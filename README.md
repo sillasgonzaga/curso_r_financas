@@ -57,3 +57,6 @@
 - [Blog RViews - Category Finance](https://rviews.rstudio.com/categories/finance/)
 - [Blog do Wilson Freitas - Categoria Finanças](http://wilsonfreitas.github.io/category/finance.html)
 - [Curso de Estratégias de Trading com R](http://wilsonfreitas.github.io/estrategias-de-trading/)
+- [Importando e Manipulando Dados Financeiros no R](http://wilsonfreitas.github.io/slides/ser-maio-2018/)
+
+
