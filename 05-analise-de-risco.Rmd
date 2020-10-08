@@ -1,0 +1,296 @@
+```{r include=FALSE}
+library(tidyverse)
+library(xts)
+library(PerformanceAnalytics)
+library(quantmod)
+```
+
+# Análise de Risco
+
+## Visualização dos Retornos
+
+No Capítulo \@ref(returns) vimos como calcular os retornos a partir da série de preços de um ativo financeiro.
+
+Dado que sabemos como calcular os retornos para uma série de preços, vamos calcular os retornos do IBOVESPA no período de 10 anos de 2010 a 2019.
+
+Para obter a série do índice vamos utiliza a função `getSymbols` do pacote `quantmod`.
+O símbolo referente ao IBOVESPA é `^BVSP`.
+
+```{r message=FALSE, warning=FALSE}
+IBOVESPA <- getSymbols("^BVSP",
+                       from = "2009-12-31",
+                       to = "2019-12-31",
+                       auto.assign = FALSE)
+```
+
+Como é fundamental **ver** os dados com os quais se está trabalhando, vamos visualizar a série do índice, pegando a série de cotações de fechamento.
+
+```{r warning=FALSE}
+IBOVESPA %>%
+  Cl() %>%
+  autoplot()
+```
+
+O que observamos?
+
+- De 2010 até 2016, aproximadamente há uma tendência de queda.
+- A partid de 2016 há uma forte tendência de alta.
+
+Agora vamos calcular os retornos das cotações de fechamento:
+
+```{r}
+IBOVESPA_rets <- IBOVESPA %>%
+  Cl() %>%
+  log() %>%
+  diff()
+```
+
+Vamos visualizar os retornos agora:
+
+```{r warning=FALSE}
+IBOVESPA_rets %>%
+  autoplot()
+```
+
+O que observamos?
+
+- Oscilações tanto positivas quanto negativas
+- Sem tendência
+- Pontos extremos
+- Quando temos pontos extremos podemos perceber uma aglomeração nesse sentido
+
+Observando os retornos do índice temos um sobe e desce errático, sem tendência aparente, pelo meno visualmente, bem diferente da série do índice.
+Na próxima seção vamos introduzir a análise estatística dos retornos e como ela pode nos ajudar na caracterização dessa variável.
+
+## Análise Estatística dos Retornos
+
+Uma forma de descrever os retornos é assumir que podem ser descritos como uma variável aleatória e assim usar a teoria da probabilidade para descrever o seu comportamento de forma teórica.
+A variável `IBOVESPA_rets` que tem a série de retornos é uma realização existencial dessa variável aleatória, a qual vamos chamar de amostra aleatória.
+A partir dessa amostra realizamos a **análise estatística dos retornos**.
+Nesta análise vamos apresentar algumas métricas úteis para descrever a variável aleatória, e muito úteis para comparar diferentes varíaveis aleatórias.
+Pois se consideramos os retornos do IBOVESPA uma variável aleatória, os retornos no índice S&P, por exemplo, também podem ser descritos como uma variável aleatória só que uma diferente da utilizada para o IBOVESPA.
+
+A descrição matemática de uma variável aleatória não será vista aqui, não é o objetivo.
+Entretanto, vamos apresentar algumas avaliações qualitativas que permitam caracterizar a variável aleatória e nos suportem na avaliação de risco dos ativos.
+
+### Histograma
+
+Toda variável aleatória possui uma distribuição de probabilidade associada.
+
+
+```{r}
+IBOVESPA_rets %>%
+  chart.Histogram(breaks = 50,
+                  main = "Histograma de retornos do IBOVESPA",
+                  show.outliers = TRUE)
+```
+
+
+O que observamos?
+
+- Picos em torno de zero
+- Pontos distantes do zero, positivos e negativos, indicando a ocorrência de eventos extremos
+- No geral, tipicamente simétrico, se ignorarmos os extremos.
+
+### Estatísticas Descritivas
+
+- Média
+- Mediana
+- Quartis
+- Mínimo e Máximo
+
+```{r}
+summary(coredata(IBOVESPA_rets))
+```
+
+```{r}
+fivenum(coredata(IBOVESPA_rets), na.rm = TRUE)
+```
+
+
+```{r}
+kurtosis(IBOVESPA_rets, na.rm = TRUE)
+```
+
+```{r}
+skewness(IBOVESPA_rets, na.rm = TRUE)
+```
+
+```{r}
+SkewnessKurtosisRatio(IBOVESPA_rets)
+```
+
+
+## Análise em Janela Móvel
+
+```{r warning=FALSE}
+rollmean(IBOVESPA_rets, 21) %>%
+  autoplot()
+```
+
+
+```{r warning=FALSE}
+rollapply(IBOVESPA_rets, 21, sd) %>%
+  autoplot()
+```
+
+
+## Túnel de Volatilidade
+
+```{r}
+plot(index(IBOVESPA_rets), coredata(IBOVESPA_rets),
+     type = "l",
+     ylim = c(-0.1, 0.1),
+     cex.axis = .7,
+     lwd = 1,
+     xlab = "Date", ylab = "Retorno",
+     main = "Retorno diário do IBOVESPA com intervalo de confiança de 2 desvios")
+volatility <- rollapply(IBOVESPA_rets, 21, sd)
+lines(index(volatility), coredata(volatility) * 2, col = "red")
+lines(index(volatility), -coredata(volatility) * 2, col = "red")
+```
+
+## Outras medidas de Risco
+
+```{r message=FALSE, warning=FALSE}
+BOVA11 <- getSymbols("BOVA11.SA",
+                     auto.assign = FALSE)
+BOVA11_rets <- BOVA11 %>%
+  Cl() %>%
+  log() %>%
+  diff()
+BOVA11_monthly <- BOVA11 %>%
+  Ad() %>%
+  to.period()
+BOVA11_monthly_rets <- BOVA11_monthly %>%
+  Cl() %>%
+  log() %>%
+  diff()
+```
+
+### Value at Risk
+
+```{r}
+quantile(BOVA11_monthly_rets, 0.05, na.rm = TRUE) * 100000
+```
+
+### Drawdown
+
+```{r}
+table.Drawdowns(BOVA11_rets)
+```
+
+
+```{r}
+PerformanceAnalytics::chart.Drawdown(BOVA11_rets["2017"])
+```
+
+```{r}
+PerformanceAnalytics::chart.Drawdown(BOVA11_rets["2020"])
+```
+
+### Short-Fall Risk
+
+Qual a probabilidade de um retorno cair abaixo de 5%?
+
+```{r}
+100 * sum(BOVA11_rets < -0.05,
+    na.rm = TRUE) / length(BOVA11_rets)
+```
+
+
+```{r}
+100 * sum(BOVA11_monthly_rets < -0.05,
+    na.rm = TRUE) / length(BOVA11_monthly_rets)
+```
+
+## Comparando Ativos
+
+### Comparação de risco e retorno de diversos ativos: gráfico de risco x retorno
+
+```{r warning=FALSE}
+symbols <- c("BOVA11.SA", "SMAL11.SA", "SPXI11.SA", "PETR4.SA", "VALE3.SA", "B3SA3.SA", "ABEV3.SA", "ITUB4.SA", "VVAR3.SA")
+prices <- getSymbols(symbols, from = "2016-01-01",
+                     to = "2019-12-31",
+                     auto.assign = TRUE) %>%
+  map(~Ad(get(.))) %>%
+  reduce(merge) %>%
+  `colnames<-`(symbols)
+```
+
+
+```{r}
+plot(prices, legend.loc = "topleft")
+```
+
+```{r warning=FALSE}
+prices_monthly <- to.monthly(prices, indexAt = "lastof", OHLC = FALSE)
+head(prices_monthly)
+```
+
+```{r}
+prices_monthly_rets <- Return.calculate(prices_monthly, "log")
+head(prices_monthly_rets)
+```
+
+```{r}
+exp_returns <- colMeans(prices_monthly_rets, na.rm = TRUE)
+exp_returns
+```
+```{r}
+exp_risk <- StdDev(prices_monthly_rets)
+exp_risk
+```
+
+```{r}
+plot(exp_risk, exp_returns, 
+     xlim = c(0.05, 0.2),
+     ylim = c(0.0, 0.05),
+     pch = 16)
+text(x = exp_risk,
+     y = exp_returns,
+     labels = colnames(exp_risk),
+     pos=4)
+```
+
+
+### Gráfico violinplot com as distribuições de retornos dos ativos
+
+```{r warning=FALSE}
+prices_monthly_rets %>%
+  data.frame(Date = index(.)) %>%
+  remove_rownames() %>%
+  gather(Symbol, Returns, -Date) %>%
+  ggplot(aes(x = Symbol, y = Returns)) +
+  geom_violin(fill = "blue")
+```
+
+
+### Gráfico boxplot com retorno dos ativos
+
+```{r warning=FALSE}
+prices_monthly_rets %>%
+  data.frame(Date = index(.)) %>%
+  remove_rownames() %>%
+  gather(Symbol, Returns, -Date) %>%
+  ggplot(aes(x = Symbol, y = Returns)) +
+  geom_boxplot()
+```
+
+### Correlação entre séries de retornos
+
+```{r}
+chart.Correlation(prices_monthly_rets)
+```
+
+
+## Exercícios
+
+1. Escolher 1 série de preços de ações, ETFs ou Índices, calcular:
+  - Retornos diários logaritmicos
+  - Volatilidade em janela móvel
+  - Gráfico de túnel de volatilidade
+
+2. Para a série de retornos diários logaritmicos
+  - Fazer o gráfico do histograma
+  - Com a média e variância da amostra fazer o gráfico da densidade de probabilidade da distribuição normal. Comparar os gráficos. O histograma da amostra *parece* com uma distribuição normal?
