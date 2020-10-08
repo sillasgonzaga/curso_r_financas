@@ -1,0 +1,300 @@
+# (PART) Aplicações {-}
+
+
+```{r include=FALSE}
+library(tidyverse)
+library(xts)
+library(PerformanceAnalytics)
+```
+
+
+# Análise de Retornos {#returns}
+
+Os retornos representam a variação dos preços de um ativo.
+São obtidos da série temporal de preços do ativo, logo, são relacionados a frequencia dessa série.
+Por exemplo, considera uma ação que possui cotações diárias do seu preço de fechamento, então podemos calcular os retornos diários dessa ação.
+
+Os retornos podem ser aritiméticos e logaritimicos.
+São formas equivalentes de representar a variação do preço entre dois instantes de tempo.
+
+
+## Retornos aritiméticos
+
+Os retornos aritiméticos são a variação percentual dos preços de um ativo.
+Como calculamos a variação percentual no preço de um ativo entre dois instantes de tempo?
+Vamos considerar $P_t$ o valor da cotação do dólar em um instante $t$ qualquer.
+A **variação** do dólar entre os instantes $t$ e $t-1$ é dada por:
+
+$$
+\Delta P_t = P_t - P_{t-1}
+$$
+
+Com uma série temporal no R calculamos esta variação usando o método `diff`.
+
+```{r}
+USDBRL <- rbcb::get_currency("USD", start_date = "2020-09-01", end_date = "2020-09-04",
+                             as = "xts") %>% rbcb::Ask()
+merge(USDBRL, diff(USDBRL) %>% setNames("diff"))
+```
+
+O primeiro elemento do vetor da diferença é um `NA` porque não há um elemento anterior para realizar o cálculo, dessa forma o R mantém a estrutura de índices e indica que o resultado para o índice em questão não está disponível.
+
+> Usamos `setNames` para renomear `diff(USDBRL)` que vem com o nome `ask`, que é o mesmo da série original.
+> Isso é interessante e uma ótima alternativa para organizar a apresentação dos dados.
+
+
+Para obter a variação percentual devemos dividir $\Delta P_t$ pelo seu valor inicial, $P_{t-1}$, dessa forma calculamos o retorno aritimético $R_t$.
+
+\begin{equation}
+R_t = \frac{\Delta P_t}{P_{t-1}} = \frac{P_t - P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}} - 1
+(\#eq:arithmetic-return)
+\end{equation}
+
+Para realizar este cálculo no R é necessário obter a série de $P_{t-1}$, isso pode ser feito com o método `lag.xts` da série temporal.
+
+```{r}
+lag.xts(USDBRL)
+```
+
+Assim, o retorno $R_t$ é calculado no R da seguinte maneira:
+
+```{r}
+100 * diff(USDBRL) / lag.xts(USDBRL)
+```
+
+Note a multiplicação por 100 no código R, isso ajuda a interpretar o resultado.
+De forma prática podemos observamos que do segundo para o terceiro dia tivemos um retorno negativo de mais de 1% na cotação do dólar.
+
+Uma outra forma de calcular retornos aritiméticos é utilizando a função `Return.calculate` do pacote `PerformanceAnalytics`.
+
+```{r}
+100 * Return.calculate(USDBRL, method = "discrete")
+```
+Uma outra forma de entender os retornos aritiméticos é inverter a Eq.\@ref(eq:arithmetic-return) e escrevê-la em termos do preço $P_t$
+
+\begin{equation}
+P_t = P_{t-1} (1 + R_t) = P_{t-1} + R_t P_{t-1}
+(\#eq:arithmetic-price)
+\end{equation}
+
+O preço $P_t$ pode ser interpretado como um choque do retorno $R_t$ no preço $P_{t-1}$.
+O retorno $R_t$ está associado ao período entre os instantes $t$ e $t-1$, de forma análoga, $R_{t-1}$ está associado aos instantes $t-1$ e $t-2$, e assim por diante para diferentes valores de $t$.
+Por isso o retorno aritimético também é conhecido como **retorno discreto**, pois, para cada período entre instantes dois instantes de tempo temos um choque discreto associado a cada movimento dos preços.
+Note que na função `Return.calculate` temos o argumento `method="discrete"`.
+
+### Composição retornos aritiméticos
+
+A composição de retornos é para saber se, dado que temos o retorno diário de dois dias consecutivos, qual é o retorno total nos dois dias?
+Isso vale para dois dias e vale para $N$ dias.
+Para simplificar vamos começar com dois dias, temos os retonos $R_t$ e $R_{t-1}$.
+Vamos começar escrevendo o preço $P_t$ conforme a Eq.\@ref(eq:arithmetic-price).
+
+\begin{equation}
+P_t = P_{t-1} (1 + R_t)
+\end{equation}
+
+nesta equação temos $P_{t-1}$.
+Vamos escrever $P_{t-1}$ também segundo a Eq.\@ref(eq:arithmetic-price) substituindo na equação acima.
+
+\begin{equation}
+P_t = P_{t-2} (1 + R_{t-1}) (1 + R_t)
+\end{equation}
+
+Temos aqui os retornos $R_t$ e $R_{t-1}$ compostos produzindo o retorno total no período de dois dias.
+Para simplificar podemos escrever
+
+\begin{equation}
+P_t = P_{t-2} (1 + \bar{R}_{2})
+\end{equation}
+
+onde $(1 + \bar{R}_{2})$ é o retorno total no período de dois dias.
+
+Generalizando para $N$ dias temos que o retorno total neste período é dado por:
+
+\begin{equation}
+(1 + \bar{R}_{N}) = \prod_{i=0}^{N-1} (1 + R_{t-i})
+(\#eq:arithmetic-return-composed)
+\end{equation}
+
+No R podemos calcular a série de retornos aritméticos compostos usando o método `cumprod` da seguinte maneira:
+
+```{r}
+100 * (cumprod(1 + na.trim(Return.calculate(USDBRL, method = "discrete"))) - 1)
+```
+
+Foi necessário utilizar o método `na.trim` para remover o `NA` do primeiro elemento do cálculo dos produtos acumulados.
+
+> As funções `cumsum`, `cumprod`, `cummax` e `cummin` não possuem o argumento `na.rm` que exclui os elementos com `NA` da operação, como acontece com as funções `sum`, `prod`, `max` e `min`.
+> Por este motivo é importante fazer este tratamento antes de executar estas funções.
+
+
+## Retornos logaritimicos
+
+Os retornos logaritimicos são dados por:
+
+\begin{equation}
+r_t = \log \left( \frac{P_t}{P_{t-1}} \right) = \log P_t - \log P_{t-1} = p_t - p_{t-1}
+(\#eq:log-return)
+\end{equation}
+
+No R fazemos como na equação acima, tiramos a diferença dos logaritimos dos preços $P_t$
+
+```{r}
+100 * diff(log(USDBRL))
+```
+
+Os valores são bastante próximos aos dos retornos logaritimicos.
+
+Também podemos usar a função `Return.calculate` do pacote `PerformanceAnalytics` para calcular os retornos logaritimicos
+
+```{r}
+100 * Return.calculate(USDBRL, method = "log")
+```
+
+Invertendo a Eq.\@ref(eq:log-return) para obter a equação dos preços, da mesma maneira que fizemos na Eq.\@ref(eq:arithmetic-price).
+
+\begin{equation}
+P_t =  P_{t-1} \exp\left( r_t \right)
+(\#eq:log-price)
+\end{equation}
+
+### Composição dos retornos logaritimicos
+
+Pela Eq.\@ref(eq:arithmetic-log-return-relation) de relação entre os retornos aritiméticos e logaritimicos podemos escrever a composição dos retornos logaritimicos substituindo essa equação na Eq.\@ref(eq:arithmetic-return-composed).
+
+\begin{equation}
+\begin{array}{rcl}
+\exp(\bar{R}_{N}) & = & \prod_{i=0}^{N-1} \exp(r_{t-i}) = \exp\left(\sum_{i=0}^{N-1} r_{t-i}\right) \\
+\bar{r}_{N}       & = & \sum_{i=0}^{N-1} r_{t-i} \\
+\end{array}
+(\#eq:log-return-composed)
+\end{equation}
+
+No R podemos calcular a série de retornos logaritimicos compostos usando o método `cumprod`, da mesma forma que fizemos com os retornos aritiméticos.
+
+```{r}
+100 * (cumprod(1 + na.trim(Return.calculate(USDBRL, method = "log"))) - 1)
+```
+
+
+## Relação entre os retornos aritiméticos e logaritimicos
+
+Como $P_t$ deve ser sempre o mesmo, independente do retorno que estamos utilizando, então, usando as Eqs.\@ref(eq:arithmetic-price) e \@ref(eq:log-price), podemos obter a relação entre os retornos aritiméticos e logaritimicos.
+
+\begin{equation}
+1 + R_t =  \exp\left( r_t \right)
+(\#eq:arithmetic-log-return-relation)
+\end{equation}
+
+No R
+
+```{r}
+cbind(
+  Return.calculate(USDBRL, method = "discrete") %>% setNames("discrete_raw"),
+  (exp(Return.calculate(USDBRL, method = "log")) - 1) %>% setNames("discrete_from_log"),
+  Return.calculate(USDBRL, method = "log") %>% setNames("log_raw"),
+  log(1 + Return.calculate(USDBRL, method = "discrete")) %>% setNames("log_from_discrete")
+)
+```
+
+## Retorno esperado
+
+Com a composição de retornos obtemos o retorno total para o período de abrangência da série.
+Em nossos exemplos temos um período de 3 dias úteis, mas podemos trabalhar com uma semana, um mês, um ano, dez anos e por aí vai.
+
+\begin{equation}
+\begin{array}{rcl}
+(1 + \bar{R})^{\frac{1}{N}} & = & \prod_{i=0}^{N-1} (1 + R_{t-i}) \\
+\bar{R}                     & = & \left( \prod_{i=0}^{N-1} (1 + R_{t-i}) \right)^{\frac{1}{N}}
+\end{array}
+\end{equation}
+
+
+\begin{equation}
+\bar{r} = \frac{1}{N} \sum_{i=0}^{N-1} r_{t-i}
+\end{equation}
+
+A média aritimética dos retornos logaritimicos é equivalente ao retorno médio no período e por isso podemos denominá-lo como retorno esperado.
+
+A média aritimética dos retornos discretos não é equivalente ao retorno médio definido, entretanto, para algumas análises, por simplificação, podemos usar a média aritimética dos retornos discretos como retorno médio.
+
+A média aritimética é uma estimativa estatística para o valor esperado de uma grandeza.
+Em nosso exemplo, os retornos representam as grandezas que queremos avaliar e o valor esperado dos retornos vamos chamar de **retorno esperado**.
+Dessa maneira, a média dos retornos logaritimicos são uma boa medida para os retornos esperado.
+Como já citamos, dados as devidas aproximações, não é um crime utilizar a média aritimética dos retornos discretos como o retorno esperado, entretanto, eu dou preferência aos retornos logaritimicos.
+
+No R temos a função `mean` que calcula a média aritimética de uma amostra, e passando a série de retornos logaritimicos como amostra, obtemos o retorno esperado para a amostra.
+
+```{r}
+USDBRL_2019 <- rbcb::get_currency("USD", start_date = "2019-01-01", end_date = "2019-12-31",
+                                  as = "xts") %>% rbcb::Ask()
+100 * mean(Return.calculate(USDBRL_2019, method = "log"), na.rm = TRUE)
+```
+
+Neste exemplo utilizamos a série de cotação do dólar em Reais para o ano de 2019 e podemos observar que para este período o retorno esperado é de aproximadamente 0.01%.
+
+
+## Risco esperado
+
+Variância dos retornos
+
+$$
+\textrm{Var}(r_t) = \frac{1}{N-1}\sum_{i=0}^{N-1}\left( r_{t-i} - \bar{r} \right)^2
+$$
+Desvio padrão dos retornos
+
+$$
+\sigma = \sqrt{\textrm{Var}(r_t)}
+$$
+
+Também é conhecido como volatilidade.
+A volatilidade é um conceito amplo para descrever o comportamento da dinâmica de um ativo.
+Entretanto, a métrica mais comumente utilizada para descrever ou explicar a volatilidade é o desvio padrão dos retornos.
+Há diversas formas de estimar a volatilidade, o desvio padrão amostral é uma delas.
+Contudo, a volatilidade não é observada, diferente dos preços dos ativos e das taxas de juros, logo, sua estimação é sempre calcada em um conjunto de hipóteses.
+Em termos gerais, o objetivo de caracterizar o risco esperado em termos da volatilidade é que a partir dessa medida possamos definir perdas esperadas associadas a probabilidades.
+Ou mesmo que não defina-se uma perda esperada, conhecendo a volatilidade de diferentes ativos é possível comparar os ativos por uma métrica de risco esperado potencial.
+
+No R
+
+```{r}
+100 * sd(Return.calculate(USDBRL_2019, method = "log"), na.rm = TRUE)
+```
+
+
+O desvio padrão tem uma relação direta com os retornos, eles estão na mesma *unidade*.
+Por esse motivo o desvio padrão é utilizado para definir um **intervalo de confiança** para o retorno esperado.
+Por ora vamos segurar um pouco aqui, mais adiante vamos trazer uma abordagem estatística sobre os retornos e vamos falar mais sobre o desvio padrão.
+
+## Volatilidade e Retornos anualizados
+
+As taxas de juros presentes no mercado são taxas de juros anuais, dessa maneira, como comparar o retorno esperado de um ativo com um investimento simples como um CDB, ou o Tesouro SELIC que remuneram próximo das taxas básicas de juros do mercado, fora os custos.
+Uma forma de fazer essa comparação é colocar os retornos esperados e a volatilidade na mesma *base* das taxas de juros.
+Então, é necessário **anualizar** o retorno esperado e sua volatilidade.
+
+### Retornos anualizados
+
+\begin{equation}
+1 + r_a = (1 + r_d)^252
+\end{equation}
+
+### Volatilidade anualizada
+
+\begin{equation}
+\sigma_a = \sigma_d\sqrt{252}
+\end{equation}
+
+## Exercícios
+
+1. Para séries de preços de ações, ETFs e Índices, calcular:
+  - Retornos logaritmicos mensais
+  - Retorno esperado anualizado
+  - Volatilidade esperada anualizada
+  - Comparar os retornos e volatilidades esperadas dos ativos
+2. Para a série de preços do ativo selecionado.
+  - Calcular os retornos diários aritméticos.
+  - Dividir as séries em 4 períodos com a mesma quantidade de dados e calcule as estatísticas: média, desvio padrão e correlação, para cada sub-período.
+  - O que se observa?
+  - As medidas permanecem constantes ao longo do tempo?
+  - Fazer a mesma análise para retornos diários logaritmicos - as medidas mudam substancialmente?
+  - Fazer o boxplot para cada sub-período com os 2 tipos de retornos.
