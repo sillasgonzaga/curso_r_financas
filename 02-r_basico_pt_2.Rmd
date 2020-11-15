@@ -1,3 +1,520 @@
-# Literature
+# Novos passos com R {part2}
 
-Here is a review of existing methods.
+## Leitura de arquivos csv
+
+Para ler arquivos csv com o R, usamos o pacote `readr`, que faz parte do `tidyverse`.
+
+Caso as colunas do arquivo que se deseja ler sejam separadas por vírgula, usa-se a função `readr::read_csv()`. Caso o separador seja ponto e vírgula (o padrão brasileiro), usa-se `readr::read_csv2()`.
+
+Vamos ler o arquivo de exemplo deste módulo:
+
+```{r}
+library(tidyverse)
+df <- readr::read_csv("abev3_petr4.csv")
+```
+
+
+
+## Gráficos com ggplot2
+
+O `ggplot2` é uma poderosa ferramenta para fazer gráficos a partir de objetos da classe `data.frame`. Gráficos no R são um assunto bem extenso, e muito se poderia falar sobre o tema. Neste material, o pacote será apresentado de forma breve. Para um conteúdo mais abrangente sobre o tema, recomenda-se a leitura [deste material](http://sillasgonzaga.com/material/cdr/ggplot2.html).  
+
+### Como usar o ggplot2:
+
+Gráficos no ggplot são feitos nesta sintaxe:
+
+```{r, eval = FALSE}
+ggplot(<NOME DO DATAFRAME>, aes(x = <VARIAVEL DO EIXO X>,
+                                y = <VARIAVEL DO EIXO Y>)) +
+  <TIPO DO GRÁFICO> +
+  <CUSTOMIZAÇÕES EXTRAS>
+```
+
+
+### Gráfico de dispersão ou gráfico de pontos
+
+A sintaxe para se fazer um gráfico de pontos é:
+
+```{r}
+ggplot(df, aes(x = petr4, y = abev3)) +
+  geom_point()
+```
+
+### Gráfico de linha
+
+A sintaxe para fazer um gráfico de linha é semelhante ao de pontos. Contudo, esse tipo de gráfico é mais usado quando a variável do eixo x é do tipo Date.
+
+```{r}
+ggplot(df, aes(x = data, y = petr4)) +
+  geom_line()
+```
+
+### Histogramas
+
+Os histogramas são utilizados para representar-se a distribuição de dados de uma variável quantitativa em intervalos contínuos. Esses intervalos são chamados de `bins`. Para cada bin, será apresentada a quantidade de valores que estão naquele intervalo. 
+
+No mercado financeiro, uma aplicação comum de histogramas é analisar a distribuição de retornos diários de um ativo:
+
+
+```{r}
+
+ggplot(df, aes(x = retorno_diario_petr4)) +
+  geom_histogram()
+
+
+```
+
+
+
+## Trabalhando com datas
+
+
+Datas são um caso a parte no R. Existe uma própria classe para objetos desse tipo, chamada `Date`, com D maiúsculo. O R lida com datas no formato AAAA-MM-DD (Ano, Mês e Dia).
+
+Abaixo, definimos um vetor com datas
+
+```{r 08-datas-1}
+x <- c("2014-07-15", "2018/03/20", "2019-12-31", "20170511")
+as.Date(x)
+class(as.Date(x))
+```
+
+Perceba que o R nativamente não aceita qualquer separador entre o ano, o mês e o dia, apenas o traço. O pacote `lubridate`, que faz parte da família `tidyverse`, possui uma versão mais generalizável para isso:
+
+```{r 08-datas-2}
+library(lubridate)
+lubridate::as_date(x)
+```
+
+
+A propósito, dominar o pacote `lubridate`, que possui funções muito simples de usar, é a única coisa necessária para saber lidar com datas no R. Por isso, vamos mostrar as principais funções do pacote.
+
+### Gerar um vetor sequencial de datas
+
+Essa tarefa é feita usando uma função nativa do R chamada `seq.Date()`, que possui quatro argumentos principais, sendo que três deles precisam ser especificados.
+
+```{r 08-datas-3}
+args(seq.Date)
+```
+
+```{r 08-datas-4}
+# gerar vetor de datas separadas por mes
+seq.Date(from = as_date("2020-01-01"),
+         to = as_date("2020-12-01"),
+         by = "1 month")
+
+# gerar vetor de datas separadas por dia
+seq.Date(from = as_date("2020-01-01"),
+         to = as_date("2020-01-20"),
+         by = "1 day")
+
+# gerar vetor de datas separadas por 3 dias
+seq.Date(from = as_date("2020-01-01"),
+         to = as_date("2020-01-20"),
+         by = "3 day")
+
+# gerar um vetor de 7 semanas separados por 1 semana
+seq.Date(from = as_date("2020-01-01"),
+         length.out = 7,
+         by = "1 week")
+
+```
+
+
+
+## 'Parsear' datas e horários
+
+Para fazer o R converter (ou parsear na linguagem de programação) um string em data, basta usar as funções correspondentes do lubridate.
+
+Por exemplo, no vetor de exemplo `x`, definido acima, as datas já estavam definidas no formato correto: AAAA-MM-DD. Aqui no Brasil usamos outro formato: DD/MM/AAAA. O `lubridate` possui uma função pronta para essa situação:
+
+```{r 08-datas-5}
+# observer como usamos diferentes separadores
+datas_brasil <- c("01/12/2019", "20/11/2018", "30011990", "17-03-2000")
+# parseando o vetor acima para Data
+dmy(datas_brasil)
+
+```
+
+Caso o vetor também contenha dados de horário, basta incluir o sufixo referente a hora, minuto e segundo:
+
+```{r 08-datas-6}
+dmy_hms("30-09-2019 14:51:39")
+# sem o segundo
+dmy_hm("30-09-2019 14:15")
+# apenas a hora
+dmy_h("30-09-2019 15")
+```
+
+## Extrair componentes de uma data
+
+É possível extrair qualquer tipo de componente de uma data ou de um vetor de datas com o lubridate. Veja alguns exemplos:
+
+```{r 08-datas-7}
+datas_brasil <- dmy_hms(c("01/12/2019 13:51:15", "20/11/2018 00:00:00", "30011990 080000", "17-03-2000 203000"))
+datas_brasil
+# extrair componentes da data:
+# ano
+year(datas_brasil)
+# mes
+month(datas_brasil)
+# dia
+day(datas_brasil)
+# semana do ano
+week(datas_brasil)
+# dia da semana
+wday(datas_brasil, label = TRUE)
+# trimestre
+quarter(datas_brasil)
+# hora
+hour(datas_brasil)
+```
+
+## Operações matemáticas com datas
+
+Geralmente se está interessado em fazer três tipos de operações matemáticas com datas:
+
+* **Adicionar uma quantidade N de dias/meses/anos/etc em uma data**:
+
+```{r 08-datas-8}
+# adicionar 1 semana nas datas
+datas_brasil + ddays(7)
+# adicionar 3 meses
+datas_brasil + ddays(90)
+# adicionar 1 ano
+datas_brasil + dyears(1)
+```
+
+* **Calcular a diferença de tempo entre duas datas**:
+
+No R, subtrair datas segue a mesma sintaxe de subtrair números:
+
+```{r 08-datas-9}
+data1 <- dmy_hms("01/09/1993 20:00:00")
+data2 <- dmy_hms("24-06-2018 17:00:00")
+
+dif <- data2 - data1
+dif
+```
+Por padrão, o R retorna a diferença em dias, mas em um objeto de classe `difftime`.
+
+```{r 08-datas-10}
+class(dif)
+```
+
+Recomenda-se então converter o output para a classe `numeric`:
+
+```{r 08-datas-11}
+as.numeric(dif)
+```
+
+Caso se deseje calcular essa diferença em outras unidades de tempo, como meses ou semanas, basta fazer a divisão correspondente:
+
+```{r 08-datas-12}
+# conveter para semanas
+as.numeric(dif) / 7
+# converter para meses
+as.numeric(dif) / 30
+# converter para anos
+as.numeric(dif) / 365
+```
+
+
+* **Arredondar datas**:
+
+Para arredondar uma data, por exemplo, retornar o primeiro ou último dia da semana/mês/trimestre/etc de uma data de referência, usa-se as funções `ceiling_date()` (arredondar para cima) e `floor_date()` (para baixo):
+
+
+
+```{r 08-datas-13 }
+# retornar a primeira data da semana:
+floor_date(datas_brasil, "week")
+# retornar a ultima data do mês
+# por padrao, ceiling_date retorna a primeira data do próximo mês,
+# por isso é necessario subtrair o resultado por 1
+ceiling_date(datas_brasil, "month") - 1
+# arredondar usando a hora como referencia
+floor_date(datas_brasil, "hour")
+```
+
+
+## If-else
+
+A estrutura condicional é algo bastante intuitivo. A estrutura de if (se) e else (então) usa os operadores lógicos apresentados anteriormente. Se a condição do `if()` for verdadeira, executa-se uma tarefa específica, se for falsa, executa-se uma tarefa diferente. A estrutura parece algo do tipo:
+
+```{r 04-manipulando-dados-16, eval=FALSE}
+if( variavel >= 500 ) {
+  #executa uma tarefa se operação resultar TRUE
+} else {
+  #executa outra tarefa se operação resultar FALSE
+}
+``` 
+
+Da mesma forma, existe uma função que gera o mesmo resultado, o `ifelse()` (e uma do pacote `dplyr`, o `if_else()`).
+
+```{r 04-manipulando-dados-17, eval=FALSE}
+ifelse(variavel >= 500, 'executa essa tarefa se TRUE', 'executa outra se FALSE')
+```
+
+Existe uma diferença entre as duas formas de "if else": a estrutura `if() {} else {}` só opera variáveis, uma por uma, já a estrutura `ifelse()` opera vetores, ou seja, consegue fazer a comparação para todos os elementos. Isso faz com que a forma `if() {} else {}` seja mais utilizada para comparações fora dos dados, com variáveis avulsas. Já a estrutura `ifelse()` é mais usada para comparações dentro dos dados, com colunas, vetores e linhas.
+
+Qualquer uma dessas estruturas pode ser "aninhada", ou seja, encadeada. Por exemplo:
+
+```{r 04-manipulando-dados-18}
+a <- 9823
+
+if(a >= 10000) {
+  b <- 'VALOR ALTO'
+} else if(a < 10000 & a >= 1000) {
+  b <- 'VALOR MEDIO' 
+} else if(a < 1000) {
+  b <- 'VALOR BAIXO'
+}
+
+b
+```
+
+Ou ainda:
+
+```{r 04-manipulando-dados-19}
+a <- 839
+c <- ifelse(a >= 10000, 'VALOR ALTO', ifelse(a < 10000 & a >= 1000, 'VALOR MEDIO', 'VALOR BAIXO'))
+c
+```
+
+
+
+## Loops
+
+Trata-se de um dos conceitos mais importantes de qualquer linguagem de programação, em R não é diferente. Loops (ou laços) repetem uma sequência de comando quantas vezes você desejar, ou até que uma condição aconteça, variando-se alguns aspectos entre uma repetição e outra.
+
+Supondo que você tenha que ler 400 arquivos de dados que você obteve de um cliente. Você vai escrever 400 vezes a funcão de leitura? Nesse caso, basta fazer um loop para percorrer todos os arquivos da pasta e ler um por um com a função de leitura.
+
+O `for()` é usado para realizar uma série de ordens para uma determinada sequência ou índices (vetor). Sua sintaxe é bem simples:
+
+```{r 04-manipulando-dados-20}
+for(i in c(1, 2, 3, 4, 5)) {
+  print(i^2)
+}
+```
+
+Para cada valor (chamamos esse valor de `i`) dentro do vetor `c(1, 2, 3, 4, 5)`, execute o comando `print(i^2)`. Qualquer outro comando dentro das chaves `{ ... }` seria executado para cada valor do vetor.
+
+Para entendermos melhor, vamos repensar o exemplo das séries usando o `for()`.
+
+```{r 04-manipulando-dados-21}
+lista.de.arquivos <- list.files('dados/dados_loop') #lista todos os arquivos de uma pasta
+is.vector(lista.de.arquivos)
+
+for(i in lista.de.arquivos) {
+  print(paste('Leia o arquivo:', i))
+  #exemplo: read_delim(i, delim = "|")
+}
+```
+
+Também é possível utilizar loop com if. No exemplo a seguir, queremos ver todos os números de 1 a 1000 que são divisíveis por 29 e por 3 ao mesmo tempo. Para isso, utilizaremos o operador `%%`, que mostra o resto da divisão. Se o resto for zero, é divisível.
+
+```{r 04-manipulando-dados-22}
+for(i in 1:1000){
+  if((i %% 29 == 0) & (i %% 3 == 0)){
+    print(i)
+  }
+}
+```
+
+
+## Criado suas próprias funções
+
+Funções "encapsulam" uma sequência de comandos e instruções. É uma estrutura nomeada, que recebe parâmetros para iniciar sua execução e retorna um resultado ao final. Até o momento, você já usou diversas funções. Vejamos então como criar uma função:
+
+```{r 04-manipulando-dados-26, eval=FALSE}
+sua_funcao <- function(parametro1, parametro2){
+  
+  # sequência de tarefas
+  
+  return(valores_retornados)
+}
+
+# chamada da função
+sua_funcao
+```
+
+Por exemplo, vamos criar uma função que, dado uma série temporal de retornos, exibe algumas estatísticas:
+
+```{r}
+analisar_retorno <- function(x){
+  # x é um nome qualquer que, no escopo da função, diz respeito ao objeto
+  # que será passado como input
+  print("Média: " )
+  print(mean(x))
+  print("Desvio padrão: ")
+  print(sd(x))
+  print("Mediana: ")
+  print(median(x))
+  
+}
+```
+
+
+Vamos então aplicar às séries de retorno do nosso dataset:
+
+```{r}
+analisar_retorno(df$retorno_diario_petr4)
+```
+
+Veja que é necessário alterar o corpo da função para que as funções ignorem a presença de `NA`s nos dados.
+
+```{r}
+analisar_retorno <- function(x){
+  # x é um nome qualquer que, no escopo da função, diz respeito ao objeto
+  # que será passado como input
+  print("Média: " )
+  print(mean(x, na.rm = TRUE))
+  print("Desvio padrão: ")
+  print(sd(x, na.rm = TRUE))
+  print("Mediana: ")
+  print(median(x, na.rm = TRUE))
+  
+}
+```
+
+Agora sim:
+
+```{r}
+analisar_retorno(df$retorno_diario_abev3)
+```
+
+```{r}
+analisar_retorno(df$retorno_diario_petr4)
+```
+
+## Listas
+
+Nós já falamos sobre vetores, que são as principais estruturas unidimensionais de dados e que só aceitam elementos da mesma classe:
+
+```{r 11-dados-complexos-1}
+a <- c(1, 2, "c", 4)
+class(a)
+```
+
+O R também possui uma estrutura de dados que pode armazenar, literalmente, qualquer tipo de objeto: as listas, criadas com a função `list()`.
+
+No exemplo abaixo uma série de objetos de classes diferentes são armazenadas:
+
+```{r 11-dados-complexos-2}
+data_frame <- head(iris)
+elemento_unico_inteiro <- 1
+um_na <- NA
+vetor_string <- letters[1:5]
+
+minha_lista <- list(data_frame = data_frame, 
+                    elemento_unico_inteiro = elemento_unico_inteiro, 
+                    # este elemento abaixo não vai possuir um nome
+                    um_na, 
+                    vetor_string = vetor_string)
+
+# Conferindo o output: 
+minha_lista
+```
+
+Pelo output já percebemos que a maneira como extraímos um elemento de um vetor é diferente da de uma lista. No primeiro, usamos um par de colchetes (`[]`), no segundo usamos dois pares (`[[]]`) ou também cifrão (`$`), que só funciona caso o elemento da lista possua um nome.
+
+```{r 11-dados-complexos-3}
+minha_lista[[2]]
+minha_lista$vetor_string
+# o comando abaixo retorna NULL pq "um_na" não é um nome de
+# nenhum elemento da lista
+minha_lista$um_na
+```
+
+A maneira mais produtiva de se usar listas em seus projetos é para automatizar a aplicação de uma determinada função (ou funções) para todos os elementos de uma lista. Suponha, por exemplo, que você precise importar dezenas de arquivos csv, fazer algumas limpezas e manipulações de dados, construir modelos de Machine Learning e depois salvar os resultados no computador. Seria muito tedioso fazer isso manualmente, mas é para esse tipo de operação que listas se tornam muito úteis.
+
+O pacote `purrr` possui uma série de comandos para aplicar funções a elementos de uma lista. O R base até possui as funções da família *apply* (`apply()`, `tapply()`, `lapply()`, etc), mas estas estão entrando em desuso devido à adoção do `purrr`. 
+
+
+## purrr::map
+
+
+Nós já vimos que o R aplica uma função a cada elemento de um vetor de uma forma muito simples:
+
+```{r 11-dados-complexos-7}
+meu_vetor <- c(1, -3, 5, -10)
+# extrair o modulo de cada elemento do vetor acima
+abs(meu_vetor)
+```
+
+No caso de listas, não é bem assim que funciona:
+```{r 11-dados-complexos-8, error = TRUE}
+minha_lista <- list(1, 3, 5, 10)
+abs(minha_lista)
+```
+
+É necessário usar uma outra função para aplicar uma função a cada elemento da lista. É aqui que introduzimos a função `map()`, do pacote `purrr`. O primeiro argumento é a estrutura de dados sobre a qual se deseja iterar e o segundo é a função que será aplicada a cada elemento.
+
+O pacote `purrr` faz parte do `tidyverse`.
+
+```{r 11-dados-complexos-9}
+library(tidyverse)
+library(purrr)
+map(minha_lista, abs)
+```
+
+Veja a diferença no output:
+
+```{r 11-dados-complexos-10}
+class(minha_lista)
+map(minha_lista, class)
+```
+
+De maneira genérica, é assim que são usados os parâmetros de `map()`:
+
+```{r 11-dados-complexos-11, eval = FALSE}
+map(.x, .f, ...)
+# ou 
+map(VETOR_OU_LISTA, FUNCAO_PARA_APLICAR, ARGUMENTOS_OPCIONAIS)
+# que é equivalente a 
+VETOR_OU_LISTA %>% map(FUNCAO_PARA_APLICAR, ARGUMENTOS_OPCIONAIS)
+```
+
+Existem duas maneiras de especificar a função para usar no `map()`:
+
+- Uma função existente
+
+```{r 11-dados-complexos-12}
+# definir uma lista composta por vetores
+v <- list(v1 = c(1, 3, 5), v2 = c(2, 4, 6), v3 = c(7, 8, 9))
+# aplicar a raiz quadrada a todos os vetores
+map(v, sqrt)
+# calcular a soma dos elementos de cada vetor
+map(v, sum)
+```
+
+
+- Uma função "anônima", definida dentro da própria `map()`. Veja que, em `function(x)` abaixo, `x` é como se fosse uma representação genérica de cada elemento da lista `v`. Em inglês isso se chama placeholder.
+
+```{r 11-dados-complexos-13}
+# elevar cada elemento de cada vetor ao quadrado
+map(v, function(x) x^2)
+# elevar a soma dos elementos do vetor ao quadrado
+map(v, function(x) sum(x)^2)
+```
+
+
+## Case 1
+
+Dada série de preços de 2 ativos: f
+* fazer gráfico com 2 ativos  
+* calcular série de variação de preços dos ativos (retorno aritimético) - fazer gráfico do retorno  
+* com retornos dos 2 ativos calcular série de índices (usando cumprod) para cada ativo - fazer gráfico comparando 2 ativos dá até pra criar uma série de taxa de juros fixa acumulada (simulando um CDI no período)
+
+
+
+## Case 2
+
+Dada uma matriz de variação de preços de ativos calcular para cada ativo as estatísticas descritivas: média, desvio padrão, máximo, mínimo e mediana.
+Calcular o IBOVESPA: pegar, no site da B3, os ativos que constituem o IBOVESPA, os pesos e as cotações e calcular o valor do índice.
+
+
+
+
+

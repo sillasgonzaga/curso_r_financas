@@ -1,21 +1,369 @@
-# Introduction {#intro}
+# Primeiros passos com R {#intro}
 
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+O material deste módulo introdutóri foi adaptado do excelente material didático [Ciência de Dados com R - Introdução](http://sillasgonzaga.com/material/cdr/).
 
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
 
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
+## O que é R e por que devo aprendê-lo?
+
+R é uma linguagem de programação estatística que vem passando por diversas evoluções e se tornando cada vez mais uma linguagem de amplos objetivos. Podemos entender o R também como um conjunto de pacotes e ferramentas estatísticas, munido de funções que facilitam sua utilização, desde a criação de simples rotinas até análises de dados complexas, com visualizações bem acabadas.
+
+Segue alguns motivos para aprender-se R:
+
+  - É completamente gratuito e de livre distribuição;
+- Curva de aprendizado bastante amigável, sendo muito fácil de se aprender;
+- Enorme quantidade de tutoriais e ajuda disponíveis gratuitamente na internet;
+- É excelente para criar rotinas e sistematizar tarefas repetitivas;
+- Amplamente utilizado pela comunidade acadêmica e pelo mercado;
+- Quantidade enorme de pacotes, para diversos tipos de necessidades;
+- Ótima ferramenta para criar relatórios e gráficos.
+
+Apenas para exemplificar-se sua versatilidade, este eBook e os slides das aulas foram todos feitos em R.
+
+## Introdução ao Rstudio
+
+
+
+
+O R puro se apresenta como uma simples "tela preta" com uma linha para inserir comandos. Isso é bastante assustador para quem está começando e bastante improdutivo para quem já faz uso intensivo da ferramenta. Felizmente existe o RStudio, ferramenta auxiliar que usaremos durante todo o curso.
+
+Entenda o RStudio como uma interface gráfica com diversas funcionalidades que melhoram ainda mais o uso e aprendizado do R. Na prática, o RStudio facilita muito o dia a dia de trabalho. Portanto, desde já, ao falarmos em R, falaremos automaticamente no RStudio.
+
+Essa é a "cara" do RStudio:
+
+  ```{r echo=FALSE, fig.cap='RStudio se divide em 4 partes'}
+knitr::include_graphics("imagens/RStudio_001.png")
 ```
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+Repare que, além da barra de menu superior, o RStudio é divido em quatro partes principais:
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
+  <h4> 1. Editor de Código </h4>
+  No editor de código, você poderá escrever e editar os scripts. Script nada mais é do que uma sequência de comandos/ordens que serão executados em sequência pelo R. O editor do RStudio oferece facilidades como organização dos comandos, "auto-complete" de comandos, destaque da sintaxe dos comandos etc. Provavelmente é a parte que mais utilizaremos.
+
+<h4> 2. Console </h4>
+  É no console que o R mostrará a maioria dos resultados dos comandos. Também é possível escrever os comandos diretamente no console, sem o uso do editor de código. É muito utilizado para testes e experimentos rápidos. Um uso rápido do console é, por exemplo, chamar a ajuda do R usando o comando `?` (isso mesmo, a interrogação é um comando!). Voltaremos a falar deste comando `?` em breve.
+
+<h4> 3. Environment e History </h4>
+  No Environment ficarão guardados todos os objetos que forem criados na sessão do R. Entenda sessão como o espaço de tempo entre o momento em que você inicia o R e o momento em que finaliza. Neste período, tudo que você faz usa memória RAM e o processador do computador. E na aba History, como você deve imaginar, o RStudio cria um histórico de comandos utilizados.
+
+<h4> 4. Files, Plots, Packages, Help e Viewer. </h4>
+  Nesta janela, estão várias funcionalidades do RStudio. Na aba Files, você terá uma navegação de arquivos do seu computador. Também será possível definir o diretório de trabalho (você também pode definir diretamente no código, mas isto será tratado posteriormente), ou seja, o R entende o seu diretório de trabalho como ponto de partida para localizar arquivos que sejam chamados no script.
+
+<h5> 4.1 Aba Plots </h5>
+  A aba Plots trará os gráficos gerados, possibilitando a exportação para alguns formatos diferentes, como .png e .pdf.
+
+<h5> 4.2 Aba Packages </h5>
+  Em Packages estão listados os pacotes instalados. Você pode verificar quais estão carregados e, caso necessário, poderá carregar algum pacote necessário para a sua análise. Também é possível instalar e atualizar pacotes. Novamente, tudo isto é possível fazer diretamente no código.
+
+<h5> 4.3 Aba Help </h5>
+  O nome já diz tudo. Esta aba será bastante utilizada por você. Saber usar o help é fundamental para evitar desperdício de tempo. Os usuários de R, em geral, são bastante solícitos. Entretanto, uma olhadinha rápida no help pode evitar que você gaste “créditos” desnecessariamente.
+
+<h5> 4.4 Aba Viewer </h5>
+  Por fim, o Viewer. Esta funcionalidade é utilizada para visualizar-se localmente conteúdo web. O gráfico da figura está na aba Viewer porque é uma visualização em javascript, que pode ser adicionada a documentos html gerados usando o RMarkdown ou em aplicações web com suporte do Shiny.
+  
+  
+## Operações aritméticas
+
+O R pode ser usado como uma simples calculadora para fazer operações matemáticas simples:
+
+```{r}
+4 + 5
+2 - 3
+4 * 8
+1  / 3
+2 ^ 5
+4 %% 3
+9 %/% 2
 ```
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+## Criação de variáveis e objetos
+
+
+Para que o R deixe de ser uma simples calculadora, será necessário aprender, dentre outras coisas, o uso de variáveis. Se você tem alguma noção de estatística, provavelmente já tem a intuição do que é uma variável para uma linguagem de programação. No contexto do R, vamos entender variável como um objeto, ou seja, como uma estrutura predefinida que vai "receber" algum valor. Utilizando uma linguagem mais técnica, objeto (ou variável) é um pequeno espaço na memória do seu computador onde o R armazenará um valor ou o resultado de um comando, utilizando um nome que você mesmo definiu.
+
+Conhecer os tipos de objetos do R é fundamental. Para criar objetos, utiliza-se o símbolo `<-`. Este provavelmente é o símbolo que você mais verá daqui para frente.
+
+Execute, no console ou no editor de códigos, o seguinte comando `x <- 15`. Pronto, agora o nome `x` representa o valor `15`. Para comprovar, execute apenas o nome do objeto `x`, o R mostrará o conteúdo dele. A partir de então, você poderá utilizar esse objeto como se fosse o valor 15. Experimente os seguintes resultados:
+
+```{r 02-conceitos-basicos-4, eval=FALSE}
+x + 5
+x * x / 2
+2 ^ x
+y <- x / 3
+```
+
+Dê uma boa lida em *Dicas e boas práticas para um código organizado* para aprender a organizar seus objetos e funções da melhor maneira possível. 
+
+Todos os objetos que você criar estarão disponíveis na aba **_Environment_**.
+
+O RStudio possui a função _auto complete_. Digite as primeiras letras de um objeto (ou função) que você criou e, em seguida, use o atalho **_ctrl + barra de espaço_**. O RStudio listará tudo que começar com essas letras no arquivo. Selecione algum item e aperte _enter_ para escrevê-lo no editor de códigos.
+
+## Estruturas de dados
+
+Existem diversos tipos de objetos, e cada tipo "armazena" um conteúdo diferente, desde tabelas de dados recém-carregados a textos, números, ou simplesmente a afirmação de verdadeiro ou falso (Boleano).
+
+```{r 04-manipulando-dados-3}
+inteiro <- 928
+outro.inteiro <- 5e2
+decimal <- 182.93
+caracter <- 'exportação'
+logico <- TRUE
+outro.logico <- FALSE
+```
+
+Repare nas atribuições acima. Usaremos a função `class()` para ver o tipo de cada uma:
+
+```{r 04-manipulando-dados-4}
+class(inteiro)
+class(outro.inteiro)
+class(decimal)
+class(caracter)
+class(logico)
+class(outro.logico)
+```
+
+Esses são alguns dos tipos básicos de objetos/variáveis no R. Para valores inteiros ou decimais, `numeric` , `character` para valores textuais e `logical` para valores lógicos (verdadeiro ou falso). Existe também o tipo `integer`, que representa apenas números inteiros, sem decimais, porém, na maioria das vezes, o R interpreta o `integer` como `numeric`, pois o `integer` também é um `numeric`.
+
+Além dos tipos básicos, existem também os tipos "complexos", que são `vector`, `array`, `matrix`, `list`, `data.frame` e `factor`. 
+
+## Operadores de comparação
+
+Em todas as comparações do R usamos operadores lógicos. São operações matemáticas em que o resultado é `TRUE` ou `FALSE` (tipo `logical`). Para melhor entendimento, selecionamos alguns operadores lógicos e seus significados:
+
+- `==` igual a: compara dois objetos e se forem iguais retorna TRUE, caso contrário, FALSE;
+- `!=` diferente: compara dois objetos e se forem diferentes retorna TRUE, caso contrário, FALSE;
+- `|` ou (or): compara dois objetos, se um dos dois for TRUE, retorna TRUE, se os dois forem FALSE, retorna FALSE;
+- `&` e (and): compara dois objetos, se os dois forem TRUE, retorna TRUE, se um dos dois ou os dois forem FALSE, retorna FALSE;
+- `>`, `>=`, `<`, `<=` maior, maior ou igual, menor, menor ou igual: compara grandeza de dois números e retorna TRUE ou FALSE conforme a condição;
+
+Vejamos alguns exemplos de comparação:
+
+```{r}
+1 > 2
+"b" > "a"
+0 < -1
+1 != 2
+0 == FALSE
+1 != TRUE
+(4 > 5) | (1 < 2)
+(4 > 5) & (1 < 2)
+2 >= 2
+```
+
+## Conversões de tipos de variáveis
+
+
+Quando é feito o carregamento de algum arquivo de dados no R, ele tenta "deduzir" os tipos de dados de cada coluna. Nem sempre essa dedução sai correta e, eventualmente, você precisará converter de um tipo para o outro. O R tem algumas funções para fazer essas conversões.
+
+```{r 04-manipulando-dados-11}
+class("2015")
+as.numeric("2015")
+
+class(55)
+as.character(55)
+
+class(3.14)
+as.integer(3.14)
+
+as.numeric(TRUE)
+as.numeric(FALSE)
+
+as.logical(1)
+as.logical(0)
+```
+
+O R também tenta "forçar a barra", às vezes, para te ajudar. Quando você faz uma operação entre dois tipos diferentes, ele tenta fazer algo chamado **coerção de tipos**, ou seja, ele tenta converter os dados para que a operação faça sentido. Caso o R não consiga fazer a coerção, ele vai mostrar uma mensagem de erro.
+
+Experimente os comandos a seguir no console:
+```{r 04-manipulando-dados-12, eval=FALSE}
+7 + TRUE
+2015 > "2016"
+"2014" < 2017
+# em alguns casos a coerção irá falhar ou dar resultado indesejado
+6 > "100"
+"6" < 5
+1 + "1"
+```
+
+Recomendamos fortemente que sempre se realize as conversões explicitamente com as funções apropriadas ao invés de confiar na coerção do R, a não ser que se tenha certeza do resultado.
+
+
+## Vetores
+
+Vetores são sequências unidimensionais de valores de um mesmo tipo:
+
+```{r 04-manipulando-dados-9}
+#faça as seguintes atribuições
+vetor.chr <- c('tipo1', 'tipo2', 'tipo3', 'tipo4')
+vetor.num <- c(1, 2, 5, 8, 1001)
+vetor.num.repetidos <- c(rep(2, 50)) #usando funcão para repetir números
+vetor.num.sequencia <- c(seq(from=0, to=100, by=5)) #usando função para criar sequências
+vetor.logical <- c(TRUE, TRUE, TRUE, FALSE, FALSE)
+##veja o conteúdo das variáveis
+vetor.chr
+vetor.num
+vetor.num.repetidos
+vetor.num.sequencia
+vetor.logical
+```
+
+Para a criação de vetores, usamos a função de combinação de valores `c()` (combine). Esta função vai combinar todos os parâmetros em um único vetor. Lembre-se: vetores são sequências que contêm apenas um tipo de dado.
+
+Para retornar (extrair) um ou mais elementos de um vetor, usa-se colchetes:
+
+```{r}
+vetor <- c(seq(from=0, to=100, by=15)) #vetor de 0 a 100, de 15 em 15.
+vetor #lista todos os elementos
+vetor[1] #mostra apenas o elemento na posição 1
+vetor[2] #apenas o elemento na posição 2
+vetor[7] #apenas o elemento na posição 7
+vetor[8] #não existe nada na posição 8...
+vetor[c(2,7)] #selecionando mais de um elemento no vetor
+```
+
+
+Pode-se usar até lógica de programação para retornar elementos de um vetor de acordo com algum teste lógico:
+
+```{r}
+vetor[vetor < 20]
+vetor[vetor %% 2 == 0]
+```
+
+## Matrizes
+
+Matrizes são estruturas de dados bidimensionais: linhas e colunas.
+
+Assim como vetores, matrizes podem possuir dados de apenas uma classe (`numeric` ou `character`).
+
+```{r}
+# criando uma matriz a partir de vetores
+v1 <- c(1, 2, 3)
+v2 <- c(4, 5, 6)
+v3 <- c(7, 8, 9)
+
+matriz <- cbind(v1, v2, v3)
+matriz
+
+```
+
+```{r}
+class(matriz)
+```
+
+Matrizes também podem ser indexadas com colchetes, com a diferença que é preciso especificar o elemento da linha e o da coluna:
+
+```{r}
+matriz[1, ]
+matriz[, 2]
+matriz[1:2, 3]
+matriz[1, 3]
+```
+
+
+## Data frames
+
+Data frame é, provavelmente, o tipo de dado complexo mais utilizado em R. É nele que você armazena conjuntos de dados estruturados em linhas e colunas. Um data frame possui colunas nomeadas, sendo que todas as colunas possuem a mesma quantidade de linhas. Imagine o `dataframe` como uma tabela em que cada coluna corresponde a um vetor.
+
+
+Conhecendo o `data.frame` e o `vector`, você será capaz de entender como os dois se relacionam. Cada coluna de um data frame é um vetor. Um data frame pode ter colunas de diferentes tipos, mas cada coluna só pode ter registros de um único tipo.
+
+Ficará mais claro a seguir. Veja como se cria um `data.frame`:
+```{r 04-manipulando-dados-10}
+#cria-se diferentes vetores
+nome <- c('João', 'José', 'Maria', 'Joana')
+idade <- c(45, 12, 28, 31)
+adulto <- c(TRUE, FALSE, TRUE, TRUE)
+uf <- c('DF', 'SP', 'RJ', 'MG')
+#cada vetor é uma combinação de elementos de um MESMO tipo de dados
+#sendo assim, cada vetor pode ser uma coluna de um data.frame
+clientes <- data.frame(nome, idade, adulto, uf)
+clientes
+str(clientes)
+```
+
+## Funções
+
+Entenda função como uma sequência de comandos preparados para serem usados de forma simples e, assim, facilitar sua vida. Funções são usadas para tudo que você possa imaginar: cálculos mais complexos, estatística, análise de dados, manipulação de dados, gráficos, relatórios etc. Assim que você o instala, o R já vem configurado com várias funções prontas para uso. A partir de agora, chamaremos esse conjunto de funções que já vem por padrão com o R de *R Base*. 
+
+Claro que as funções do R base não serão suficientes para resolver todos os problemas que você encontrará pela frente. Nesse sentido, o R também mostra outro ponto forte. Você pode instalar conjuntos extras de funções específicas de maneira muito simples: usando pacotes.
+
+Funcões do R base.
+
+```{r 02-conceitos-basicos-5, eval=FALSE}
+raiz.quadrada <- sqrt(16) # função para calcular raiz quadrada
+
+round(5.3499999, 2) # função para arredondamento
+```
+
+Uma função tem dois elementos básicos: o nome e o(s) parâmetro(s) (também chamados de argumentos). Por exemplo, a função `log(10)` possui o nome `log()` e apenas um parâmetro, que é o número que você quer calcular o log. Já a função `round()` possui dois parâmetros, o número que você quer arredondar e a quantidade de dígitos para arredondamento.
+
+Quando você usa uma função, você pode informar os parâmetros de duas formas: sequencialmente, sem explicitar o nome dos parâmetros, ou na ordem que quiser, explicitando o nome dos parâmetros. Veja o exemplo a seguir:
+
+```{r 02-conceitos-basicos-6, eval=FALSE}
+round(5.3499999, 2)
+# o mesmo que:
+round(digits = 2, x = 5.3499999)
+```
+
+Para saber como informar os parâmetros corretamente, utilize o comando `?` (ou coloque o cursor no nome da função e pressione F1) para ver a documentação de funções, ou seja, conhecer para que serve, entender cada um dos seus parâmetros e ver exemplos de uso.
+
+```{r 02-conceitos-basicos-7, eval=FALSE}
+?round
+?rnorm
+??inner_join # procurar ajuda de funções que não estão "instaladas" ainda
+```
+
+Vale comentar que é possível informar objetos nos parâmetros das funções. 
+
+```{r 02-conceitos-basicos-8, eval=TRUE}
+x <- 3.141593
+round(x, 3)
+ceiling(x)
+floor(x)
+```
+
+Observe algumas das principais funções para estatísticas básicas no R:
+
+Função R       Estatística 
+------------  -------------- 
+`sum()`        Soma de valores 
+`mean()`          Média 
+`var()`         Variância 
+`median()`        Mediana 
+`summary()`     Resumo Estatístico 
+`quantile()`     Quantis 
+---------------------------------
+
+## Pacotes
+
+Como dito antes, pacotes são conjuntos extras de funções que podem ser instalados além do R base. Existem pacotes para auxiliar as diversas linhas de estudo que você possa imaginar: estatística, econometria, ciências sociais, medicina, biologia, gráficos, machine learning etc.
+
+Caso você precise de algum pacote específico, procure no Google pelo tema que necessita. Você encontrará o nome do pacote e o instalará normalmente.
+
+[Nesse link](https://cran.r-project.org/web/packages/available_packages_by_name.html) você pode ver uma lista de todos os pacotes disponíveis no repositório central. Além desses, ainda existe a possibilidade de instalar-se pacotes "não oficiais", que ainda não fazem parte de um repositório central.
+
+Para instalar um pacote, execute o seguinte comando:
+
+```{r 02-conceitos-basicos-9, eval = FALSE}
+install.packages("dplyr") # instala um famoso pacote de manipulação de dados
+```
+
+Uma vez instalado, esse pacote estará disponível para uso sempre que quiser, sem a necessidade de instalá-lo novamente. Mas, sempre que iniciar um código novo, você precisará carregá-lo na memória. Para isso, use o seguinte comando:
+
+```{r 02-conceitos-basicos-10, eval = FALSE}
+library(dplyr)
+```
+
+Para instalar um pacote, você precisa informar o nome entre aspas `install.packages(“readxl”)`, caso contrário o pacote não funcionará. Porém, para carregar o pacote em memória, você pode usar com ou sem aspas library(readxl) ou library(“readxl”), ambas as formas funcionam.
+
+## Exercícios
+
+Dado o vetor de retornos abaixo, use as funções `summary()` e `sd()` para calcular algumas estatísticas relevantes:
+
+```{r}
+retornos <- c(0.0102, 0.00186, -0.00635, 0.0193, 
+              0.00203, -0.01846, 0.00434, 
+              -0.01256, -0.00944, -0.00087)
+```
+
+
+

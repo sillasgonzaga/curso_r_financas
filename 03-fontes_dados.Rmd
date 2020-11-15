@@ -1,3 +1,173 @@
-# Methods
+# Fontes de dados financeiros
 
-We describe our methods in this chapter.
+
+## Pacotes
+
+Alguns pacotes do R são ótimas fontes de dados financeiros, sem haver necessidade de buscar em fontes externas. 
+
+```{r}
+library(quantmod)
+library(rbcb)
+library(GetTDData)
+library(tidyverse)
+```
+
+
+### quantmod: séries de preços de ações e índices
+
+O pacote `quantmod` é uma ótima ferramenta para obter dados de cotações de ações e índices. Funciona muito bem para o mercado brasileiro, apesar de, para alguns ativos, como ETF, existir alguns bugs.
+
+Possui a função `getSymbols()`, que utiliza a API do [Yahoo Finance](https://finance.yahoo.com/) para obter os dados das cotações. Veja como pode ser usada:
+
+```{r}
+dolar <- getSymbols("USDBRL=x", auto.assign = FALSE)
+```
+
+Na tabela abaixo vemos uma amostra dos dados:
+
+```{r}
+head(dolar)
+```
+
+A função retornou uma tabela com colunas de preço de abertura, maior e menor preço do dia, preço de fechamento, volume negociado e preço ajustado (por conta de fatores como dividendos, split, etc).
+
+Na verdade, o objeto acima não é um data.frame. Veja a classe dele:
+
+
+```{r}
+class(dolar)
+```
+
+O objeto é das classes `xts` e `zoo`, que eram muito usadas no passado. Atualmente, tem-se preferido usar dados na classe data.frame. Contudo, muitos pacotes ainda usam o `xts` como classe principal, sendo assim importante conhecer essas classes.
+
+
+Para obter cotações de uma ação do mercado brasileiro, deve-se usar o sufixo ".SA" com o código da ação. Além disso, pode-se alterar outros parâmetros da função, como a data de início da série, para modificar o objeto de retorno:
+
+```{r}
+itausa <- getSymbols("ITSA4.SA", 
+                     auto.assign = FALSE, 
+                     from = "2019-01-01",
+                     to = "2020-01-02", 
+                     periodicity = "monthly")
+itausa
+```
+
+
+
+
+### rbcb: séries de preços de moedas: Mostrar helpers bid e ask
+
+O pacote `rbcb` foi criado para permitir que o R interaja com a [API do Banco Central do Brasil](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries), o Sistema Gerenciador de Séries Temporais (SGS). Para saber quais séries temporais podem ser obtidas com o pacote, recomenda-se ler a documentação do SGS.
+
+Vamos aos principais usos do pacote:
+
+* **Função `get_series()`**
+
+Essa função é usada para baixar dados de uma série temporal. É necessário informar o código da série temporal na API do Bacen. Caso seja desconhecida, você pode usar a função `search_series()`:
+
+```{r}
+rbcb::search_series("dólar diário")
+```
+
+Vemos, portanto, que o código da série temporal do dólar é 1. Portanto, a usamos como input de `get_series()`:
+
+
+```{r}
+x <- rbcb::get_series(code = c(dolar = 1))
+class(x)
+```
+
+```{r}
+tail(x)
+```
+
+Outro item interessante que pode ser baixado é o IPCA. Além disso, outros paràmetros da função podem ser manipulados:
+
+```{r}
+df_ipca <- get_series(code = c(ipca = 433),
+                      start_date = "2019-06-01",
+                      end_date = "2019-12-01")
+df_ipca
+```
+
+Também é possível baixar mais de uma série temporal em apenas uma chamada da função:
+
+```{r}
+inflacao <- get_series(c(IPCA = 433, IGPM = 189), last = 12, as = "tibble")
+```
+
+Nesse caso, contudo, o objeto retornado é uma lista de data frames:
+
+```{r}
+class(inflacao)
+map(inflacao, class)
+```
+
+
+```{r}
+map(inflacao, head)
+```
+
+Caso você deseje que o objeto de output acima seja um tibble, pode-se usar a função customizada abaixo:
+
+```{r}
+df_inflacao <- reduce(inflacao, left_join, by = "date")
+head(df_inflacao)
+```
+
+
+
+
+### GetTDData: séries de preços do tesouro direto
+
+O pacote `GetTDData` facilita a obtenção de dados históricos do Tesouro Direto, que disponibiliza, em [seu site](https://www.tesourotransparente.gov.br/publicacoes/balanco-do-tesouro-direto-btd/2020/8), arquivos xlsx de seus ativos de renda fixa.
+
+Os ativos que podem ser baixados com o pacote são os dos códigos LFT, LTN, NTN-C, NTN-B, NTN-B Principal e NTN-F.
+
+No exemplo abaixo, obtemos 
+
+
+```{r}
+ativo <- "LFT"
+# baixar arquivo
+x <- download.TD.data(ativo)
+```
+
+Veja que o código nos avisa que foi criada uma pasta chamada `TD Files` onde foram baixados os arquivos do ativo.
+
+Para importar esses arquivos para o R, usamos uma outra função do pacote:
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+lft <- read.TD.files(asset.codes = ativo)
+```
+
+```{r}
+class(lft)
+```
+
+
+
+```{r}
+head(lft)
+```
+
+##  Manipulação de dados com xts e quantmod
+
+
+### Helpers do quantmod: Cl, Op, Hi, Lo. Obter dados de fechamento com Cl
+### Criação de objetos xts: uso de dados do GetTDData usando LFT, LTN e NTN-B
+### Usar função to.period para obter dados semanais/mensais OHLC para séries de preços e fazer gráficos de candle
+### Juntar múltiplas séries temporais: fazer merge das séries de fechamento.
+
+
+## Case
+
+Calcular o IBOVESPA em Dólar
+
+Obter ^BVSP com quantmod
+
+
+Obter USDBRL com rbcb usando preço de venda (Ask)
+
+
+Fazer a conversão do IBOVESPA em dólar e fazer gráficos
