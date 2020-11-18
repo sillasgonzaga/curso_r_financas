@@ -38,7 +38,7 @@ Na verdade, o objeto acima não é um data.frame. Veja a classe dele:
 class(dolar)
 ```
 
-O objeto é das classes `xts` e `zoo`, que eram muito usadas no passado. Atualmente, tem-se preferido usar dados na classe data.frame. Contudo, muitos pacotes ainda usam o `xts` como classe principal, sendo assim importante conhecer essas classes.
+O objeto é das classes `xts` e `zoo`, que eram muito usadas no passado. Atualmente, tem-se preferido usar dados na classe data.frame. Contudo, muitos pacotes ainda usam o `xts` como classe principal, sendo assim importante conhecer essas classes. Voltaremos a falar sobre `xts` em breve.
 
 
 Para obter cotações de uma ação do mercado brasileiro, deve-se usar o sufixo ".SA" com o código da ação. Além disso, pode-se alterar outros parâmetros da função, como a data de início da série, para modificar o objeto de retorno:
@@ -153,21 +153,149 @@ head(lft)
 
 ##  Manipulação de dados com xts e quantmod
 
+Conforme foi mencionado, objetos retornados pelo pacote `quantmod` (e por outros importantes pacotes R para Finanças) são da classe `xts`, por isso é importante conhecer alguns principios básicos de manipulação de dados com o pacote `xts`.
 
-### Helpers do quantmod: Cl, Op, Hi, Lo. Obter dados de fechamento com Cl
-### Criação de objetos xts: uso de dados do GetTDData usando LFT, LTN e NTN-B
-### Usar função to.period para obter dados semanais/mensais OHLC para séries de preços e fazer gráficos de candle
-### Juntar múltiplas séries temporais: fazer merge das séries de fechamento.
+```{r}
+library(xts)
+```
+
+Vamos voltar a usar um objeto dessa classe do pacote `quantmod`:
+
+```{r}
+itausa <- getSymbols("ITSA4.SA", 
+                     auto.assign = FALSE, 
+                     from = "2018-01-01",
+                     to = "2020-01-01", 
+                     periodicity = "daily")
+head(itausa)
+
+```
+
+Um objeto `xts` possui dois principais elementos:
+
+* *coredata*: o vetor ou matriz referente aos dados.
+
+```{r}
+head(coredata(itausa))
+```
+
+* *index*: vetor referente às datas
+
+```{r}
+head(index(itausa))
+```
+
+### Funções úteis para objetos `xts`
+
+Para estimar a periocidade:
+
+```{r}
+periodicity(itausa)
+```
+
+Converter a periodicidade:
+
+```{r}
+# para anual
+to.yearly(itausa)
+# para mensal
+head(to.monthly(itausa))
+# para trimestral
+head(to.quarterly(itausa))
+```
+
+Para converter um `xts` para data.frame:
+
+```{r}
+head(fortify.zoo(itausa))
+```
+
+
+## Helpers do quantmod: Cl, Op, Hi, Lo
+
+O pacote `quantmod` possui funções para auxiliar a extração de dados de objetos retornados por `getSymbols()`:
+
+```{r}
+# Obter apenas a serie de fechamento
+head(Cl(itausa))
+# serie de abertura
+head(Op(itausa))
+# serie do maior preço do período
+head(Hi(itausa))
+# serie de preços ajustados
+head(Ad(itausa))
+```
+
+## Funções de gráficos xts
+
+Plotar um objeto xts é muito simples, basta usar a função `plot()`:
+
+```{r}
+plot(itausa)
+```
+
+O pacote `quantmod`  possui outras funções interessantes para produzir gráficos de ativos financeiros:
+
+```{r}
+chartSeries(itausa)
+```
+
+
+```{r}
+# candleChart dos 30 últitmos dias de itausa:
+candleChart(tail(itausa, 30), type = "candlesticks")
+```
+
+Também é possível fazer rapidamente gráficos de indicadores de análise técnica:
+
+```{r}
+chartSeries(itausa)
+addSMA()
+addMACD()
+```
+
+
+## Juntar múltiplas séries temporais: fazer merge das séries de fechamento.
+
+A função `merge()` é usada para juntar dois objetos `xts` em um só:
+
+```{r}
+
+petr3 <- getSymbols("PETR3.SA", 
+                     auto.assign = FALSE, 
+                     from = "2018-01-01",
+                     to = "2020-01-01", 
+                     periodicity = "monthly")
+petr3 <- Ad(petr3)
+
+bbdc <- getSymbols("BBDC4.SA", 
+                     auto.assign = FALSE, 
+                     from = "2018-01-01",
+                     to = "2020-01-01", 
+                     periodicity = "monthly")
+bbdc <- Ad(bbdc)
+
+ibov <- getSymbols("^BVSP", 
+                     auto.assign = FALSE, 
+                     from = "2018-01-01",
+                     to = "2020-01-01", 
+                     periodicity = "monthly")
+ibov <- Ad(ibov)
+
+
+```
+
+
+```{r}
+portfolio <- merge(petr3, bbdc, ibov)
+head(portfolio)
+```
 
 
 ## Case
 
 Calcular o IBOVESPA em Dólar
 
-Obter ^BVSP com quantmod
+Dicas : Obter ^BVSP com quantmod, obter USDBRL com rbcb usando preço de venda (Ask) e fazer a conversão do IBOVESPA em dólar.
 
 
-Obter USDBRL com rbcb usando preço de venda (Ask)
-
-
-Fazer a conversão do IBOVESPA em dólar e fazer gráficos
