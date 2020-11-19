@@ -9,6 +9,8 @@ library(quantmod)
 library(rbcb)
 ```
 
+# Análise de Retornos {#returns}
+
 Vamos considerar os seguintes investimentos em ações:
 
 - Investimento em WEGE3 a R\$ 42,03 em junho/2020 e venda em julho/2020 a R\$ 67,32, lucro de R$ 25,29 por ação em 2 meses.
@@ -51,8 +53,6 @@ O que podemos extrair desses exemplos?
 - **retorno** é um termo utilizado para fazer referência ao resultado de um investimento.
 
 Veremos nas próximas seções algumas formas de calcular o retorno de um investimento e como utilizar o retorno para fazer a análise de risco do investimento.
-
-# Análise de Retornos {#returns}
 
 O que são retornos?
 

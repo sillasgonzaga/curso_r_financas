@@ -7,31 +7,36 @@ library(quantmod)
 
 # Análise de Carteiras
 
+Até agora em nossa jornada já vimos como calcular retornos financeiros, como fazer sua análise estatística e sua análise de risco, onde pudemos analisar diversos ativos e comparar levando em consideração o risco e retorno de cada um.
+Todos estes tópicos nos trazem a análise de carteira de ativos, onde analisamos o comportamento conjunto dos ativos e descobrimos como podemos utilizá-los conjuntamente para montar uma carteira com um risco menor do que se considerarmos o investimento nos ativos separadamente.
+
+Neste capítulo é necessário um pouco de teoria, mas garanto que já entramos nos códigos para entender como tudo isso se aplica.
+
 ## Carteira de ativos
 
 Vamos considerar um exemplo simples onde temos um capital $W$ para ser investido em dois ativos $P_1$ e $P_2$.
-Dessa maneira investindo 100% do capital temos que:
+Dessa maneira, investindo 100% do capital temos
 
 \begin{equation}
-W = n_1 P_1 + n_2 P_2
+n_1 P_1 + n_2 P_2 = W
 (\#eq:total-wealth)
 \end{equation}
 
-é a carteira investida e esta tem o mesmo valor $W$ do capital investido, pois todo o capital foi investido na carteira.
-As variáveis $n_1$ e $n_2$ são as quantidades dos ativos $P_1$ e $P_2$, respectivamente.
+que representa a carteira de ativos onde compramos $n_1$ quantidades do ativo $P_1$ e $n_2$ quantidades de $P_2$.
+No ato da compra o valor da carteira é $W$, ignorando custos de transação e portanto, a fração $\frac{n_1 P_1}{W}$ é o percentual da carteira alocado no ativo $P_1$ e $\frac{n_2 P_2}{W}$ é o percentual referente a $P_2$.
 
-Para avaliarmos o percentual de alocação de cada ativo vamos dividir ambos os lados da Eq.\@ref(eq:total-wealth) pelo capital $W$.
+Podemos demostrar dividindo ambos os lados da Eq.\@ref(eq:total-wealth) pelo capital $W$.
 Logo temos:
 
 \begin{equation}
-\begin{array}{lcr}
-\frac{W}{W} & = & \frac{n_1 P_1 + n_2 P_2}{W} \\
-1           & = & \frac{n_1 P_1}{W} + \frac{n_2 P_2}{W} \\
-1           & = & w_1 + w_2 \\
+\begin{array}{rcl}
+\frac{n_1 P_1 + n_2 P_2}{W}  & = & \frac{W}{W} \\
+\frac{n_1 P_1}{W} + \frac{n_2 P_2}{W} & = & 1  \\
+w_1 + w_2 & = & 1 \\
 \end{array}
 \end{equation}
 
-Onde $w_1 = \frac{n_1 P_1}{W}$ e $w_2 = \frac{n_2 P_2}{W}$ são os pesos dos ativos $P_1$ e $P_2$ na carteira.
+$w_1 = \frac{n_1 P_1}{W}$ e $w_2 = \frac{n_2 P_2}{W}$ representam os pesos dos ativos $P_1$ e $P_2$ na carteira.
 
 ### Variação do valor da carteira em função dos retornos dos ativos
 
@@ -45,7 +50,7 @@ onde $\frac{\partial W}{\partial P1}$ e $\frac{\partial W}{\partial P2}$ são da
 De acordo com a Eq.\@ref(eq:total-wealth) temos:
 
 \begin{equation}
-\begin{array}{lcr}
+\begin{array}{rcl}
 \frac{\partial W}{\partial P1} & = & n_1 \\
 \frac{\partial W}{\partial P2} & = & n_2 \\
 \end{array}
@@ -54,7 +59,7 @@ De acordo com a Eq.\@ref(eq:total-wealth) temos:
 Assim
 
 \begin{equation}
-\begin{array}{lcr}
+\begin{array}{rcl}
 dW & = & \frac{\partial W}{\partial P1} dP_1 + \frac{\partial W}{\partial P2} dP_2 \\
    & = & n_1 dP_1 + n_2 dP_2 \\
    & = & n_1 \frac{P_1}{P_1} dP_1 + n_2 \frac{P_2}{P_2} dP_2 \\
@@ -63,19 +68,23 @@ dW & = & \frac{\partial W}{\partial P1} dP_1 + \frac{\partial W}{\partial P2} dP
 \end{array}
 \end{equation}
 
+Dividindo os 2 lados da equação por $W$ para obter as relações $\frac{dx}{x} \equiv d\log x$.
 
 \begin{equation}
-\begin{array}{lcr}
+\begin{array}{rcl}
 \frac{dW}{W} & = & w_1 \frac{dP_1}{P_1} + w_2 \frac{dP_2}{P_2} \\
-             & = & w_1 d\log P_1 + w_2 d\log P_2 \\
+d\log W      & = & w_1 d\log P_1 + w_2 d\log P_2 \\
 \end{array}
 \end{equation}
 
-$d\log W \equiv r_W$, $d\log P_1 \equiv r_1$, $d\log P_2 \equiv r_2$
+O termo $d\log x$ pode ser expandido para $\log x_t - \log x_{t-1}$ que é a definição de log-retorno.
+Dessa maneira podemos escrever $d\log W \equiv r_W$, $d\log P_1 \equiv r_1$ e $d\log P_2 \equiv r_2$, logo:
 
 $$
 r_W = w_1 r_1 + w_2 r_2
 $$
+
+Temos então que o log-retorno da carteira é dado pela soma dos retornos ponderados pelos pesos dos ativos na carteira.
 
 ## Carteira com 2 ativos
 
@@ -99,7 +108,7 @@ $$
 logo, se fizermos $w_1 = \alpha$ temos
 
 $$
-\begin{array}{lcr}
+\begin{array}{rcl}
 w_1 & = & \alpha \\
 w_2 & = & 1 - \alpha
 \end{array}
