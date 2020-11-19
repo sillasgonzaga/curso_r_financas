@@ -13,19 +13,17 @@ bookdown::gitbook:
       github: yes
       facebook: no
 
-bookdown::pdf_book:
-  documentclass: krantz
-  includes:
-    in_header: preamble.tex
-  latex_engine: xelatex
-  citation_package: natbib
-  keep_tex: yes
-  template: null
-  pandoc_args: [--top-level-division=chapter, --wrap=none]
-  toc_depth: 3
-  toc_unnumbered: no
-  toc_appendix: yes
-  highlight_bw: yes
-  quote_footer: ["\\VA{", "}{}"]
-
-bookdown::epub_book: default
+# bookdown::pdf_book:
+#   documentclass: krantz
+#   includes:
+#     in_header: preamble.tex
+#   latex_engine: xelatex
+#   citation_package: natbib
+#   keep_tex: yes
+#   template: null
+#   pandoc_args: [--top-level-division=chapter, --wrap=none]
+#   toc_depth: 3
+#   toc_unnumbered: no
+#   toc_appendix: yes
+#   highlight_bw: yes
+#   quote_footer: ["\\VA{", "}{}"]
