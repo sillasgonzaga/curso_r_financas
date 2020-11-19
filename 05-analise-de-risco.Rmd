@@ -9,14 +9,14 @@ library(quantmod)
 library(rbcb)
 ```
 
+# Análise de Risco
+
 Acabamos de ver como trabalhar com retornos financeiros, qual a diferença entre retornos simples e log-retornos, porque é mais comum trabalharmos com os log-retornos e como calcular o retorno esperado e a volatilidade de ativos financeiros.
 Dando continuidade vamos entender o que fazer com tudo isso.
 Como fazer a análise de risco de ativos e como comparar ativos financeiros, levando em consideração o seu retorno esperado e a sua volatilidade (análise de risco e retorno).
 
 Vamos ver que, em geral, o retorno e o risco costumam caminhar juntos de forma que para obter maiores retornos em investimentos devemos estar dispostos a assumir mais risco.
 Se algum investimento promete maior retorno com menos risco, tome cuidado, pode ser uma fraude!
-
-# Análise de Risco
 
 ## Visualização dos Retornos
 
