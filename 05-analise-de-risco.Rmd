@@ -1,20 +1,33 @@
+
+[PerformanceAnalytics]: https://cran.r-project.org/package=PerformanceAnalytics
+
 ```{r include=FALSE}
 library(tidyverse)
 library(xts)
 library(PerformanceAnalytics)
 library(quantmod)
+library(rbcb)
 ```
+
+Acabamos de ver como trabalhar com retornos financeiros, qual a diferença entre retornos simples e log-retornos, porque é mais comum trabalharmos com os log-retornos e como calcular o retorno esperado e a volatilidade de ativos financeiros.
+Dando continuidade vamos entender o que fazer com tudo isso.
+Como fazer a análise de risco de ativos e como comparar ativos financeiros, levando em consideração o seu retorno esperado e a sua volatilidade (análise de risco e retorno).
+
+Vamos ver que, em geral, o retorno e o risco costumam caminhar juntos de forma que para obter maiores retornos em investimentos devemos estar dispostos a assumir mais risco.
+Se algum investimento promete maior retorno com menos risco, tome cuidado, pode ser uma fraude!
 
 # Análise de Risco
 
 ## Visualização dos Retornos
 
-No Capítulo \@ref(returns) vimos como calcular os retornos a partir da série de preços de um ativo financeiro.
+No Capítulo \@ref(returns) vimos como calcular os retornos a partir da série de preços de um ativo financeiro, assim como calcular o seu retorno esperado e a sua volatilidade.
 
-Dado que sabemos como calcular os retornos para uma série de preços, vamos calcular os retornos do IBOVESPA no período de 10 anos de 2010 a 2019.
+Mas um ponto muito importante na análise de ativos financeiro é a observação dos dados.
+Dessa maneira, vamos dar uma passo para trás e introduzir uma análise qualitativa dos retornos que envolve a visualização dos log-retornos.
 
+Vamos começar obtendo a série de cotação de fechamento do índice IBOVESPA no período de 10 anos de 2010 a 2019.
 Para obter a série do índice vamos utiliza a função `getSymbols` do pacote `quantmod`.
-O símbolo referente ao IBOVESPA é `^BVSP`.
+O símbolo do IBOVESPA é `^BVSP`.
 
 ```{r message=FALSE, warning=FALSE}
 IBOVESPA <- getSymbols("^BVSP",
@@ -34,7 +47,7 @@ IBOVESPA %>%
 O que observamos?
 
 - De 2010 até 2016, aproximadamente há uma tendência de queda.
-- A partid de 2016 há uma forte tendência de alta.
+- A partir de 2016 há uma forte tendência de alta.
 
 Agora vamos calcular os retornos das cotações de fechamento:
 
@@ -59,101 +72,121 @@ O que observamos?
 - Pontos extremos
 - Quando temos pontos extremos podemos perceber uma aglomeração nesse sentido
 
-Observando os retornos do índice temos um sobe e desce errático, sem tendência aparente, pelo meno visualmente, bem diferente da série do índice.
+> Observando os retornos do índice temos um sobe e desce errático, **sem tendência**, bem diferente da série do índice que claramente apresenta tendência.
+> Essa ausência de tendência é uma característica fundamental da série de retornos.
+
 Na próxima seção vamos introduzir a análise estatística dos retornos e como ela pode nos ajudar na caracterização dessa variável.
 
 ## Análise Estatística dos Retornos
 
-Uma forma de descrever os retornos é assumir que podem ser descritos como uma variável aleatória e assim usar a teoria da probabilidade para descrever o seu comportamento de forma teórica.
-A variável `IBOVESPA_rets` que tem a série de retornos é uma realização existencial dessa variável aleatória, a qual vamos chamar de amostra aleatória.
-A partir dessa amostra realizamos a **análise estatística dos retornos**.
-Nesta análise vamos apresentar algumas métricas úteis para descrever a variável aleatória, e muito úteis para comparar diferentes varíaveis aleatórias.
-Pois se consideramos os retornos do IBOVESPA uma variável aleatória, os retornos no índice S&P, por exemplo, também podem ser descritos como uma variável aleatória só que uma diferente da utilizada para o IBOVESPA.
+Uma forma de descrever os retornos é assumir que podem ser descritos como uma **variável aleatória** e assim usar a teoria da probabilidade para descrever o seu comportamento.
+A variável `IBOVESPA_rets` que tem a série de retornos é uma realização dessa variável aleatória, a qual vamos chamar de amostra aleatória.
+A partir dessa amostra realizamos a **análise estatística dos retornos**, onde vamos apresentar algumas métricas úteis para descrever a variável aleatória, e muito úteis para comparar diferentes varíaveis aleatórias.
+Pois se consideramos os retornos do IBOVESPA uma variável aleatória, os retornos no índice S&P 500, por exemplo, também podem ser descritos como uma variável aleatória só que uma diferente do IBOVESPA.
 
 A descrição matemática de uma variável aleatória não será vista aqui, não é o objetivo.
 Entretanto, vamos apresentar algumas avaliações qualitativas que permitam caracterizar a variável aleatória e nos suportem na avaliação de risco dos ativos.
 
-### Histograma
-
-Toda variável aleatória possui uma distribuição de probabilidade associada.
-
-
-```{r}
-IBOVESPA_rets %>%
-  chart.Histogram(breaks = 50,
-                  main = "Histograma de retornos do IBOVESPA",
-                  show.outliers = TRUE)
-```
-
-
-O que observamos?
-
-- Picos em torno de zero
-- Pontos distantes do zero, positivos e negativos, indicando a ocorrência de eventos extremos
-- No geral, tipicamente simétrico, se ignorarmos os extremos.
-
 ### Estatísticas Descritivas
 
-- Média
-- Mediana
-- Quartis
-- Mínimo e Máximo
+São *medidas resumo* que são calculadas para qualquer **amostra aleatória**.
+São úteis para caracterizar e entender a amostra aleatória, assim como comparar variáveis aleatórias diferentes.
+
+São exemplos de  estatísticas descritivas para uma amostra aleatória: a média, a mediana, alguns quartis e valores de mínimo e máximo.
+
+No R a função `summary` provê algumas estatísticas descritivas da nossa série de retornos do IBOVESPA
 
 ```{r}
 summary(coredata(IBOVESPA_rets))
 ```
 
+Note que estas medidas ajudam a entender como a amostra está distribuída.
+Conhecendo os pontos de mínimo e máximo temos o intervalo de cobertura da amostra.
+No caso dos retornos diários do IBOVESPA temos um mínimo de -0,092107 e um máximo de 0,063887.
+Com isso podemos concluir que em um intervalo de 10 anos o pior retorno diário para o IBOVESPA foi de -9% e o seu maior retorno foi de 6%.
+Como os retornos são calculados com base no preço de fechamento, temos que eventualmente ao longo de um dia de negociação o índice pode ter sofrido uma queda superior a 9%, contudo, para o fechamento este é o pior resultado no período.
+O primeiro quartil, que marca 25% dos dados da amostra, está em -0,008163 indicando que um quarto dos dados da amostra está abaixo de -0,8%, de outra forma temos que 75% dos dados está acima de -0,8%, ou seja, em 75% dos dias da amostra os retornos foram superiores a -0,8%.
+A mediana é ligeiramente superior a média, na verdade quase o dobro, isso pode ser uma indicação de qua amostra é negativamente assimétrica, pois a mediana é o *meio* da amostra e a média o seu ponto médio.
+Todavia, os valores aqui de média e mediana são muito próximos de zero, dessa maneira, a análise persiste, mas eventualmente esse efeito não seja significativo.
+
+Além dessas medidas de posição, há também as medidas de dispersão.
+Já vimos no Capítulo \@ref(returns) a variância e o desvio padrão (volatilidade)
+
 ```{r}
-fivenum(coredata(IBOVESPA_rets), na.rm = TRUE)
+var(IBOVESPA_rets %>% as.numeric(), na.rm = TRUE)
+sd(IBOVESPA_rets, na.rm = TRUE)
 ```
 
-
-```{r}
-kurtosis(IBOVESPA_rets, na.rm = TRUE)
-```
+Mas temos também a assimetria (*skewness*), que indica o quão simétrica é a amostra em torno da média.
+Uma assimetria zero indica que a amostra é simétrica, a assimetria positiva indica uma amostra com maior peso para valores acima da média e assimetria negativa o oposto.
 
 ```{r}
 skewness(IBOVESPA_rets, na.rm = TRUE)
 ```
 
-```{r}
-SkewnessKurtosisRatio(IBOVESPA_rets)
-```
+Conforme falamos na análise da mediana, a amostra apresentava uma assimetria negativa, e o skewness confirma essa hipótese.
 
-
-## Análise em Janela Móvel
-
-```{r warning=FALSE}
-rollmean(IBOVESPA_rets, 21) %>%
-  autoplot()
-```
-
-
-```{r warning=FALSE}
-rollapply(IBOVESPA_rets, 21, sd) %>%
-  autoplot()
-```
-
-
-## Túnel de Volatilidade
+Outra medida interessante é a curtose (*kurtosis*).
+A curtose é sempre positiva e quanto maior a curtose maior a probabilidade de que eventos extremos ocorram.
+Como balisador usamos a curtose da distribuição Normal (Gaussiana) que é uma distribuição muito importante e aparece em diversos fenômenos.
+Para a distribuição Normal e curtose é 3, dessa maneira, se a amostra apresenta uma curtose maior que 3 ela tem probabilidade de eventos extremos maior do que uma distribuição Normal.
 
 ```{r}
-plot(index(IBOVESPA_rets), coredata(IBOVESPA_rets),
-     type = "l",
-     ylim = c(-0.1, 0.1),
-     cex.axis = .7,
-     lwd = 1,
-     xlab = "Date", ylab = "Retorno",
-     main = "Retorno diário do IBOVESPA com intervalo de confiança de 2 desvios")
-volatility <- rollapply(IBOVESPA_rets, 21, sd)
-lines(index(volatility), coredata(volatility) * 2, col = "red")
-lines(index(volatility), -coredata(volatility) * 2, col = "red")
+kurtosis(IBOVESPA_rets, na.rm = TRUE, method = "moment")
 ```
 
-## Outras medidas de Risco
+Como vemos os retornos do IBOVESPA apresentam uma curtose maior do que 3, logo, há uma probabilidade de eventos extremos maior do que uma distribuição Normal.
+Isso não é necessariamente bom ou ruim, porque os eventos extremos podem ser positivos ou negativos e apesar dos retornos extremos negativos serem indesejados, os retornos extremos positivos são altamente desejáveis.
+
+Para efeito de comparação, vamos calcular as estatísticas descritivas para uma amostra aleatória Normal com média e variância dos retornos do IBOVESPA.
+
+```{r}
+# aprox. 10 anos
+x <- rnorm(2500,
+           mean = mean(IBOVESPA_rets, na.rm = TRUE),
+           sd = sd(IBOVESPA_rets, na.rm = TRUE))
+c(
+  summary(x),
+  skewness = skewness(x),
+  kurtosis = kurtosis(x, method = "moment")
+)
+```
+
+Note que na amostra Normal os pontos de mínimo e máximo são bem menores que na distribuição de retornos do IBOVESPA, esse é um efeito que pode ser explicado, pela curtose mais elevada da distribuição de retornos.
+
+### Histograma
+
+Um histograma é um gráfico que representa a distribuição construida a partir da amostra aleatória, é um gráfico da distribuição amostral.
+
+No [PerformanceAnalytics] temos a função `chart.Histogram`.
+
+```{r}
+IBOVESPA_rets %>%
+  chart.Histogram(breaks = 50,
+                  main = "Histograma de retornos do IBOVESPA",
+                  show.outliers = TRUE,
+                  methods = "add.normal", lwd = 1)
+```
+
+O que observamos?
+
+- Pico em torno de zero, região mais provável ou de maior frequência.
+- Pontos distantes do zero, positivos e negativos, indicando a ocorrência de eventos extremos
+- No geral, tipicamente simétrico, se ignorarmos os extremos.
+
+A análise estatística dos retornos é fundamental pra entendermos a amostra e fazer qualquer tratamento nos dados para corrigir distorções que eventualmente surjam nos dados.
+É fundamental visualizar os dados, calcular as estatísticas descritivas e as estatísticas de dispersão e visualizar o histograma dos retornos, se comparar com a distribuição Normal, melhor ainda.
+Esse processo contribui para aumentar a sensibilidade com os dados e o senso crítico ao inicial uma análise.
+
+## Medidas de Risco
+
+Vamos introduzir aqui algumas medidas de risco e utilizar alguns exemplos com o ativo BOVA11, que é um ETF (fundo negociado em bolsa) que reproduz o retorno do índice IBOVESPA.
+O BOVA11 não é exatamente, na vírgula, o índice IBOVESPA, mas é muito próximo do índice.
+Vamos criar as séries de preços do BOVA11, de retornos diários, de preços mensais e retornos mensais.
 
 ```{r message=FALSE, warning=FALSE}
 BOVA11 <- getSymbols("BOVA11.SA",
+                     to = "2019-12-31",
                      auto.assign = FALSE)
 BOVA11_rets <- BOVA11 %>%
   Cl() %>%
@@ -168,35 +201,132 @@ BOVA11_monthly_rets <- BOVA11_monthly %>%
   diff()
 ```
 
-### Value at Risk
+Vamos considerar um cenário onde eu tenho uma carteira com 1000 ações do BOVA11.
+A série de BOVA11 termina em dez/2019, e a cotação de fechamento é R\$ 111,23, logo o patrimônio da carteira é R\$ 111.230,00.
 
 ```{r}
-quantile(BOVA11_monthly_rets, 0.05, na.rm = TRUE) * 100000
+BOVA11 %>% last() %>% Cl()
 ```
+
+Dessa forma e para começarmos a discutir sobre as medidas de risco vou colocar algumas perguntas que precisam ser respondidas.
+
+- Quanto eu (investidor) posso perder, em valor, para uma oscilação extrema do BOVA11 considerando o período de 1 mês?
+- Qual a probabilidade de que eu sofra uma perda de mais de 5% em 1 mês?
+- Qual a pior perda que eu posso sofrer no meu patrimônio?
+
+Essas são perguntas objetivas que passam pela cabeça de todos os investidores e na tentativa de respondê-las nós vamos abordar as medidas de risco que nos permitem quantificar os pontos levantados.
+
+### Value at Risk
+
+O *Value at Risk* (Valor em Risco - tradução livre) ajuda a responder a pergunta:
+
+> Quanto eu (investidor) posso perder, em valor, para uma oscilação extrema do BOVA11 no período de 1 mês e sabendo que o valor do ativo é R$ 111.23?
+
+Para o horizonte de investimento de 1 mês, quanto pode ser uma oscilação **extrema**?
+É necessário definir o que vem a ser uma variação extrema neste horizonte de investimento
+Para isso vamos usar a série de retornos de 1 mês do BOVA11, pois é necessário que os retornos estejam ajustados ao horizonte de investimento definido, e vamos observar o seu histograma.
+
+```{r}
+BOVA11_monthly_rets %>%
+  chart.Histogram(breaks = 30,
+                  main = "Histograma de retornos do IBOVESPA",
+                  show.outliers = TRUE,
+                  methods = "add.normal", lwd = 1)
+
+```
+
+O que observamos:
+
+- os maiores retornos positivos ocorrem acima de 15%
+- os maiores retornos negativos ocorrem abaixo de 10%
+- o histograma para os dados mensais não se aproxima da distribuição Normal e há alguns buracos no histograma, isso se deve ao fato da amostra ter poucos dados - note que definimos `breaks = 30`
+
+Observando o histograma vemos que as perdas extremas, abaixo de 10%, ocorrem com uma frequência muito baixa, pois estão na cauda da distribução.
+Sabendo que o desvio padrão de `BOVA11_monthly_rets` é aproximadamente 5%, temos que as maiores perdas estão abaixo de 2 desvios padrão.
+Isso é muito ou pouco?
+Para nos ajudar nessa análise vamos olhar a distribuição Normal na figura abaixo:
+
+![Fonte: http://www.portalaction.com.br/probabilidades/62-distribuicao-normal](normal3.png)
+
+Com 2 desvios padrão da média (centro da distribuição) temos, aproximadamente, 5% de probabilidade para as duas caudas, como a cauda negativa é a que nos interessa, temos 2,5% de probabilidade para perdas que estão abaixo de 2 desvios padrão.
+
+> Conclusão: A probabilidade de perdas maiores que 2 desvios padrão é de 2,5%, quando utilizamos a distribuição Normal como proxy.
+
+Note que estamos fazendo uma aproximação considerando a distribuição Normal para chegarmos a essa probabilidade.
+
+Agora a pergunta é: dado que eu sei que a probabilidade de termos uma perda maior que 2 desvios padrão é de 2,5%, como calcular essa perda em financeiro?
+
+Para isso vamos usar a função `qnorm` que dada uma probabilidade ela retorna o valor associado, considerando uma distribuição Normal.
+Dado que temos a média e o desvio padrão dos retornos mensais, vamos *plugar* estes parâmetros na distribuição Normal para obter a perda associada a probabilidade de 2,5%.
+
+```{r}
+mu <- BOVA11_monthly_rets %>%
+  na.omit() %>%
+  mean()
+sigma <- BOVA11_monthly_rets %>%
+  na.omit() %>%
+  sd()
+qnorm(0.025, mean = mu, sd = sigma)
+```
+<!-- Para isso vamos usar a função `quantile` que para uma série de retornos, retorna o valor na série referente a probabilidade fornecida. -->
+<!-- Por exemplo, passando a série de retornos mensais do BOVA11 e a probabilidade de 2,5% temos -->
+<!-- ```{r} -->
+<!-- quantile(BOVA11_monthly_rets %>% na.omit(), 0.025) -->
+<!-- ``` -->
+
+Para essa amostra de retornos temos que a probabilidade de uma perda maior do que 10,15% é de 2,5%.
+De posse do retorno podemos aplicar a Eq.\@ref(eq:log-price) para calcular a variação no preço para este retorno.
+Sabemos que último preço de BOVA11 é R$ 111,23, dessa forma a perda é dada por:
+
+```{r}
+r_t <- qnorm(0.025, mean = mu, sd = sigma)
+P_t <- 111.23
+1000 * P_t * (1 - exp(r_t))
+```
+
+Temos que para o horizonte de investimentos de 1 mês, a carteira com 1000 posições de BOVA11 tem um *Value at Risk* de R\$ 10.738,70 com nível de confiança de 95%.
+Essa é a forma que se constuma *ler* o *Value at Risk*.
 
 ### Drawdown
 
+Dado o histórico do BOVA11, qual a pior perda que eu posso sofrer no meu patrimônio? quanto tempo eu vou ficar amargando essa miséria?
+Na tentativa de responder essa pergunta usamos o drawdown.
+O drawdown é uma perda acumulada em uma sequência de perdas.
+Como se dá isso?
+As séries de retornos são bastante simétricas em torno de uma média, que é bem próxima de zero.
+Dessa maneira, podemos supor que em geral os retornos sobem e descem com a mesma probabilidade.
+Entretanto, existem períodos que ocorrem sequências de quedas e é isso que o drawdown mede, dada uma sequência de quedas:
+
+- Quando ela começa?
+- Quando termina ?
+- Qual a magnetude da perda?
+
+No pacote `PerformanceAnalytics` tem algumas funções para trabalhar com drawdown.
+Vejamos o gráfico do drawdown para os retornos diários do BOVA11 no ano de 2019.
+
 ```{r}
-table.Drawdowns(BOVA11_rets)
+chart.Drawdown(BOVA11_rets["2019"])
 ```
 
+Note que no gráfico as perdas começam, há uma recuperação, mas não suficiente para reverter o estado de perda.
+Quando puxamos os dados de drawdowns para o ano de 2019 (usando a função `table.Drawdowns` do `PerformanceAnalytics`) temos:
 
 ```{r}
-PerformanceAnalytics::chart.Drawdown(BOVA11_rets["2017"])
+table.Drawdowns(BOVA11_rets["2019"])
 ```
 
-```{r}
-PerformanceAnalytics::chart.Drawdown(BOVA11_rets["2020"])
-```
+Note que o maior drawdown gera uma perda de 10,57%, com uma duração de 66 dias, do começo até zerar a perda, a pior ponto acontece em 41 dias e após este ponto são 25 dias de recuperação.
 
 ### Short-Fall Risk
 
-Qual a probabilidade de um retorno cair abaixo de 5%?
+Vimos como quantificar a perda dado um nível de risco associado a uma probabilidade no cálculo do VaR, agora vamos inverter a análise, e vamos calcular a probabilidade de ter uma perda maior que um determinado valor.
+Ou seja, como calcular a probabilidade de um retorno cair abaixo de 5%?
 
 ```{r}
 100 * sum(BOVA11_rets < -0.05,
     na.rm = TRUE) / length(BOVA11_rets)
 ```
+Para os retornos diários temos uma probabilidade de 0,16% de termos retornos menores que 5%.
 
 
 ```{r}
@@ -204,11 +334,85 @@ Qual a probabilidade de um retorno cair abaixo de 5%?
     na.rm = TRUE) / length(BOVA11_monthly_rets)
 ```
 
+Os retornos mensais apresentam uma probabilidade de 12,09% de probabilidade para retornos menores que 5%.
+
+## Análise em Janela Móvel
+
+Análise em janela móvel é útil para a avaliação da dinâmica temporal dos dados.
+Por exemplo, temos a série de retornos do IBOVESPA de 2010 a 2019 e podemos calcular a média e o desvio padrão para essa amostra.
+
+```{r}
+c(
+  mean = IBOVESPA_rets %>% na.omit %>% mean(),
+  sd = IBOVESPA_rets %>% na.omit %>% sd()
+)
+```
+
+Uma pergunta que podemos fazer é, como se comporta a média e o desvio em uma janela móvel de 21 dias (tipicamente 1 mês em dias úteis).
+
+Vamos usar a função `rollmean` onde passamos a série e o tamanho da janela e ela retorna uma série com as médias para as janelas contíguas de 21 dias.
+
+```{r warning=FALSE}
+rollmean(IBOVESPA_rets, 21) %>%
+  autoplot() +
+  geom_hline(yintercept = IBOVESPA_rets %>% na.omit %>% mean(), colour = 'red')
+```
+
+Marcando em vermelho a média da amostra completa, é interessante ver que há uma grande dispersão em torno desse valor e não há tendência clara de longo prazo, o que faz sentido (porque?).
+
+A mesma análise pode ser realizada com o desvio padrão.
+Neste caso usamos a função `rollapply` que recebe a série de retornos, o tamanho da janela e a função a ser aplicada a cada janela, aqui usaremos a função `sd` para cálculo do desvio padrão.
+
+```{r warning=FALSE}
+rollapply(IBOVESPA_rets, 21, sd) %>%
+  autoplot() +
+  geom_hline(yintercept = IBOVESPA_rets %>% na.omit %>% sd(), colour = 'red')
+```
+
+Curioso ver que em 2011 e 2014/2015 tivemos picos mais pronunciados no desvio padrão, indicando momentos de maior volatilidade.
+
+## Túnel de Volatilidade
+
+Complementando a análise em janela móvel para os retornos, podemos também construir um túnel de volatilidade (ou envelope de volatilidade) que é útil para uma análise qualitativa dos retornos em conjunto com o desvio padrão em janela móvel.
+
+No gráfico abaixo fazemos o gráfico dos retornos com o túnel de volatilidade e fica bem evidente que nos períodos de 2011 e 2014/2015 tivemos umas aglomerações de retornos, indicando um período de crise onde retornos mais extremos, bastante distantes da média, podem ocorrer.
+
+```{r}
+plot(index(IBOVESPA_rets), coredata(IBOVESPA_rets),
+     type = "l",
+     ylim = c(-0.1, 0.1),
+     cex.axis = .7,
+     lwd = 1,
+     xlab = "Date", ylab = "Retorno",
+     main = "Retorno diário do IBOVESPA com intervalo de confiança de 2 desvios")
+volatility <- rollapply(IBOVESPA_rets, 21, sd)
+lines(index(volatility), coredata(volatility) * 2, col = "red")
+lines(index(volatility), -coredata(volatility) * 2, col = "red")
+```
+
 ## Comparando Ativos
+
+Até aqui realizamos a análise de risco para apenas um ativo.
+Agora vamos utilizar esta análise univariada e vamos aplicar a diversos ativos para entender como diferentes ativos podem ser comparados entre si.
+Vamos utilizar uma série gráficos aqui que permitem uma análise conjunta dos ativos de forma que façamos uma análise de risco comparando os ativos entre si.
 
 ### Comparação de risco e retorno de diversos ativos: gráfico de risco x retorno
 
-```{r warning=FALSE}
+Vamos começar o gráfico risco x retorno, onde no eixo x é o risco e no y os retornos.
+Os passos são
+
+- baixar as séries de preços dos ativos com o `quantmod`
+- juntar as séries de diferentes ativos em um único objeto `xts`
+- criar as séries mensais e calcular os retornos
+- calcular médias e desvios padrão para cada um dos ativos
+- montar o gráfico risco x retorno
+
+#### Baixando as séries de preços
+
+As séries dos ativos contidas em `symbols` são baixadas e depois juntadas com a chamada `reduce(merge)`.
+Essa é uma passagem tricky que vale a pena ser executada passo a passo para que seja bem compreendida.
+
+```{r warning=FALSE, message=FALSE}
 symbols <- c("BOVA11.SA", "SMAL11.SA", "SPXI11.SA", "PETR4.SA", "VALE3.SA", "B3SA3.SA", "ABEV3.SA", "ITUB4.SA", "VVAR3.SA")
 prices <- getSymbols(symbols, from = "2016-01-01",
                      to = "2019-12-31",
@@ -218,29 +422,51 @@ prices <- getSymbols(symbols, from = "2016-01-01",
   `colnames<-`(symbols)
 ```
 
+Obtidas as séries vamos ver o que temos em mãos.
 
 ```{r}
 plot(prices, legend.loc = "topleft")
 ```
+
+Nada demais, séries diferentes com diferentes ordens de grandeza, o que prejudica a avaliação.
+
+#### Calculando dados mensais
+
+Usando a função `to.monthly` para obter as séries de preços mensais.
 
 ```{r warning=FALSE}
 prices_monthly <- to.monthly(prices, indexAt = "lastof", OHLC = FALSE)
 head(prices_monthly)
 ```
 
+Obtidas as séries de preços mensais vamos seguir com o cálculo dos retornos usando a já conhecida `Return.calculate`.
+
 ```{r}
 prices_monthly_rets <- Return.calculate(prices_monthly, "log")
 head(prices_monthly_rets)
 ```
 
+#### Calculando média e desvio padrão
+
+Tendo um objeto com todos os retornos mensais vamos calcular a média para cada ativo com `colMeans` que calcula a média de cada coluna de uma matriz (em nosso caso um objeto `xts`).
+
 ```{r}
 exp_returns <- colMeans(prices_monthly_rets, na.rm = TRUE)
 exp_returns
 ```
+
+O cálculo do desvio padrão utiliza a função `StdDev` do pacote `PerformanceAnalytics`.
+
 ```{r}
 exp_risk <- StdDev(prices_monthly_rets)
 exp_risk
 ```
+
+Com isso fechamos os indicadores de risco e retorno para cada um dos ativos.
+
+#### Construindo o gráfico risco x retorno
+
+A parte mais fácil é construir os gráficos e utilizar os nomes dos ativos para identificá-los facilmente no gráfico.
 
 ```{r}
 plot(exp_risk, exp_returns, 
@@ -254,7 +480,29 @@ text(x = exp_risk,
 ```
 
 
+Interessante aqui é ver uma *small cap* (ação de empresa com menor tamanho de mercado), VVAR3, dispontando com a maior risco e retorno, seguida de PETR4 e VALE3, duas consagradas blueships.
+Outra coisa curiosa, o SMALL11 (ETF de small caps) com um risco ligeiramente menor que BOVA11 e com maior retorno.
+
+### Gráfico boxplot com retorno dos ativos
+
+O boxplot é uma forma de visualizar a dispersão dos dados e permite ainda a avaliação de pontos extremos na amostra, os *outliers*.
+Dado que possuimos uma amostra de retornos para cada ativo, podemos calcular um boxplot para cada ativo.
+Colocando tudo no mesmo gráfico nos permite comparar como os retornos dos ativos estão distribuidos.
+
+```{r warning=FALSE}
+prices_monthly_rets %>%
+  data.frame(Date = index(.)) %>%
+  remove_rownames() %>%
+  gather(Symbol, Returns, -Date) %>%
+  ggplot(aes(x = Symbol, y = Returns)) +
+  geom_boxplot()
+```
+
 ### Gráfico violinplot com as distribuições de retornos dos ativos
+
+O *violinplot* é muito semelhante ao boxplot.
+É um pouco mais *fancy* apesar de não deixar clara a existência de *outliers*, mas impressiona em um ppt.
+Brincadeiras a parte ele apresenta uma distribuição continua para cada ativo, o que permite identificar a simetria das distribuições dos retornos.
 
 ```{r warning=FALSE}
 prices_monthly_rets %>%
@@ -266,25 +514,30 @@ prices_monthly_rets %>%
 ```
 
 
-### Gráfico boxplot com retorno dos ativos
+### Correlação entre séries de retornos
 
-```{r warning=FALSE}
-prices_monthly_rets %>%
-  data.frame(Date = index(.)) %>%
-  remove_rownames() %>%
-  gather(Symbol, Returns, -Date) %>%
-  ggplot(aes(x = Symbol, y = Returns)) +
-  geom_boxplot()
+Concluindo a parte multivariada precisamos calcular a correlação entre os ativos, não poderia ficar de fora.
+A matriz de correlação é obtida com a função `cor` que retorna uma matrix quadrada com as correlações entre cada um dos pares de ativos e 1 na diagonal principal, como é uma matriz de correlação.
+
+```{r}
+cor(prices_monthly_rets %>% na.omit())
 ```
 
-### Correlação entre séries de retornos
+A matriz de covariância é calculada com a função `cov`.
+
+```{r}
+cov(prices_monthly_rets %>% na.omit())
+```
+
+A função `chart.Correlation` do `PerformanceAnalytics` traz um gráfico bem interessante e completo da correlação entre os ativos.
 
 ```{r}
 chart.Correlation(prices_monthly_rets)
 ```
+Onde além dos valores de correlação também traz os níveis de significância de cada estivativa.
+Note que ABEV3 e VALE3 apresentam uma correlação muito baixa entre si, o que veremos no próximo capítulo, é uma boa característica quando falamos em diversificação.
 
-
-## Exercícios
+## Exercícios - Análise de Risco
 
 1. Escolher 1 série de preços de ações, ETFs ou Índices, calcular:
   - Retornos diários logaritmicos
