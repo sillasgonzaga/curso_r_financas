@@ -91,8 +91,13 @@
   - Value at risk
   - Drawdown
   - Expected shortfall
+- Comparando ativos
+  - Comparação de risco e retorno de diversos ativos: gráfico de risco x retorno
+  - Gráfico violinplot com as distribuições de retornos dos ativos
+  - Gráfico boxplot com retorno dos ativos
+  - Correlação entre séries de retornos de 2 ativos
 
-### Case
+### Exercícios
 
 - Escolher 1 série de preços de ações, ETFs ou Índices, calcular:
   - Retornos diários logaritmicos
@@ -101,16 +106,6 @@
 - Para a série de retornos diários logaritmicos
   - Fazer o gráfico do histograma
   - Com a média e variância da amostra fazer o gráfico da densidade de probabilidade da distribuição normal. Comparar os gráficos. O histograma da amostra *parece* com uma distribuição normal?
-
-## Comparando ativos
-
-- Comparação de risco e retorno de diversos ativos: gráfico de risco x retorno
-- Gráfico violinplot com as distribuições de retornos dos ativos
-- Gráfico boxplot com retorno dos ativos
-- Correlação entre séries de retornos de 2 ativos
-
-### Case
-
 - Selecionar 5 ativos:
   - Fazer o gráfico de risco x retorno
 - Selecionar 5 ativos:
@@ -128,7 +123,7 @@ Fazer estes gráficos para um conjunto de ativos
 - Técnicas para encontrar carteiras ótimas
 - Carteira de Mínima-Variância
 
-### Case
+### Exercício
 
 - TODO
 

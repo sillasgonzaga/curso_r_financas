@@ -5,72 +5,267 @@
 library(tidyverse)
 library(xts)
 library(PerformanceAnalytics)
+library(quantmod)
+library(rbcb)
 ```
 
+Vamos considerar os seguintes investimentos em ações:
+
+- Investimento em WEGE3 a R\$ 42,03 em junho/2020 e venda em julho/2020 a R\$ 67,32, lucro de R$ 25,29 por ação em 2 meses.
+- Investimento em OIBR3 a R\$ 0,49 em abril/2020 e venda em junho/2020 a R\$ 1,20, lucro de R$ 0,71 por ação em 3 meses.
+- Investimento em VVAR3 a R\$ 4,65 em abril/2020 e venda em setembro/2020 a R\$ 17,87, lucro de R$ 13,22 por ação em 6 meses.
+
+Qual investimento tem o melhor *retorno*?
+
+O investimento em WEGE3 apresenta o melhor resultado financeiro, pois é o que paga o maior *retorno* por ação, R\$ 25,29.
+
+Calculando o resultado percentual temos
+
+```{r}
+100 * c(
+  WEGE3 = (67.32 - 42.03) / 42.03,
+  OIBR3 = (1.20 - 0.49) / 0.49,
+  VVAR3 = (17.87 - 4.65) / 4.65
+)
+```
+
+O *retorno* _percentual_ no período total da VVAR3 foi o dobro da OIBR3 e o quatro vezes o da WEGE3.
+
+Se ainda considerarmos o prazo do investimento de forma linear, ou seja, dividindo o retorno percentual pelo prazo em meses do investimento, temos:
+
+```{r}
+meses <- c(2, 3, 6)
+
+100 * c(
+  WEGE3 = (67.32 - 42.03) / 42.03,
+  OIBR3 = (1.20 - 0.49) / 0.49,
+  VVAR3 = (17.87 - 4.65) / 4.65
+) / meses
+```
+
+O *retorno* por mês da OIBR3 é um pouco maior que o retorno da VVAR3, na prática muito próximos.
+
+O que podemos extrair desses exemplos?
+
+- Há diversas formas de avaliar o resultado entregue por um investimento: financeiro, percentual, ajustado ao prazo e outras formas.
+- **retorno** é um termo utilizado para fazer referência ao resultado de um investimento.
+
+Veremos nas próximas seções algumas formas de calcular o retorno de um investimento e como utilizar o retorno para fazer a análise de risco do investimento.
 
 # Análise de Retornos {#returns}
 
-Os retornos representam a variação dos preços de um ativo.
-São obtidos da série temporal de preços do ativo, logo, são relacionados a frequencia dessa série.
-Por exemplo, considera uma ação que possui cotações diárias do seu preço de fechamento, então podemos calcular os retornos diários dessa ação.
+O que são retornos?
 
-Os retornos podem ser aritiméticos e logaritimicos.
-São formas equivalentes de representar a variação do preço entre dois instantes de tempo.
+> Os retornos (retornos financeiros) representam a variação no preço dos nossos investimentos.
 
+Exemplo: Variação do preço de fechamento do ETF BOVA11 entre 31-01-2020 e 30-09-2020.
 
-## Retornos aritiméticos
+```{r message=FALSE, warning=FALSE}
+getSymbols("BOVA11.SA",
+           from = "2020-01-31",
+           to = "2020-10-01")
 
-Os retornos aritiméticos são a variação percentual dos preços de um ativo.
-Como calculamos a variação percentual no preço de um ativo entre dois instantes de tempo?
-Vamos considerar $P_t$ o valor da cotação do dólar em um instante $t$ qualquer.
-A **variação** do dólar entre os instantes $t$ e $t-1$ é dada por:
+Cl(BOVA11.SA)[c("2020-01-31", "2020-09-30")] %>% as.numeric()
+```
+Vamos calcular a variação total dos preços usando a função `diff`
+
+```{r}
+Cl(BOVA11.SA)[c("2020-01-31", "2020-09-30")] %>%
+  as.numeric() %>%
+  diff()
+```
+
+Entre as datas 31-01-2020 e 30-09-2020 o cotação do BOVA11 perdeu R$ 17,85, pois temos uma variação negativa.
+Essa é a variação total, simplismente a diferença dos preços em instantes de tempo diferentes.
+
+Exemplo: Variação da cotação do Dólar Americano em Reais entre 31-01-2020 e 30-09-2020.
+
+```{r message=FALSE, warning=FALSE}
+USDBRL <- get_currency("USD", start_date = "2020-01-31", end_date = "2020-10-01", as = "xts")
+
+Ask(USDBRL)[c("2020-01-31", "2020-09-30")] %>%
+  as.numeric()
+```
+
+Vamos calcular a variação total dos preços usando a função `diff`
+
+```{r}
+Ask(USDBRL)[c("2020-01-31", "2020-09-30")] %>%
+  as.numeric() %>%
+  diff()
+```
+
+Note que entre as datas 31-01-2020 e 30-09-2020 o cotação do Dólar Americano perdeu R$ 1,3712, pelo menos 1 ordem de grandeza menor que o BOVA11, em módulo.
+
+A variação total pode ser considerada uma medida de retorno, entretanto, ela está muito vinculada ao valor do ativo.
+Vamos considerar $P_t$ o valor do ativo em um instante $t$ qualquer.
+A **variação** deste ativo entre os instantes $t$ e $t-1$ é dada por:
 
 $$
 \Delta P_t = P_t - P_{t-1}
 $$
 
-Com uma série temporal no R calculamos esta variação usando o método `diff`.
+Chamamos esta variação total de $\Delta P_t$ onde $t$ representa um instante qualquer no tempo e $t-1$ é o instante anterior na série.
+Em nosso exemplo $t$ é a primeira data e $t-1$  a segunda.
+
+Como observamos, no mesmo período, os dois ativos apresentam medidas muito diferentes, logo, com esta medida é difícil comparar os 2 ativos.
+
+<!-- Pergunta: Quanto de retorno teríamos se tivessemos investido a mesma quantia em ambos os ativos? -->
+
+Há duas formas de calcular os retornos de maneira que possamos comparar os investimentos.
+
+1. Retornos Simples: calculados a partir da variação percentual dos preços com referência ao valor inicial
+1. Retornos Logarítimicos: calculados a partir da variação do logarítimo dos preços
+
+Nas próximas seções vamos detalhar estes tipos de retornos e como calculá-los.
+
+## Retornos simples
+
+Os retornos simples são a variação percentual dos preços de um ativo.
+
+Do exemplo do BOVA11 temos a diferença dos preços nas datas 31-01-2020 e 30-09-2020.
 
 ```{r}
-USDBRL <- rbcb::get_currency("USD", start_date = "2020-09-01", end_date = "2020-09-04",
-                             as = "xts") %>% rbcb::Ask()
-merge(USDBRL, diff(USDBRL) %>% setNames("diff"))
+Cl(BOVA11.SA)[c("2020-01-31", "2020-09-30")] %>%
+  as.numeric() %>%
+  diff()
 ```
 
-O primeiro elemento do vetor da diferença é um `NA` porque não há um elemento anterior para realizar o cálculo, dessa forma o R mantém a estrutura de índices e indica que o resultado para o índice em questão não está disponível.
+Dada a diferença, só precisamos dividir pelo preço inicial, na data 31-01-2020.
 
-> Usamos `setNames` para renomear `diff(USDBRL)` que vem com o nome `ask`, que é o mesmo da série original.
-> Isso é interessante e uma ótima alternativa para organizar a apresentação dos dados.
+```{r}
+diff_ <- Cl(BOVA11.SA)[c("2020-01-31", "2020-09-30")] %>%
+  as.numeric() %>%
+  diff()
 
+ini_price <- Cl(BOVA11.SA)["2020-01-31"] %>% as.numeric()
 
-Para obter a variação percentual devemos dividir $\Delta P_t$ pelo seu valor inicial, $P_{t-1}$, dessa forma calculamos o retorno aritimético $R_t$.
+diff_ / ini_price
+```
+O BOVA11 apresentou uma variação negativa de 16,39% no período.
+
+Usando os dados do Dólar Americano temos
+
+```{r}
+diff_ <- Ask(USDBRL)[c("2020-01-31", "2020-09-30")] %>%
+  as.numeric() %>%
+  diff()
+
+ini_price <- Ask(USDBRL)["2020-01-31"] %>% as.numeric()
+
+diff_ / ini_price
+```
+
+O Dólar Americano apresentou uma variação positiva de 32,11% no período, aproximadamente o dobro da variação do BOVA11, em módulo.
+
+Colocando em equação, a variação percentual é dada pela divisão de $\Delta P_t$ pelo seu valor inicial, $P_{t-1}$, dessa forma calculamos o retorno simples $R_t$.
 
 \begin{equation}
 R_t = \frac{\Delta P_t}{P_{t-1}} = \frac{P_t - P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}} - 1
-(\#eq:arithmetic-return)
+(\#eq:simple-return)
 \end{equation}
 
-Para realizar este cálculo no R é necessário obter a série de $P_{t-1}$, isso pode ser feito com o método `lag.xts` da série temporal.
+O cálculo do retorno simples para dois instantes de tempo é útil para cálculos isolados, na prática queremos calcular retornos compostos em diferentes períodos em sequência.
+Queremos responder a perguntas como:
+
+- Para uma série de preços diários de um ativo, calculamos os retornos simples diários, qual é a média dos retornos diários no período?
+- Para uma série de retornos diários de um ativo, como calcular o retorno mensal?
+- Dado o retorno mensal, qual é o retorno médio diário?
+
+### Retornos Simples Multiperíodo
+
+Vamos calcular os retornos simples a partir de uma série de preços.
+Com uma série temporal no R calculamos a variação usando a função `diff` para a série do Dólar Americano entre as datas 01-09-2020 e 04-09-2020.
 
 ```{r}
-lag.xts(USDBRL)
+USDBRL <- get_currency("USD",
+                       start_date = "2020-09-01",
+                       end_date = "2020-09-04",
+                       as = "xts") %>%
+  Ask()
+merge(
+  USDBRL %>% setNames("P_t"),
+  diff(USDBRL) %>% setNames("diff")
+)
 ```
+
+O primeiro elemento do vetor de diferenças é um `NA` porque o cálculo das diferenças é entre o elemento corrente com o anterior e para o primeiro elemento não há um elemento anterior para realizar o cálculo, dessa forma o R mantém a estrutura de índices e indica que o resultado para o índice em questão não está disponível.
+
+> Usamos `setNames` para renomear `diff(USDBRL)` que vem com o nome `ask`, que é o mesmo da série original.
+> Isso é interessante e uma ótima alternativa para organizar a apresentação dos dados.
+> Usamos também a função `merge` para *juntar* as séries de preço e diferenças.
+
+A série `diff` é a série de diferenças, logo, representa $\Delta P_t$.
+
+Para realizar este cálculo de $R_t$ no R é necessário obter a série de $P_{t-1}$.
+Isso pode ser feito com a função `lag.xts` da série temporal.
+
+```{r}
+merge(
+  USDBRL %>% setNames("P_t"),
+  lag.xts(USDBRL) %>% setNames("P_t1"),
+  diff(USDBRL) %>% setNames("diff")
+)
+```
+
+Note que essa função desloca a série tempora em 1 elemento adiante.
+Aqui a coluna `P_t1` refere-se a $P_{t-1}$.
+Uma boa forma de ler esse resultado é que em $t$  igual a `2020-09-02`, $P_{t-1}$ é `5.3732`, que é o valor de $P_t$ quando $t$ é `2020-09-01`, ou seja, o instante anterior.
 
 Assim, o retorno $R_t$ é calculado no R da seguinte maneira:
 
 ```{r}
-100 * diff(USDBRL) / lag.xts(USDBRL)
+(100 * diff(USDBRL) / lag.xts(USDBRL)) %>%
+  setNames("R_t")
 ```
 
 Note a multiplicação por 100 no código R, isso ajuda a interpretar o resultado.
-De forma prática podemos observamos que do segundo para o terceiro dia tivemos um retorno negativo de mais de 1% na cotação do dólar.
+De forma prática observamos que do segundo para o terceiro dia tivemos um retorno negativo de mais de 1% na cotação do dólar, por exemplo.
 
-Uma outra forma de calcular retornos aritiméticos é utilizando a função `Return.calculate` do pacote `PerformanceAnalytics`.
+Uma outra forma de calcular retornos simples é utilizando a função `Return.calculate` do pacote `PerformanceAnalytics`.
 
 ```{r}
-100 * Return.calculate(USDBRL, method = "discrete")
+100 * Return.calculate(USDBRL, method = "discrete") %>%
+  setNames("R_t")
 ```
-Uma outra forma de entender os retornos aritiméticos é inverter a Eq.\@ref(eq:arithmetic-return) e escrevê-la em termos do preço $P_t$
+
+Dessa forma calculamos os retornos simples para uma série temporal.
+Neste exemplo calculamos os retornos diários, pois a série é de cotações diárias.
+É comum trabalharmos com séries com períodos maiores como séries semanais, mensais ou anuais.
+Logo, utilizando ainda a série do Dólar Americano, vamos obter a série mensal de preços e desta série vamos obter a série de retornos mensais para o ano de 2019.
+
+```{r}
+USDBRL_2019 <- get_currency("USD",
+                            start_date = "2018-12-31",
+                            end_date = "2019-12-31",
+                            as = "xts") %>%
+  Ask()
+USDBRL_2019_monthly <- to.monthly(USDBRL_2019, indexAt = "firstof") %>%
+  Cl()
+USDBRL_2019_monthly
+```
+
+Note que aqui o argumento `start_date = "2018-12-31"`, definimos dessa maneira para que a série de preços começe com os dados de dezembro/2018 e assim ao construirmos a série mensal para o cálculo dos retornos tenhamos o retorno de janeiro/2019.
+De outra forma teríamos o retorno de janeiro/2019 igual a `NA`.
+
+Agora, utilizando a função `Return.calculate`, vamos calcular os retornos simples para a série mensal de cotações do Dólar Americano.
+
+```{r}
+Return.calculate(USDBRL_2019_monthly, method = "discrete") %>%
+  setNames("R_t") -> USDBRL_2019_monthly_returns
+
+100 * USDBRL_2019_monthly_returns
+```
+
+Visualizando os dados em um gráfico de barras.
+
+```{r}
+barplot(USDBRL_2019_monthly_returns * 100, las = 2, ylim = c(-5, 10))
+```
+
+### Entendendo os preços em função dos retornos
+
+Vimos com escrever os retornos em função dos preços, uma outra forma de entender os retornos simples é inverter a Eq.\@ref(eq:simple-return) e escrevê-la em termos do preço $P_t$.
 
 \begin{equation}
 P_t = P_{t-1} (1 + R_t) = P_{t-1} + R_t P_{t-1}
@@ -79,58 +274,166 @@ P_t = P_{t-1} (1 + R_t) = P_{t-1} + R_t P_{t-1}
 
 O preço $P_t$ pode ser interpretado como um choque do retorno $R_t$ no preço $P_{t-1}$.
 O retorno $R_t$ está associado ao período entre os instantes $t$ e $t-1$, de forma análoga, $R_{t-1}$ está associado aos instantes $t-1$ e $t-2$, e assim por diante para diferentes valores de $t$.
-Por isso o retorno aritimético também é conhecido como **retorno discreto**, pois, para cada período entre instantes dois instantes de tempo temos um choque discreto associado a cada movimento dos preços.
+Por isso o retorno simples também é conhecido como **retorno discreto**, pois, para cada período entre instantes dois instantes de tempo temos um choque discreto associado a cada movimento dos preços.
 Note que na função `Return.calculate` temos o argumento `method="discrete"`.
 
-### Composição retornos aritiméticos
+### Composição de retornos simples
 
-A composição de retornos é para saber se, dado que temos o retorno diário de dois dias consecutivos, qual é o retorno total nos dois dias?
-Isso vale para dois dias e vale para $N$ dias.
-Para simplificar vamos começar com dois dias, temos os retonos $R_t$ e $R_{t-1}$.
+Vimos como obter a série de retornos a partir da série de preços de um ativo.
+Agora vamos ver como obter a série de preços a partir da série de retornos e para isso é necessário entender como compor os retornos.
+
+A composição de retornos ajuda a responder a pergunta: Dado que temos os retornos simples de dois meses consecutivos, qual é o retorno total nos dois meses?
+Para obter os retornos mensais partimos da série de preços diários, para obter os retornos de 2 meses podemos partir da série de preços de 2 meses, mas este período não possui uma função com `to.monthly` de forma que dificulta um pouco o trabalho.
+Contudo, podemos partir da série de retornos mensais e criar uma série de retornos bimestrais compondo os retornos mensais.
+Isso vale para dois meses e vale para $N$ meses, podemos construir séries de retornos trimestrais, semestrais e assim por diante.
+
+Vamos começar com um exemplo estático.
+Da série `USDBRL_2019_monthly_returns` vamos pegar os retonos dos últimos 2 meses, novembro e dezembro de 2019.
+
+```{r}
+last(USDBRL_2019_monthly_returns * 100, 2)
+```
+Em novembro/2019 tivemos um retorno de 5,49% e em dezembro/2019 um retorno negativo de -4,57%.
+O retorno total no período é dado pela equação
+
+\begin{equation}
+R_{nov-dez/19} = (1 + R_{nov/19})(1 + R_{dez/19}) - 1
+(\#eq:simple-return-composed-2-months)
+\end{equation}
+
+Dessa forma, no R, utilizamos a função `prod` para calcular o retorno composto para este período.
+
+Modo base R:
+
+```{r}
+100 * (prod(1 + last(USDBRL_2019_monthly_returns, 2)) - 1)
+```
+
+Modo tidyverse:
+
+```{r}
+last(USDBRL_2019_monthly_returns, 2) %>%
+  `+`(1) %>%
+  prod() %>%
+  `-`(1) %>%
+  `*`(100)
+```
+
+O retorno total é de 0,66%, praticamente zero, devido a queda de dezembro.
+
+Mas de onde vem a Eq.\@ref(eq:simple-return-composed-2-months)?
+Vamos demostrar.
+
+Temos os retonos $R_t$ e $R_{t-1}$ referentes aos meses de novembro e dezembro de 2019.
 Vamos começar escrevendo o preço $P_t$ conforme a Eq.\@ref(eq:arithmetic-price).
 
 \begin{equation}
 P_t = P_{t-1} (1 + R_t)
 \end{equation}
 
-nesta equação temos $P_{t-1}$.
+Aqui temos o preço de dezembro/2019 ($t$) como função do preço de novembro/2019 ($t-1$).
 Vamos escrever $P_{t-1}$ também segundo a Eq.\@ref(eq:arithmetic-price) substituindo na equação acima.
 
 \begin{equation}
 P_t = P_{t-2} (1 + R_{t-1}) (1 + R_t)
 \end{equation}
 
-Temos aqui os retornos $R_t$ e $R_{t-1}$ compostos produzindo o retorno total no período de dois dias.
+Agora temos o preço de dezembro/2019 ($t$) como função do preço de outubro/2019 ($t-2$)
+Temos também os retornos $R_t$ e $R_{t-1}$ compostos produzindo o retorno total no período de novembro-dezembro/2019.
 Para simplificar podemos escrever
 
 \begin{equation}
 P_t = P_{t-2} (1 + \bar{R}_{2})
 \end{equation}
 
-onde $(1 + \bar{R}_{2})$ é o retorno total no período de dois dias.
+onde $(1 + \bar{R}_{2})$ é o retorno total no período de dois meses.
 
-Generalizando para $N$ dias temos que o retorno total neste período é dado por:
+Generalizando para $N$ meses (ou dias, ou anos) temos que o retorno total neste período é dado por:
 
 \begin{equation}
 (1 + \bar{R}_{N}) = \prod_{i=0}^{N-1} (1 + R_{t-i})
-(\#eq:arithmetic-return-composed)
+(\#eq:simple-return-composed)
 \end{equation}
 
-No R podemos calcular a série de retornos aritméticos compostos usando o método `cumprod` da seguinte maneira:
+Podemos calcular o retorno simples para todo o ano de 2019 utilizando a função `prod`.
 
 ```{r}
-100 * (cumprod(1 + na.trim(Return.calculate(USDBRL, method = "discrete"))) - 1)
+100 * (prod(1 + na.trim(USDBRL_2019_monthly_returns)) - 1)
 ```
+
+Dessa forma descobrimos que no ano de 2019 o Dólar Americano teve uma valorização de 4,02%.
 
 Foi necessário utilizar o método `na.trim` para remover o `NA` do primeiro elemento do cálculo dos produtos acumulados.
 
 > As funções `cumsum`, `cumprod`, `cummax` e `cummin` não possuem o argumento `na.rm` que exclui os elementos com `NA` da operação, como acontece com as funções `sum`, `prod`, `max` e `min`.
 > Por este motivo é importante fazer este tratamento antes de executar estas funções.
 
+No R ainda calcular o calcular a série de retornos simples compostos usando a função `cumprod`:
+
+```{r}
+100 * (cumprod(1 + na.trim(USDBRL_2019_monthly_returns)) - 1)
+```
+
+Isso fica legal de ver em um gráfico de barras.
+
+```{r}
+barplot(100 * (cumprod(1 + na.trim(USDBRL_2019_monthly_returns)) - 1),
+        las = 2, ylim = c(-5, 10))
+```
+
+É possível notar que o grande resultado para o ano do Dólar Americano ocorreu em julho/2019, após este mês ele ficou de lado mantendo esse resultado.
+
+### Retorno médio 
+
+Outra pergunta interessante para se fazer aqui é: Tá ok, eu sei que o retorno simples para o Dólar Americano em 2019 foi de 10,37%, mas qual é o retorno mensal médio de 2019?
+Este seria o retorno que poderíamos comparar com outros investimentos que também apresentam retornos mensais, como a Poupança por exemplo.
+
+Sabendo que o retorno simples no período é dado pela Eq.\@ref(eq:simple-return-composed), podemos considerar que os retornos $R_t$ são constantes e iguais a $\hat{R}$.
+Assim teríamos,
+
+\begin{equation}
+\begin{array}{lcr}
+(1 + \bar{R}_{N}) & = & \prod_{i=0}^{N-1} (1 + \hat{R}) \\
+                  & = & (1 + \hat{R})^N
+\end{array}
+\end{equation}
+
+Consequentemente temos
+
+\begin{equation}
+(1 + \hat{R}) = (1 + \bar{R}_{N})^{\frac{1}{N}}
+(\#eq:simple-mean-return-composed)
+\end{equation}
+
+É uma média geométrica dos retornos simples
+
+$$
+1 + \hat{R} = \left( \prod_{i=0}^{N-1} (1 + R_{t-i}) \right)^{\frac{1}{N}}
+$$
+
+> Esta é a razão pela qual é incorreto calcular a média aritimética dos retornos simples.
+
+No R calculamos essa operação usando o operado de exponenciação `^`.
+
+```{r}
+R_med <- ( prod(1 + na.trim(USDBRL_2019_monthly_returns)) ) ^ (1/length(na.trim(USDBRL_2019_monthly_returns))) - 1
+100 * R_med
+```
+
+Obtemos 0,33% ao mês! Para efeito de comparação, vamos considerar a taxa SELIC (taxa básica de juros na economia), esta taxa é de 2,0% ao ano.
+Podemos calcular o seu equivalente mensal aplicando a mesma fórmula.
+
+```{r}
+SELIC <- 0.02
+SELIC_med <- (1 + SELIC) ^ (1 / 12) - 1
+100 * SELIC_med
+```
+
+Temos 0,17%, aproximadamente a metade do retorno obtido com o Dólar Americano no ano de 2019.
 
 ## Retornos logaritimicos
 
-Os retornos logaritimicos são dados por:
+Os retornos logaritimicos são dados pela diferença entre os logarítimos dos preços dos ativos.
 
 \begin{equation}
 r_t = \log \left( \frac{P_t}{P_{t-1}} \right) = \log P_t - \log P_{t-1} = p_t - p_{t-1}
@@ -140,161 +443,250 @@ r_t = \log \left( \frac{P_t}{P_{t-1}} \right) = \log P_t - \log P_{t-1} = p_t - 
 No R fazemos como na equação acima, tiramos a diferença dos logaritimos dos preços $P_t$
 
 ```{r}
-100 * diff(log(USDBRL))
+100 * diff(log(USDBRL)) %>%
+  setNames("r_t")
 ```
 
-Os valores são bastante próximos aos dos retornos logaritimicos.
+Os valores são bastante próximos aos dos retornos simples.
 
-Também podemos usar a função `Return.calculate` do pacote `PerformanceAnalytics` para calcular os retornos logaritimicos
+Também podemos usar a função `Return.calculate` do pacote `PerformanceAnalytics` para calcular os retornos logaritimicos, só que neste caso, passando o argumento `method = "log"`.
 
 ```{r}
-100 * Return.calculate(USDBRL, method = "log")
+100 * Return.calculate(USDBRL, method = "log") %>%
+  setNames("r_t")
 ```
 
-Invertendo a Eq.\@ref(eq:log-return) para obter a equação dos preços, da mesma maneira que fizemos na Eq.\@ref(eq:arithmetic-price).
+Como o termo *retorno logaritimico* é muito extenso pra escrever e falar, vamos usar com mais frequência o termo **log-retorno**.
+
+### Entendendo os preços em função dos retornos
+
+Invertendo a Eq.\@ref(eq:log-return) para obter a equação dos preços, da mesma maneira que fizemos na Eq.\@ref(eq:arithmetic-price), temos:
 
 \begin{equation}
 P_t =  P_{t-1} \exp\left( r_t \right)
 (\#eq:log-price)
 \end{equation}
 
-### Composição dos retornos logaritimicos
+### Composição dos log-retornos
 
-Pela Eq.\@ref(eq:arithmetic-log-return-relation) de relação entre os retornos aritiméticos e logaritimicos podemos escrever a composição dos retornos logaritimicos substituindo essa equação na Eq.\@ref(eq:arithmetic-return-composed).
+A composição dos log-retornos se dá da seguinte forma:
 
 \begin{equation}
-\begin{array}{rcl}
-\exp(\bar{R}_{N}) & = & \prod_{i=0}^{N-1} \exp(r_{t-i}) = \exp\left(\sum_{i=0}^{N-1} r_{t-i}\right) \\
-\bar{r}_{N}       & = & \sum_{i=0}^{N-1} r_{t-i} \\
-\end{array}
+\exp(\bar{r}_{N}) = \prod_{i=0}^{N-1} \exp(r_{t-i}) = \exp\left(\sum_{i=0}^{N-1} r_{t-i}\right)
+\end{equation}
+
+Dessa forma temos que o log-retorno no período, $\bar{r}_{N}$, é dado pela **soma** dos retornos
+
+\begin{equation}
+\bar{r}_{N} = \sum_{i=0}^{N-1} r_{t-i}
 (\#eq:log-return-composed)
 \end{equation}
 
-No R podemos calcular a série de retornos logaritimicos compostos usando o método `cumprod`, da mesma forma que fizemos com os retornos aritiméticos.
+No R podemos calcular o log-retorno no período usando a função `sum`.
+Usando a série de preços do Dólar Americano em 2019, temos:
 
 ```{r}
-100 * (cumprod(1 + na.trim(Return.calculate(USDBRL, method = "log"))) - 1)
+100 * sum(Return.calculate(USDBRL_2019_monthly, method = "log"), na.rm = TRUE)
 ```
 
+> Note que aqui usamos `na.rm = TRUE` para indicar para a função `sum` que os elementos com `NA` deve ser excluídos da amostra. A função `mean` também apresenta este argumento.
 
-## Relação entre os retornos aritiméticos e logaritimicos
+Note que o log-retorno referente a 2019 é 3.94%, ligeiramente menor que o obtido com o retorno simples, que foi de 4,02%.
+Entretanto, estas duas abordagens são equivalentes, vamos ver isso em mais detalhes na Seção\@ref(s:equivalent-returns).
 
-Como $P_t$ deve ser sempre o mesmo, independente do retorno que estamos utilizando, então, usando as Eqs.\@ref(eq:arithmetic-price) e \@ref(eq:log-price), podemos obter a relação entre os retornos aritiméticos e logaritimicos.
+Podemos ainda no R calcular a série de log-retornos compostos usando a função `cumsum`, da mesma forma que fizemos com os retornos simples.
+
+```{r}
+100 * cumsum(na.trim(Return.calculate(USDBRL_2019_monthly, method = "log")))
+```
+
+### Log-retorno médio
+
+Voltando a pergunta: *Tá ok, eu sei que o log-retorno para o Dólar Americano em 2019 foi de 9,87%, mas qual é o retorno mensal médio de 2019?*
+
+Dado que o log-retorno para um período com múltiplos retornos é dado pela soma dos retornos, temos que o log-retorno médio é dado pela média aritimética dos log-retornos.
+
+\begin{equation}
+\hat{r} = \frac{1}{N} \sum_{i=0}^{N-1} r_{t-i}
+(\#eq:mean-log-return-composed)
+\end{equation}
+
+Utilizamos a função `mean` no R para calcular o log-retorno médio para uma série de retornos
+
+```{r}
+100 * mean(Return.calculate(USDBRL_2019_monthly, method = "log"), na.rm = TRUE)
+```
+
+Obtivemos 0,33%, praticamente o mesmo resultado obtido com o retorno simples, que arredondado também ficou em 0,33%.
+
+## Relação entre os retornos simples e logaritimicos {#s:equivalent-returns}
+
+Como vimos anteriormente, os retornos simples e logaritimicos, são diferentes, mesmo quando se referem ao mesmo período.
+
+Bem, vamos ver aqui que são duas formulações equivalentes, pois ambas são obtidas a partir dos mesmos preços.
+
+Como $P_t$ deve ser sempre o mesmo, independente do retorno que estamos utilizando, então, usando as Eqs.\@ref(eq:arithmetic-price) e \@ref(eq:log-price), podemos obter a relação entre os retornos simples e logaritimicos.
 
 \begin{equation}
 1 + R_t =  \exp\left( r_t \right)
 (\#eq:arithmetic-log-return-relation)
 \end{equation}
 
-No R
+## Porque formas diferentes de calcular os retornos?
 
-```{r}
-cbind(
-  Return.calculate(USDBRL, method = "discrete") %>% setNames("discrete_raw"),
-  (exp(Return.calculate(USDBRL, method = "log")) - 1) %>% setNames("discrete_from_log"),
-  Return.calculate(USDBRL, method = "log") %>% setNames("log_raw"),
-  log(1 + Return.calculate(USDBRL, method = "discrete")) %>% setNames("log_from_discrete")
-)
-```
+Bem, faz sentido trabalhar com duas formas diferentes de calcular retornos?
+Honestamente, não!
+Entretanto, os retornos simples são mais intuitivos de serem utilizados nos cálculos de retornos, por outro lado os log-retornos são mais fáceis de manipular nos cálculos, principalmente devido ao fato de que podem ser somados.
+
+Devido a simplicidade de uso dos log-retornos, a grande maioria dos estudos de alocação de ativos e risco de investimentos utiliza os log-retornos.
+
+Nas próximas seções vamos abordar os conceitos de **retorno esperado** e **risco esperado** para ativos e veremos que a utilização de log-retornos é fundamental.
 
 ## Retorno esperado
 
-Com a composição de retornos obtemos o retorno total para o período de abrangência da série.
-Em nossos exemplos temos um período de 3 dias úteis, mas podemos trabalhar com uma semana, um mês, um ano, dez anos e por aí vai.
+O **retorno esperado** é equivalente ao *retorno médio*.
+Há diversas outras formas de estimar o retorno esperado, desde modelos matemáticos complexos até hipóteses bem fundamentadas sobre o comportamento dos ativos.
+Aqui vamos considerar a análise estatística em que, dada uma amostra de retornos, o retorno médio é um bom estimador para retornos futuros.
+Justamente por ser o valor médio, o mais comum, o *esperado* para essa amostra.
+
+Na estatística, a média aritimética é estimador para a média consistente para a média de uma amostra.
+Por esse motivo os log-retornos são utilizado para o cálculo do retorno esperado, pois são equivalentes a média aritimética dos retornos.
 
 \begin{equation}
-\begin{array}{rcl}
-(1 + \bar{R})^{\frac{1}{N}} & = & \prod_{i=0}^{N-1} (1 + R_{t-i}) \\
-\bar{R}                     & = & \left( \prod_{i=0}^{N-1} (1 + R_{t-i}) \right)^{\frac{1}{N}}
-\end{array}
+\hat{r} = \frac{1}{N} \sum_{i=0}^{N-1} r_{t-i}
 \end{equation}
 
+A partir daqui vamos assumir que o retorno esperado é a média aritimética dos log-retornos.
 
-\begin{equation}
-\bar{r} = \frac{1}{N} \sum_{i=0}^{N-1} r_{t-i}
-\end{equation}
+### Retornos anualizados
 
-A média aritimética dos retornos logaritimicos é equivalente ao retorno médio no período e por isso podemos denominá-lo como retorno esperado.
+Outro conceito importante é o de retorno anualizado.
+Primeiro: porque anualizar os retornos?
+No mercado financeiro é muito comum se trabalhar com taxas ao ano como a SELIC e o CDI, que são taxas básicas de juros e sempre são cotadas ao ano.
+Dessa forma, é interessante converter os retornos para uma base anual de maneira que seja possível comparar os retornos esperados com retornos de outros investimentos.
 
-A média aritimética dos retornos discretos não é equivalente ao retorno médio definido, entretanto, para algumas análises, por simplificação, podemos usar a média aritimética dos retornos discretos como retorno médio.
+Para calcular o retorno anualizado, multiplicamos o retorno esperado pela quantidade de períodos que temos em 1 ano.
+Por exemplo:
 
-A média aritimética é uma estimativa estatística para o valor esperado de uma grandeza.
-Em nosso exemplo, os retornos representam as grandezas que queremos avaliar e o valor esperado dos retornos vamos chamar de **retorno esperado**.
-Dessa maneira, a média dos retornos logaritimicos são uma boa medida para os retornos esperado.
-Como já citamos, dados as devidas aproximações, não é um crime utilizar a média aritimética dos retornos discretos como o retorno esperado, entretanto, eu dou preferência aos retornos logaritimicos.
+- retorno esperado diário - multiplicamos por 252, que é uma convenção adotada no mercado brasileiro que significa 252 dias úteis por ano.
+- retorno esperado mensal - multiplicamos por 12, pois 1 ano tem 12 meses.
 
-No R temos a função `mean` que calcula a média aritimética de uma amostra, e passando a série de retornos logaritimicos como amostra, obtemos o retorno esperado para a amostra.
+Vamos utilizar a nossa série `USDBRL_2019` com as cotações do Dólar Americano para 2019.
+Primeiro vamos calcular os retornos diários
 
 ```{r}
-USDBRL_2019 <- rbcb::get_currency("USD", start_date = "2019-01-01", end_date = "2019-12-31",
-                                  as = "xts") %>% rbcb::Ask()
-100 * mean(Return.calculate(USDBRL_2019, method = "log"), na.rm = TRUE)
+USDBRL_2019_daily_returns <- Return.calculate(USDBRL_2019, method = "log")
+USDBRL_2019_daily_mean_return <- mean(USDBRL_2019_daily_returns, na.rm = TRUE)
+100 * USDBRL_2019_daily_mean_return
+```
+Note que o retorno diário para o USDBRL em 2019 foi de 0,0156%.
+Vamos multiplicá-lo por 252 para encontrar o retorno anualizado
+
+```{r}
+100 * USDBRL_2019_daily_mean_return * 252
 ```
 
-Neste exemplo utilizamos a série de cotação do dólar em Reais para o ano de 2019 e podemos observar que para este período o retorno esperado é de aproximadamente 0.01%.
+Obtivemos 3,93% com retorno diário anualizado, ficou bastante próximo do retorno anual calculado com a composição dos retornos mensais que ficou em 3,94%.
 
+Utilizando os retornos mensais
+
+```{r}
+Return.calculate(USDBRL_2019_monthly, method = "log") %>%
+  setNames("R_t") -> USDBRL_2019_monthly_log_returns
+
+USDBRL_2019_monthly_mean_return <- mean(USDBRL_2019_monthly_log_returns, na.rm = TRUE)
+100 * USDBRL_2019_monthly_mean_return
+```
+Multiplicando `USDBRL_2019_monthly_mean_return` por 12 para anualizar o retorno temos
+
+```{r}
+100 * USDBRL_2019_monthly_mean_return * 12
+```
+
+Novamente a estimativa do retorno anualizado ficou muito próximo dos valores já encontrados, 3,94%.
+
+A anualização dos retornos é muito útil para converter os retornos entre períodos diários, mensais e anuais com contas simples que podem produzir análises interessantes para comparação de investimentos.
 
 ## Risco esperado
 
-Variância dos retornos
+Há diversas formas de calcular o risco esperado de um ativo.
+Aqui vamos considerar que a volatilidade dos log-retornos será a medida de **risco esperado** para o ativo.
+
+Para calcular a volatilidade precisamos calcular a variância dos log-retornos, que é dada pela fórmula:
+
 
 $$
 \textrm{Var}(r_t) = \frac{1}{N-1}\sum_{i=0}^{N-1}\left( r_{t-i} - \bar{r} \right)^2
 $$
-Desvio padrão dos retornos
+A **volatilidade** dos retornos é dada pela raiz quadrada da variância e representada por $\sigma$.
 
 $$
 \sigma = \sqrt{\textrm{Var}(r_t)}
 $$
 
-Também é conhecido como volatilidade.
+A volatilidade também é conhecida como desvio padrão dos retornos, na verdade é o contrário, mas a ordem dos fatores não altera o produto.
 A volatilidade é um conceito amplo para descrever o comportamento da dinâmica de um ativo.
-Entretanto, a métrica mais comumente utilizada para descrever ou explicar a volatilidade é o desvio padrão dos retornos.
-Há diversas formas de estimar a volatilidade, o desvio padrão amostral é uma delas.
-Contudo, a volatilidade não é observada, diferente dos preços dos ativos e das taxas de juros, logo, sua estimação é sempre calcada em um conjunto de hipóteses.
+Há diversas formas de estimar a volatilidade, aqui estamos assumindo a raiz quadrada da variância amostral.
+Contudo, a volatilidade **não é observada**, diferente dos preços dos ativos e das taxas de juros, logo, sua estimação é sempre calcada em um conjunto de hipóteses.
 Em termos gerais, o objetivo de caracterizar o risco esperado em termos da volatilidade é que a partir dessa medida possamos definir perdas esperadas associadas a probabilidades.
 Ou mesmo que não defina-se uma perda esperada, conhecendo a volatilidade de diferentes ativos é possível comparar os ativos por uma métrica de risco esperado potencial.
 
-No R
+No R utilizamos a função `sd` (de *standard deviation* e assim com `sum` e `mean` também possui um argumento `na.rm`)
 
 ```{r}
 100 * sd(Return.calculate(USDBRL_2019, method = "log"), na.rm = TRUE)
 ```
 
-
 O desvio padrão tem uma relação direta com os retornos, eles estão na mesma *unidade*.
+Aqui temos uma volatilidade de 0,69% para um retorno esperado de 0,0156%.
+Já já vamos saber como avaliar se isso é bom ou ruim, comparado a que?
+
 Por esse motivo o desvio padrão é utilizado para definir um **intervalo de confiança** para o retorno esperado.
 Por ora vamos segurar um pouco aqui, mais adiante vamos trazer uma abordagem estatística sobre os retornos e vamos falar mais sobre o desvio padrão.
 
-## Volatilidade e Retornos anualizados
-
-As taxas de juros presentes no mercado são taxas de juros anuais, dessa maneira, como comparar o retorno esperado de um ativo com um investimento simples como um CDB, ou o Tesouro SELIC que remuneram próximo das taxas básicas de juros do mercado, fora os custos.
-Uma forma de fazer essa comparação é colocar os retornos esperados e a volatilidade na mesma *base* das taxas de juros.
-Então, é necessário **anualizar** o retorno esperado e sua volatilidade.
-
-### Retornos anualizados
-
-\begin{equation}
-1 + r_a = (1 + r_d)^252
-\end{equation}
-
 ### Volatilidade anualizada
+
+Da mesma maneira que anualizamos os retornos, é necessário anualizar a volatilidade para evitar que façamos comparações de maçãs com bananas.
+
+A conta aqui é menos direta então vou colocar direto a equação.
+Para anualizar volatilidade diária (obtida de retornos diários) multiplicamos por raiz quadrada de 252 (quantidade de dias úteis no ano).
 
 \begin{equation}
 \sigma_a = \sigma_d\sqrt{252}
 \end{equation}
 
-## Exercícios
+Para anualizar volatilidade mensal multiplicamos por raiz quadrada de 12 (número de meses no ano)
 
-1. Para séries de preços de ações, ETFs e Índices, calcular:
-  - Retornos logaritmicos mensais
-  - Retorno esperado anualizado
-  - Volatilidade esperada anualizada
-  - Comparar os retornos e volatilidades esperadas dos ativos
-2. Para a série de preços do ativo selecionado.
-  - Calcular os retornos diários aritméticos.
-  - Dividir as séries em 4 períodos com a mesma quantidade de dados e calcule as estatísticas: média, desvio padrão e correlação, para cada sub-período.
-  - O que se observa?
-  - As medidas permanecem constantes ao longo do tempo?
-  - Fazer a mesma análise para retornos diários logaritmicos - as medidas mudam substancialmente?
-  - Fazer o boxplot para cada sub-período com os 2 tipos de retornos.
+\begin{equation}
+\sigma_a = \sigma_m\sqrt{12}
+\end{equation}
+
+No exemplo acima, temos a volatilidade diária, logo, para anualizar a volatilidade vamos multiplicar por $\sqrt{252}$.
+
+```{r}
+100 * sd(Return.calculate(USDBRL_2019, method = "log"), na.rm = TRUE) * sqrt(252)
+```
+Com a volatilidade anualizada podemos escrever que o retorno anualizado é de 3,9% com uma volatilidade de 11%.
+Nas próximas seções vamos entender  como comparar ativos com diferentes medidas de risco e retorno.
+
+## Exercícios - Análise de Retornos
+
+1. Obtenha as séries de preços de Petrobrás PN (PETR4.SA), Lojas Renner (LREN3.SA), Ambev (ABEV3.SA), da ETF BOVA11 (BOVA11.SA) e do Índice IBOVESPA (^BVSP), para o período de 2010-01-01 a 2020-01-01 (10 anos de dados). Use a função `getSymbols` passando os símbolos dados. Estas séries possuem valores faltantes `NA`, é necessário fazer o tratamento. Para cada uma destas séries faça:
+    1. Limpeza dos dados faltantes
+    1. Cálculo do log-retorno diário
+    1. Cálculo do retorno esperado anualizado
+    1. Cálculo da volatilidade esperada anualizada
+1. Com as séries dos exercício anterior, faça para cada uma delas:
+    1. Limpeza dos dados faltantes
+    1. Cálculo do log-retorno diário
+    1. Dividir as séries em 5 períodos de 2 anos cada (lembre de usar a indexação dos objetos xts) e calcule as estatísticas: retorno esperado e volatilidade anualizados, para cada sub-período.
+    1. O que você observa? As medidas permanecem constantes ao longo do tempo?
+    1. Fazer a mesma análise para retornos diários simples - as medidas mudam substancialmente? Dica: calcule a volatilidade usando o desvio padrão dos retornos, não é exato, mas é uma boa aproximação.
+1. Obtenha as séries de preços de Banco Itaú PN (ITUB4.SA), VALE (LREN3.SA), da ETF IVVB11 (IVVB11.SA) (replica o índice S&P 500), da ETF PIBB11 (PIBB11.SA) (replica o índice IBrX50), para o período de 2015-01-01 a 2020-01-01 (5 anos de dados). Use a função `getSymbols` passando os símbolos dados. Estas séries possuem valores faltantes `NA`, é necessário fazer o tratamento. Para cada uma destas séries faça:
+    1. Limpeza dos dados faltantes
+    1. Cálculo da série de preços mensais
+    1. Cálculo do log-retorno mensal
+    1. Cálculo do retorno esperado e volatilidade mensal
+    1. Cálculo do retorno esperado e volatilidade anualizados
+1. Repira a análise do segundo exercício utilizando as moedas USD, EUR, CNY, GBP e CHF. Dica: as moedas podem ser obtidas com a função `get_currency` do pacote `rbcb`. Use a função `list_currencies` do `rbcb` para descobrir os paises dessas moedas. Avalie as características das moedas.
+  
