@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 3 Fontes de dados financeiros | Tópicos de Finanças com R</title>
+  <meta name="description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 3 Fontes de dados financeiros | Tópicos de Finanças com R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 3 Fontes de dados financeiros | Tópicos de Finanças com R" />
+  
+  <meta name="twitter:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+<meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="novos-passos-com-r-part2.html"/>
+<link rel="next" href="returns.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tópicos de Finanças com R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Boas-vindas</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#sobre-os-instrutores"><i class="fa fa-check"></i>Sobre os instrutores</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Primeiros passos com R</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-que-é-r-e-por-que-devo-aprendê-lo"><i class="fa fa-check"></i><b>1.1</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#introdução-ao-rstudio"><i class="fa fa-check"></i><b>1.2</b> Introdução ao Rstudio</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#operações-aritméticas"><i class="fa fa-check"></i><b>1.3</b> Operações aritméticas</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#criação-de-variáveis-e-objetos"><i class="fa fa-check"></i><b>1.4</b> Criação de variáveis e objetos</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#estruturas-de-dados"><i class="fa fa-check"></i><b>1.5</b> Estruturas de dados</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#operadores-de-comparação"><i class="fa fa-check"></i><b>1.6</b> Operadores de comparação</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#conversões-de-tipos-de-variáveis"><i class="fa fa-check"></i><b>1.7</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="1.8" data-path="intro.html"><a href="intro.html#vetores"><i class="fa fa-check"></i><b>1.8</b> Vetores</a></li>
+<li class="chapter" data-level="1.9" data-path="intro.html"><a href="intro.html#matrizes"><i class="fa fa-check"></i><b>1.9</b> Matrizes</a></li>
+<li class="chapter" data-level="1.10" data-path="intro.html"><a href="intro.html#data-frames"><i class="fa fa-check"></i><b>1.10</b> Data frames</a></li>
+<li class="chapter" data-level="1.11" data-path="intro.html"><a href="intro.html#funções"><i class="fa fa-check"></i><b>1.11</b> Funções</a></li>
+<li class="chapter" data-level="1.12" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>1.12</b> Pacotes</a></li>
+<li class="chapter" data-level="1.13" data-path="intro.html"><a href="intro.html#exercícios"><i class="fa fa-check"></i><b>1.13</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html"><i class="fa fa-check"></i><b>2</b> Novos passos com R {part2}</a><ul>
+<li class="chapter" data-level="2.1" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#leitura-de-arquivos-csv"><i class="fa fa-check"></i><b>2.1</b> Leitura de arquivos csv</a></li>
+<li class="chapter" data-level="2.2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#gráficos-com-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Gráficos com ggplot2</a></li>
+<li class="chapter" data-level="2.3" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#trabalhando-com-datas"><i class="fa fa-check"></i><b>2.3</b> Trabalhando com datas</a></li>
+<li class="chapter" data-level="2.4" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#parsear-datas-e-horários"><i class="fa fa-check"></i><b>2.4</b> ‘Parsear’ datas e horários</a></li>
+<li class="chapter" data-level="2.5" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#extrair-componentes-de-uma-data"><i class="fa fa-check"></i><b>2.5</b> Extrair componentes de uma data</a></li>
+<li class="chapter" data-level="2.6" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#operações-matemáticas-com-datas"><i class="fa fa-check"></i><b>2.6</b> Operações matemáticas com datas</a></li>
+<li class="chapter" data-level="2.7" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#if-else"><i class="fa fa-check"></i><b>2.7</b> If-else</a></li>
+<li class="chapter" data-level="2.8" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#loops"><i class="fa fa-check"></i><b>2.8</b> Loops</a></li>
+<li class="chapter" data-level="2.9" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#criado-suas-próprias-funções"><i class="fa fa-check"></i><b>2.9</b> Criado suas próprias funções</a></li>
+<li class="chapter" data-level="2.10" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#listas"><i class="fa fa-check"></i><b>2.10</b> Listas</a></li>
+<li class="chapter" data-level="2.11" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#purrrmap"><i class="fa fa-check"></i><b>2.11</b> purrr::map</a></li>
+<li class="chapter" data-level="2.12" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-1"><i class="fa fa-check"></i><b>2.12</b> Case 1</a></li>
+<li class="chapter" data-level="2.13" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-2"><i class="fa fa-check"></i><b>2.13</b> Case 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html"><i class="fa fa-check"></i><b>3</b> Fontes de dados financeiros</a><ul>
+<li class="chapter" data-level="3.1" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>3.1</b> Pacotes</a></li>
+<li class="chapter" data-level="3.2" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#manipulação-de-dados-com-xts-e-quantmod"><i class="fa fa-check"></i><b>3.2</b> Manipulação de dados com xts e quantmod</a></li>
+<li class="chapter" data-level="3.3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#helpers-do-quantmod-cl-op-hi-lo"><i class="fa fa-check"></i><b>3.3</b> Helpers do quantmod: Cl, Op, Hi, Lo</a></li>
+<li class="chapter" data-level="3.4" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#funções-de-gráficos-xts"><i class="fa fa-check"></i><b>3.4</b> Funções de gráficos xts</a></li>
+<li class="chapter" data-level="3.5" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento."><i class="fa fa-check"></i><b>3.5</b> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</a></li>
+<li class="chapter" data-level="3.6" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#case"><i class="fa fa-check"></i><b>3.6</b> Case</a></li>
+</ul></li>
+<li class="part"><span><b>I Aplicações</b></span></li>
+<li class="chapter" data-level="4" data-path="returns.html"><a href="returns.html"><i class="fa fa-check"></i><b>4</b> Análise de Retornos</a><ul>
+<li class="chapter" data-level="4.1" data-path="returns.html"><a href="returns.html#retornos-simples"><i class="fa fa-check"></i><b>4.1</b> Retornos simples</a></li>
+<li class="chapter" data-level="4.2" data-path="returns.html"><a href="returns.html#retornos-logaritimicos"><i class="fa fa-check"></i><b>4.2</b> Retornos logaritimicos</a></li>
+<li class="chapter" data-level="4.3" data-path="returns.html"><a href="returns.html#s:equivalent-returns"><i class="fa fa-check"></i><b>4.3</b> Relação entre os retornos simples e logaritimicos</a></li>
+<li class="chapter" data-level="4.4" data-path="returns.html"><a href="returns.html#porque-formas-diferentes-de-calcular-os-retornos"><i class="fa fa-check"></i><b>4.4</b> Porque formas diferentes de calcular os retornos?</a></li>
+<li class="chapter" data-level="4.5" data-path="returns.html"><a href="returns.html#retorno-esperado"><i class="fa fa-check"></i><b>4.5</b> Retorno esperado</a></li>
+<li class="chapter" data-level="4.6" data-path="returns.html"><a href="returns.html#risco-esperado"><i class="fa fa-check"></i><b>4.6</b> Risco esperado</a></li>
+<li class="chapter" data-level="4.7" data-path="returns.html"><a href="returns.html#exercícios---análise-de-retornos"><i class="fa fa-check"></i><b>4.7</b> Exercícios - Análise de Retornos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análise-de-risco.html"><a href="análise-de-risco.html"><i class="fa fa-check"></i><b>5</b> Análise de Risco</a><ul>
+<li class="chapter" data-level="5.1" data-path="análise-de-risco.html"><a href="análise-de-risco.html#visualização-dos-retornos"><i class="fa fa-check"></i><b>5.1</b> Visualização dos Retornos</a></li>
+<li class="chapter" data-level="5.2" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-estatística-dos-retornos"><i class="fa fa-check"></i><b>5.2</b> Análise Estatística dos Retornos</a></li>
+<li class="chapter" data-level="5.3" data-path="análise-de-risco.html"><a href="análise-de-risco.html#medidas-de-risco"><i class="fa fa-check"></i><b>5.3</b> Medidas de Risco</a></li>
+<li class="chapter" data-level="5.4" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-em-janela-móvel"><i class="fa fa-check"></i><b>5.4</b> Análise em Janela Móvel</a></li>
+<li class="chapter" data-level="5.5" data-path="análise-de-risco.html"><a href="análise-de-risco.html#túnel-de-volatilidade"><i class="fa fa-check"></i><b>5.5</b> Túnel de Volatilidade</a></li>
+<li class="chapter" data-level="5.6" data-path="análise-de-risco.html"><a href="análise-de-risco.html#comparando-ativos"><i class="fa fa-check"></i><b>5.6</b> Comparando Ativos</a></li>
+<li class="chapter" data-level="5.7" data-path="análise-de-risco.html"><a href="análise-de-risco.html#exercícios---análise-de-risco"><i class="fa fa-check"></i><b>5.7</b> Exercícios - Análise de Risco</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html"><i class="fa fa-check"></i><b>6</b> Análise de Carteiras</a><ul>
+<li class="chapter" data-level="6.1" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-de-ativos"><i class="fa fa-check"></i><b>6.1</b> Carteira de ativos</a></li>
+<li class="chapter" data-level="6.2" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-com-2-ativos"><i class="fa fa-check"></i><b>6.2</b> Carteira com 2 ativos</a></li>
+<li class="chapter" data-level="6.3" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#montando-uma-carteira"><i class="fa fa-check"></i><b>6.3</b> Montando uma carteira</a></li>
+<li class="chapter" data-level="6.4" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#rebalanceamento-da-carteira"><i class="fa fa-check"></i><b>6.4</b> Rebalanceamento da carteira</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tópicos de Finanças com R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="fontes-de-dados-financeiros" class="section level1">
+<h1><span class="header-section-number">Capítulo 3</span> Fontes de dados financeiros</h1>
+<div id="pacotes" class="section level2">
+<h2><span class="header-section-number">3.1</span> Pacotes</h2>
+<p>Alguns pacotes do R são ótimas fontes de dados financeiros, sem haver necessidade de buscar em fontes externas.</p>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="fontes-de-dados-financeiros.html#cb260-1"></a><span class="kw">library</span>(quantmod)</span></code></pre></div>
+<pre><code>## Warning: package &#39;quantmod&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Loading required package: xts</code></pre>
+<pre><code>## Warning: package &#39;xts&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## Warning: package &#39;zoo&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre><code>## 
+## Attaching package: &#39;xts&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## Loading required package: TTR</code></pre>
+<pre><code>## Warning: package &#39;TTR&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
+##   method            from
+##   as.zoo.data.frame zoo</code></pre>
+<pre><code>## Version 0.4-0 included new data defaults. See ?getSymbols.</code></pre>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="fontes-de-dados-financeiros.html#cb274-1"></a><span class="kw">library</span>(rbcb)</span>
+<span id="cb274-2"><a href="fontes-de-dados-financeiros.html#cb274-2"></a><span class="kw">library</span>(GetTDData)</span></code></pre></div>
+<pre><code>## Warning: package &#39;GetTDData&#39; was built under R version 4.0.2</code></pre>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="fontes-de-dados-financeiros.html#cb276-1"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<div id="quantmod-séries-de-preços-de-ações-e-índices" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> quantmod: séries de preços de ações e índices</h3>
+<p>O pacote <code>quantmod</code> é uma ótima ferramenta para obter dados de cotações de ações e índices. Funciona muito bem para o mercado brasileiro, apesar de, para alguns ativos, como ETF, existir alguns bugs.</p>
+<p>Possui a função <code>getSymbols()</code>, que utiliza a API do <a href="https://finance.yahoo.com/">Yahoo Finance</a> para obter os dados das cotações. Veja como pode ser usada:</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="fontes-de-dados-financeiros.html#cb277-1"></a>dolar &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;USDBRL=x&quot;</span>, <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<pre><code>## &#39;getSymbols&#39; currently uses auto.assign=TRUE by default, but will
+## use auto.assign=FALSE in 0.5-0. You will still be able to use
+## &#39;loadSymbols&#39; to automatically load data. getOption(&quot;getSymbols.env&quot;)
+## and getOption(&quot;getSymbols.auto.assign&quot;) will still be checked for
+## alternate defaults.
+## 
+## This message is shown once per session and may be disabled by setting 
+## options(&quot;getSymbols.warning4.0&quot;=FALSE). See ?getSymbols for details.</code></pre>
+<pre><code>## Warning: USDBRL=x contains missing values. Some functions will not work if
+## objects contain missing values in the middle of the series. Consider using
+## na.omit(), na.approx(), na.fill(), etc to remove or replace them.</code></pre>
+<p>Na tabela abaixo vemos uma amostra dos dados:</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="fontes-de-dados-financeiros.html#cb280-1"></a><span class="kw">head</span>(dolar)</span></code></pre></div>
+<pre><code>##            USDBRL=X.Open USDBRL=X.High USDBRL=X.Low USDBRL=X.Close
+## 2007-01-01        2.1310        2.1325       2.1310         2.1325
+## 2007-01-02        2.1335        2.1432       2.1295         2.1310
+## 2007-01-03        2.1310        2.1351       2.1278         2.1345
+## 2007-01-04        2.1345        2.1430       2.1345         2.1390
+## 2007-01-05        2.1390        2.1525       2.1345         2.1470
+## 2007-01-08        2.1485        2.1492       2.1425         2.1465
+##            USDBRL=X.Volume USDBRL=X.Adjusted
+## 2007-01-01               0            2.1325
+## 2007-01-02               0            2.1310
+## 2007-01-03               0            2.1345
+## 2007-01-04               0            2.1390
+## 2007-01-05               0            2.1470
+## 2007-01-08               0            2.1465</code></pre>
+<p>A função retornou uma tabela com colunas de preço de abertura, maior e menor preço do dia, preço de fechamento, volume negociado e preço ajustado (por conta de fatores como dividendos, split, etc).</p>
+<p>Na verdade, o objeto acima não é um data.frame. Veja a classe dele:</p>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="fontes-de-dados-financeiros.html#cb282-1"></a><span class="kw">class</span>(dolar)</span></code></pre></div>
+<pre><code>## [1] &quot;xts&quot; &quot;zoo&quot;</code></pre>
+<p>O objeto é das classes <code>xts</code> e <code>zoo</code>, que eram muito usadas no passado. Atualmente, tem-se preferido usar dados na classe data.frame. Contudo, muitos pacotes ainda usam o <code>xts</code> como classe principal, sendo assim importante conhecer essas classes. Voltaremos a falar sobre <code>xts</code> em breve.</p>
+<p>Para obter cotações de uma ação do mercado brasileiro, deve-se usar o sufixo “.SA” com o código da ação. Além disso, pode-se alterar outros parâmetros da função, como a data de início da série, para modificar o objeto de retorno:</p>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="fontes-de-dados-financeiros.html#cb284-1"></a>itausa &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;ITSA4.SA&quot;</span>, </span>
+<span id="cb284-2"><a href="fontes-de-dados-financeiros.html#cb284-2"></a>                     <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb284-3"><a href="fontes-de-dados-financeiros.html#cb284-3"></a>                     <span class="dt">from =</span> <span class="st">&quot;2019-01-01&quot;</span>,</span>
+<span id="cb284-4"><a href="fontes-de-dados-financeiros.html#cb284-4"></a>                     <span class="dt">to =</span> <span class="st">&quot;2020-01-02&quot;</span>, </span>
+<span id="cb284-5"><a href="fontes-de-dados-financeiros.html#cb284-5"></a>                     <span class="dt">periodicity =</span> <span class="st">&quot;monthly&quot;</span>)</span>
+<span id="cb284-6"><a href="fontes-de-dados-financeiros.html#cb284-6"></a>itausa</span></code></pre></div>
+<pre><code>##            ITSA4.SA.Open ITSA4.SA.High ITSA4.SA.Low ITSA4.SA.Close
+## 2019-01-01         12.08         13.71        12.08          13.50
+## 2019-02-01         13.50         13.80        12.33          12.37
+## 2019-03-01         12.40         13.04        11.36          11.98
+## 2019-04-01         12.10         12.15        11.31          11.91
+## 2019-05-01         11.91         12.45        11.02          12.39
+## 2019-06-01         12.42         13.07        11.83          12.89
+## 2019-07-01         13.00         13.49        12.43          12.47
+## 2019-08-01         12.56         13.16        11.67          12.29
+## 2019-09-01         12.27         13.44        11.90          13.18
+## 2019-10-01         13.20         13.99        12.11          13.71
+## 2019-11-01         13.75         14.25        13.00          13.27
+## 2019-12-01         13.31         14.26        13.26          14.09
+## 2020-01-01         14.09         14.38        12.72          12.86
+##            ITSA4.SA.Volume ITSA4.SA.Adjusted
+## 2019-01-01       601458600          12.27471
+## 2019-02-01       717154000          11.24727
+## 2019-03-01       455097200          11.26931
+## 2019-04-01       371836700          11.22160
+## 2019-05-01       479823200          11.67386
+## 2019-06-01       498662200          12.14496
+## 2019-07-01       358912200          11.76823
+## 2019-08-01       533774500          11.59836
+## 2019-09-01       422719300          12.77819
+## 2019-10-01       391134100          13.31370
+## 2019-11-01       334994100          12.88642
+## 2019-12-01       338858800          13.68272
+## 2020-01-01       407079600          12.51259</code></pre>
+</div>
+<div id="rbcb-séries-de-preços-de-moedas-mostrar-helpers-bid-e-ask" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> rbcb: séries de preços de moedas: Mostrar helpers bid e ask</h3>
+<p>O pacote <code>rbcb</code> foi criado para permitir que o R interaja com a <a href="https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries">API do Banco Central do Brasil</a>, o Sistema Gerenciador de Séries Temporais (SGS). Para saber quais séries temporais podem ser obtidas com o pacote, recomenda-se ler a documentação do SGS.</p>
+<p>Vamos aos principais usos do pacote:</p>
+<ul>
+<li><strong>Função <code>get_series()</code></strong></li>
+</ul>
+<p>Essa função é usada para baixar dados de uma série temporal. É necessário informar o código da série temporal na API do Bacen. Caso seja desconhecida, você pode usar a função <code>search_series()</code>:</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="fontes-de-dados-financeiros.html#cb286-1"></a>rbcb<span class="op">::</span><span class="kw">search_series</span>(<span class="st">&quot;dólar diário&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Dataset: Taxa de câmbio - Livre - Dólar americano (venda) - diário 
+## Code: 1 
+## Conceito: Para efeito das séries temporais, as taxas de câmbio foram agrupadas em dois módulos: I - Taxas administradas ou taxas livres, abrangendo todo o período, desde 1899 e,... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/1-taxa-de-cambio---livre---dolar-americano-venda---diario 
+## 
+## Dataset: Taxas de Câmbio - todos os boletins diários 
+## Code: NA 
+## Conceito:
+## Séries de boletins diários de taxas de câmbio disponíveis desde 2 de janeiro de 2002, para o euro, e desde 28 de novembro de 1984, para as demais moedas. Para o dólar,... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/taxas-de-cambio-todos-os-boletins-diarios 
+## 
+## Dataset: Dólar comercial (venda e compra) - cotações diárias 
+## Code: NA 
+## Disponível desde 28.11.1984, refere-se às taxas administradas até março de 1990 e às taxas livres a partir de então (Resolução 1690, de 18.3.1990). As taxas administradas são... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/dolar-americano-usd-todos-os-boletins-diarios 
+## 
+## 3 results 
+## Pagination 1 / 1</code></pre>
+<p>Vemos, portanto, que o código da série temporal do dólar é 1. Portanto, a usamos como input de <code>get_series()</code>:</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="fontes-de-dados-financeiros.html#cb288-1"></a>x &lt;-<span class="st"> </span>rbcb<span class="op">::</span><span class="kw">get_series</span>(<span class="dt">code =</span> <span class="kw">c</span>(<span class="dt">dolar =</span> <span class="dv">1</span>))</span>
+<span id="cb288-2"><a href="fontes-de-dados-financeiros.html#cb288-2"></a><span class="kw">class</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="fontes-de-dados-financeiros.html#cb290-1"></a><span class="kw">tail</span>(x)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 2
+##   date       dolar
+##   &lt;date&gt;     &lt;dbl&gt;
+## 1 2020-11-12  5.41
+## 2 2020-11-13  5.49
+## 3 2020-11-16  5.42
+## 4 2020-11-17  5.40
+## 5 2020-11-18  5.29
+## 6 2020-11-19  5.33</code></pre>
+<p>Outro item interessante que pode ser baixado é o IPCA. Além disso, outros paràmetros da função podem ser manipulados:</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="fontes-de-dados-financeiros.html#cb292-1"></a>df_ipca &lt;-<span class="st"> </span><span class="kw">get_series</span>(<span class="dt">code =</span> <span class="kw">c</span>(<span class="dt">ipca =</span> <span class="dv">433</span>),</span>
+<span id="cb292-2"><a href="fontes-de-dados-financeiros.html#cb292-2"></a>                      <span class="dt">start_date =</span> <span class="st">&quot;2019-06-01&quot;</span>,</span>
+<span id="cb292-3"><a href="fontes-de-dados-financeiros.html#cb292-3"></a>                      <span class="dt">end_date =</span> <span class="st">&quot;2019-12-01&quot;</span>)</span>
+<span id="cb292-4"><a href="fontes-de-dados-financeiros.html#cb292-4"></a>df_ipca</span></code></pre></div>
+<pre><code>## # A tibble: 7 x 2
+##   date        ipca
+##   &lt;date&gt;     &lt;dbl&gt;
+## 1 2019-06-01  0.01
+## 2 2019-07-01  0.19
+## 3 2019-08-01  0.11
+## 4 2019-09-01 -0.04
+## 5 2019-10-01  0.1 
+## 6 2019-11-01  0.51
+## 7 2019-12-01  1.15</code></pre>
+<p>Também é possível baixar mais de uma série temporal em apenas uma chamada da função:</p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="fontes-de-dados-financeiros.html#cb294-1"></a>inflacao &lt;-<span class="st"> </span><span class="kw">get_series</span>(<span class="kw">c</span>(<span class="dt">IPCA =</span> <span class="dv">433</span>, <span class="dt">IGPM =</span> <span class="dv">189</span>), <span class="dt">last =</span> <span class="dv">12</span>, <span class="dt">as =</span> <span class="st">&quot;tibble&quot;</span>)</span></code></pre></div>
+<p>Nesse caso, contudo, o objeto retornado é uma lista de data frames:</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="fontes-de-dados-financeiros.html#cb295-1"></a><span class="kw">class</span>(inflacao)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="fontes-de-dados-financeiros.html#cb297-1"></a><span class="kw">map</span>(inflacao, class)</span></code></pre></div>
+<pre><code>## $IPCA
+## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
+## 
+## $IGPM
+## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="fontes-de-dados-financeiros.html#cb299-1"></a><span class="kw">map</span>(inflacao, head)</span></code></pre></div>
+<pre><code>## $IPCA
+## # A tibble: 6 x 2
+##   date        IPCA
+##   &lt;date&gt;     &lt;dbl&gt;
+## 1 2019-11-01  0.51
+## 2 2019-12-01  1.15
+## 3 2020-01-01  0.21
+## 4 2020-02-01  0.25
+## 5 2020-03-01  0.07
+## 6 2020-04-01 -0.31
+## 
+## $IGPM
+## # A tibble: 6 x 2
+##   date        IGPM
+##   &lt;date&gt;     &lt;dbl&gt;
+## 1 2019-11-01  0.3 
+## 2 2019-12-01  2.09
+## 3 2020-01-01  0.48
+## 4 2020-02-01 -0.04
+## 5 2020-03-01  1.24
+## 6 2020-04-01  0.8</code></pre>
+<p>Caso você deseje que o objeto de output acima seja um tibble, pode-se usar a função customizada abaixo:</p>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="fontes-de-dados-financeiros.html#cb301-1"></a>df_inflacao &lt;-<span class="st"> </span><span class="kw">reduce</span>(inflacao, left_join, <span class="dt">by =</span> <span class="st">&quot;date&quot;</span>)</span>
+<span id="cb301-2"><a href="fontes-de-dados-financeiros.html#cb301-2"></a><span class="kw">head</span>(df_inflacao)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   date        IPCA  IGPM
+##   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;
+## 1 2019-11-01  0.51  0.3 
+## 2 2019-12-01  1.15  2.09
+## 3 2020-01-01  0.21  0.48
+## 4 2020-02-01  0.25 -0.04
+## 5 2020-03-01  0.07  1.24
+## 6 2020-04-01 -0.31  0.8</code></pre>
+</div>
+<div id="gettddata-séries-de-preços-do-tesouro-direto" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> GetTDData: séries de preços do tesouro direto</h3>
+<p>O pacote <code>GetTDData</code> facilita a obtenção de dados históricos do Tesouro Direto, que disponibiliza, em <a href="https://www.tesourotransparente.gov.br/publicacoes/balanco-do-tesouro-direto-btd/2020/8">seu site</a>, arquivos xlsx de seus ativos de renda fixa.</p>
+<p>Os ativos que podem ser baixados com o pacote são os dos códigos LFT, LTN, NTN-C, NTN-B, NTN-B Principal e NTN-F.</p>
+<p>No exemplo abaixo, obtemos</p>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="fontes-de-dados-financeiros.html#cb303-1"></a>ativo &lt;-<span class="st"> &quot;LFT&quot;</span></span>
+<span id="cb303-2"><a href="fontes-de-dados-financeiros.html#cb303-2"></a><span class="co"># baixar arquivo</span></span>
+<span id="cb303-3"><a href="fontes-de-dados-financeiros.html#cb303-3"></a>x &lt;-<span class="st"> </span><span class="kw">download.TD.data</span>(ativo)</span></code></pre></div>
+<pre><code>## 
+## Downloading html page (attempt = 1|10)
+## Downloading file TD Files/LFT_2020.xls (1-19) Downloading...
+## Downloading file TD Files/LFT_2019.xls (2-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2018.xls (3-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2017.xls (4-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2016.xls (5-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2015.xls (6-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2014.xls (7-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2013.xls (8-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2012.xls (9-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2011.xls (10-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2010.xls (11-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2009.xls (12-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2008.xls (13-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2007.xls (14-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2006.xls (15-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2005.xls (16-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2004.xls (17-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2003.xls (18-19) Found file in folder, skipping it.
+## Downloading file TD Files/LFT_2002.xls (19-19) Found file in folder, skipping it.</code></pre>
+<p>Veja que o código nos avisa que foi criada uma pasta chamada <code>TD Files</code> onde foram baixados os arquivos do ativo.</p>
+<p>Para importar esses arquivos para o R, usamos uma outra função do pacote:</p>
+<pre><code>## 
+## Reading xls data and saving to data.frame
+##  Reading File = TD Files/LFT_2002.xls
+##     Reading Sheet LFT 210104
+##     Reading Sheet LFT 160205
+##     Reading Sheet LFT 180106
+##     Reading Sheet LFT 170107
+##  Reading File = TD Files/LFT_2003.xls
+##     Reading Sheet LFT 210104
+##     Reading Sheet LFT 160205
+##     Reading Sheet LFT 180106
+##     Reading Sheet LFT 170107
+##     Reading Sheet LFT 180608
+##  Reading File = TD Files/LFT_2004.xls
+##     Reading Sheet LFT 210104
+##     Reading Sheet LFT 160205
+##     Reading Sheet LFT 180106
+##     Reading Sheet LFT 170107
+##     Reading Sheet LFT 180608
+##     Reading Sheet LFT 180309
+##  Reading File = TD Files/LFT_2005.xls
+##     Reading Sheet LFT 160205
+##     Reading Sheet LFT 180106
+##     Reading Sheet LFT 170107
+##     Reading Sheet LFT 180608
+##     Reading Sheet LFT 180309
+##     Reading Sheet LFT 170310
+##  Reading File = TD Files/LFT_2006.xls
+##     Reading Sheet LFT 180106
+##     Reading Sheet LFT 170107
+##     Reading Sheet LFT 180608
+##     Reading Sheet LFT 180309
+##     Reading Sheet LFT 170310
+##     Reading Sheet LFT 160311
+##     Reading Sheet LFT 070312
+##  Reading File = TD Files/LFT_2007.xls
+##     Reading Sheet LFT 170107
+##     Reading Sheet LFT 180608
+##     Reading Sheet LFT 180309
+##     Reading Sheet LFT 170310
+##     Reading Sheet LFT 160311
+##     Reading Sheet LFT 070312
+##     Reading Sheet LFT 070313
+##  Reading File = TD Files/LFT_2008.xls
+##     Reading Sheet LFT 180608
+##     Reading Sheet LFT 180309
+##     Reading Sheet LFT 170310
+##     Reading Sheet LFT 160311
+##     Reading Sheet LFT 070312
+##     Reading Sheet LFT 070313
+##     Reading Sheet LFT 070314
+##  Reading File = TD Files/LFT_2009.xls
+##     Reading Sheet LFT 180309
+##     Reading Sheet LFT 170310
+##     Reading Sheet LFT 160311
+##     Reading Sheet LFT 070312
+##     Reading Sheet LFT 070313
+##     Reading Sheet LFT 070314
+##  Reading File = TD Files/LFT_2010.xls
+##     Reading Sheet LFT 170310
+##     Reading Sheet LFT 160311
+##     Reading Sheet LFT 070312
+##     Reading Sheet LFT 070313
+##     Reading Sheet LFT 070314
+##     Reading Sheet LFT 070315
+##  Reading File = TD Files/LFT_2011.xls
+##     Reading Sheet LFT 160311
+##     Reading Sheet LFT 070312
+##     Reading Sheet LFT 070313
+##     Reading Sheet LFT 070314
+##     Reading Sheet LFT 070315
+##     Reading Sheet LFT 070317
+##  Reading File = TD Files/LFT_2012.xls
+##     Reading Sheet LFT 070312
+##     Reading Sheet LFT 070313
+##     Reading Sheet LFT 070314
+##     Reading Sheet LFT 070315
+##     Reading Sheet LFT 070317
+##  Reading File = TD Files/LFT_2013.xls
+##     Reading Sheet LFT 070313
+##     Reading Sheet LFT 070314
+##     Reading Sheet LFT 070315
+##     Reading Sheet LFT 070317
+##  Reading File = TD Files/LFT_2014.xls
+##     Reading Sheet LFT 070314
+##     Reading Sheet LFT 070315
+##     Reading Sheet LFT 070317
+##  Reading File = TD Files/LFT_2015.xls
+##     Reading Sheet LFT 070315
+##     Reading Sheet LFT 070317
+##     Reading Sheet LFT 010321
+##  Reading File = TD Files/LFT_2016.xls
+##     Reading Sheet LFT 070317
+##     Reading Sheet LFT 010321
+##  Reading File = TD Files/LFT_2017.xls
+##     Reading Sheet LFT 070317
+##     Reading Sheet LFT 010321
+##     Reading Sheet LFT 010323
+##  Reading File = TD Files/LFT_2018.xls
+##     Reading Sheet LFT 010321
+##     Reading Sheet LFT 010323
+##  Reading File = TD Files/LFT_2019.xls
+##     Reading Sheet LFT 010321
+##     Reading Sheet LFT 010323
+##     Reading Sheet LFT 010325
+##  Reading File = TD Files/LFT_2020.xls
+##     Reading Sheet LFT 010321
+##     Reading Sheet LFT 010323
+##     Reading Sheet LFT 010325</code></pre>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="fontes-de-dados-financeiros.html#cb306-1"></a><span class="kw">class</span>(lft)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="fontes-de-dados-financeiros.html#cb308-1"></a><span class="kw">head</span>(lft)</span></code></pre></div>
+<pre><code>##     ref.date yield.bid price.bid asset.code matur.date
+## 4 2002-01-07    0.0024   1263.01 LFT 210104 2004-01-21
+## 5 2002-01-08    0.0024   1263.90 LFT 210104 2004-01-21
+## 6 2002-01-09    0.0024   1264.79 LFT 210104 2004-01-21
+## 7 2002-01-10    0.0024   1265.67 LFT 210104 2004-01-21
+## 8 2002-01-11    0.0023   1266.82 LFT 210104 2004-01-21
+## 9 2002-01-14    0.0023   1267.71 LFT 210104 2004-01-21</code></pre>
+</div>
+</div>
+<div id="manipulação-de-dados-com-xts-e-quantmod" class="section level2">
+<h2><span class="header-section-number">3.2</span> Manipulação de dados com xts e quantmod</h2>
+<p>Conforme foi mencionado, objetos retornados pelo pacote <code>quantmod</code> (e por outros importantes pacotes R para Finanças) são da classe <code>xts</code>, por isso é importante conhecer alguns principios básicos de manipulação de dados com o pacote <code>xts</code>.</p>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="fontes-de-dados-financeiros.html#cb310-1"></a><span class="kw">library</span>(xts)</span></code></pre></div>
+<p>Vamos voltar a usar um objeto dessa classe do pacote <code>quantmod</code>:</p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="fontes-de-dados-financeiros.html#cb311-1"></a>itausa &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;ITSA4.SA&quot;</span>, </span>
+<span id="cb311-2"><a href="fontes-de-dados-financeiros.html#cb311-2"></a>                     <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb311-3"><a href="fontes-de-dados-financeiros.html#cb311-3"></a>                     <span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>,</span>
+<span id="cb311-4"><a href="fontes-de-dados-financeiros.html#cb311-4"></a>                     <span class="dt">to =</span> <span class="st">&quot;2020-01-01&quot;</span>, </span>
+<span id="cb311-5"><a href="fontes-de-dados-financeiros.html#cb311-5"></a>                     <span class="dt">periodicity =</span> <span class="st">&quot;daily&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: ITSA4.SA contains missing values. Some functions will not work if
+## objects contain missing values in the middle of the series. Consider using
+## na.omit(), na.approx(), na.fill(), etc to remove or replace them.</code></pre>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="fontes-de-dados-financeiros.html#cb313-1"></a><span class="kw">head</span>(itausa)</span></code></pre></div>
+<pre><code>##            ITSA4.SA.Open ITSA4.SA.High ITSA4.SA.Low ITSA4.SA.Close
+## 2018-01-02       9.88182       10.0273      9.86364        10.0273
+## 2018-01-03       9.98182       10.1818      9.94545        10.1455
+## 2018-01-04      10.17270       10.3636     10.15450        10.3364
+## 2018-01-05      10.33640       10.3545     10.22730        10.3545
+## 2018-01-08      10.30000       10.3455     10.25450        10.3455
+## 2018-01-09      10.35450       10.3545     10.17270        10.1818
+##            ITSA4.SA.Volume ITSA4.SA.Adjusted
+## 2018-01-02        14040950          8.456573
+## 2018-01-03        13498870          8.556257
+## 2018-01-04        14303520          8.717254
+## 2018-01-05        10845010          8.732521
+## 2018-01-08        11024750          8.724931
+## 2018-01-09        24859010          8.586872</code></pre>
+<p>Um objeto <code>xts</code> possui dois principais elementos:</p>
+<ul>
+<li><em>coredata</em>: o vetor ou matriz referente aos dados.</li>
+</ul>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="fontes-de-dados-financeiros.html#cb315-1"></a><span class="kw">head</span>(<span class="kw">coredata</span>(itausa))</span></code></pre></div>
+<pre><code>##      ITSA4.SA.Open ITSA4.SA.High ITSA4.SA.Low ITSA4.SA.Close ITSA4.SA.Volume
+## [1,]       9.88182       10.0273      9.86364        10.0273        14040950
+## [2,]       9.98182       10.1818      9.94545        10.1455        13498870
+## [3,]      10.17270       10.3636     10.15450        10.3364        14303520
+## [4,]      10.33640       10.3545     10.22730        10.3545        10845010
+## [5,]      10.30000       10.3455     10.25450        10.3455        11024750
+## [6,]      10.35450       10.3545     10.17270        10.1818        24859010
+##      ITSA4.SA.Adjusted
+## [1,]          8.456573
+## [2,]          8.556257
+## [3,]          8.717254
+## [4,]          8.732521
+## [5,]          8.724931
+## [6,]          8.586872</code></pre>
+<ul>
+<li><em>index</em>: vetor referente às datas</li>
+</ul>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="fontes-de-dados-financeiros.html#cb317-1"></a><span class="kw">head</span>(<span class="kw">index</span>(itausa))</span></code></pre></div>
+<pre><code>## [1] &quot;2018-01-02&quot; &quot;2018-01-03&quot; &quot;2018-01-04&quot; &quot;2018-01-05&quot; &quot;2018-01-08&quot;
+## [6] &quot;2018-01-09&quot;</code></pre>
+<div id="funções-úteis-para-objetos-xts" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Funções úteis para objetos <code>xts</code></h3>
+<p>Para estimar a periocidade:</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="fontes-de-dados-financeiros.html#cb319-1"></a><span class="kw">periodicity</span>(itausa)</span></code></pre></div>
+<pre><code>## Daily periodicity from 2018-01-02 to 2019-12-30</code></pre>
+<p>Converter a periodicidade:</p>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="fontes-de-dados-financeiros.html#cb321-1"></a><span class="co"># para anual</span></span>
+<span id="cb321-2"><a href="fontes-de-dados-financeiros.html#cb321-2"></a><span class="kw">to.yearly</span>(itausa)</span></code></pre></div>
+<pre><code>## Warning in to.period(x, &quot;years&quot;, name = name, ...): missing values removed from
+## data</code></pre>
+<pre><code>##            itausa.Open itausa.High itausa.Low itausa.Close itausa.Volume
+## 2018-12-28     9.88182     13.1182       8.51        12.08    5109065710
+## 2019-12-30    12.11000     14.2600      11.02        14.09    5488006700
+##            itausa.Adjusted
+## 2018-12-28        10.98359
+## 2019-12-30        13.70937</code></pre>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="fontes-de-dados-financeiros.html#cb324-1"></a><span class="co"># para mensal</span></span>
+<span id="cb324-2"><a href="fontes-de-dados-financeiros.html#cb324-2"></a><span class="kw">head</span>(<span class="kw">to.monthly</span>(itausa))</span></code></pre></div>
+<pre><code>## Warning in to.period(x, &quot;months&quot;, indexAt = indexAt, name = name, ...): missing
+## values removed from data</code></pre>
+<pre><code>##          itausa.Open itausa.High itausa.Low itausa.Close itausa.Volume
+## jan 2018     9.88182     12.2909    9.86364      12.0455     374224180
+## fev 2018    12.04550     13.1182   11.30000      11.9273     427770310
+## mar 2018    11.97270     12.7182   11.90000      12.5364     302971900
+## abr 2018    12.54550     12.6909   11.71820      12.3727     257677200
+## mai 2018    12.29090     12.2909   10.06360      10.2091     525804620
+## jun 2018    10.50000     10.6800    8.51000       9.1800     578588000
+##          itausa.Adjusted
+## jan 2018       10.158634
+## fev 2018       10.549949
+## mar 2018       11.101403
+## abr 2018       10.956441
+## mai 2018        9.040500
+## jun 2018        8.140071</code></pre>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="fontes-de-dados-financeiros.html#cb327-1"></a><span class="co"># para trimestral</span></span>
+<span id="cb327-2"><a href="fontes-de-dados-financeiros.html#cb327-2"></a><span class="kw">head</span>(<span class="kw">to.quarterly</span>(itausa))</span></code></pre></div>
+<pre><code>## Warning in to.period(x, &quot;quarters&quot;, indexAt = indexAt, name = name, ...):
+## missing values removed from data</code></pre>
+<pre><code>##         itausa.Open itausa.High itausa.Low itausa.Close itausa.Volume
+## 2018 Q1     9.88182     13.1182    9.86364      12.5364    1104966390
+## 2018 Q2    12.54550     12.6909    8.51000       9.1800    1362069820
+## 2018 Q3     9.16000     11.0500    9.13000      10.1000    1219208900
+## 2018 Q4    10.11000     12.6300    9.92000      12.0800    1422820600
+## 2019 Q1    12.11000     13.8000   11.36000      11.9800    1757291600
+## 2019 Q2    12.10000     13.0700   11.02000      12.8900    1350322100
+##         itausa.Adjusted
+## 2018 Q1       11.101403
+## 2018 Q2        8.140071
+## 2018 Q3        9.162148
+## 2018 Q4       10.983588
+## 2019 Q1       11.287557
+## 2019 Q2       12.164594</code></pre>
+<p>Para converter um <code>xts</code> para data.frame:</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="fontes-de-dados-financeiros.html#cb330-1"></a><span class="kw">head</span>(<span class="kw">fortify.zoo</span>(itausa))</span></code></pre></div>
+<pre><code>##        Index ITSA4.SA.Open ITSA4.SA.High ITSA4.SA.Low ITSA4.SA.Close
+## 1 2018-01-02       9.88182       10.0273      9.86364        10.0273
+## 2 2018-01-03       9.98182       10.1818      9.94545        10.1455
+## 3 2018-01-04      10.17270       10.3636     10.15450        10.3364
+## 4 2018-01-05      10.33640       10.3545     10.22730        10.3545
+## 5 2018-01-08      10.30000       10.3455     10.25450        10.3455
+## 6 2018-01-09      10.35450       10.3545     10.17270        10.1818
+##   ITSA4.SA.Volume ITSA4.SA.Adjusted
+## 1        14040950          8.456573
+## 2        13498870          8.556257
+## 3        14303520          8.717254
+## 4        10845010          8.732521
+## 5        11024750          8.724931
+## 6        24859010          8.586872</code></pre>
+</div>
+</div>
+<div id="helpers-do-quantmod-cl-op-hi-lo" class="section level2">
+<h2><span class="header-section-number">3.3</span> Helpers do quantmod: Cl, Op, Hi, Lo</h2>
+<p>O pacote <code>quantmod</code> possui funções para auxiliar a extração de dados de objetos retornados por <code>getSymbols()</code>:</p>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="fontes-de-dados-financeiros.html#cb332-1"></a><span class="co"># Obter apenas a serie de fechamento</span></span>
+<span id="cb332-2"><a href="fontes-de-dados-financeiros.html#cb332-2"></a><span class="kw">head</span>(<span class="kw">Cl</span>(itausa))</span></code></pre></div>
+<pre><code>##            ITSA4.SA.Close
+## 2018-01-02        10.0273
+## 2018-01-03        10.1455
+## 2018-01-04        10.3364
+## 2018-01-05        10.3545
+## 2018-01-08        10.3455
+## 2018-01-09        10.1818</code></pre>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="fontes-de-dados-financeiros.html#cb334-1"></a><span class="co"># serie de abertura</span></span>
+<span id="cb334-2"><a href="fontes-de-dados-financeiros.html#cb334-2"></a><span class="kw">head</span>(<span class="kw">Op</span>(itausa))</span></code></pre></div>
+<pre><code>##            ITSA4.SA.Open
+## 2018-01-02       9.88182
+## 2018-01-03       9.98182
+## 2018-01-04      10.17270
+## 2018-01-05      10.33640
+## 2018-01-08      10.30000
+## 2018-01-09      10.35450</code></pre>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="fontes-de-dados-financeiros.html#cb336-1"></a><span class="co"># serie do maior preço do período</span></span>
+<span id="cb336-2"><a href="fontes-de-dados-financeiros.html#cb336-2"></a><span class="kw">head</span>(<span class="kw">Hi</span>(itausa))</span></code></pre></div>
+<pre><code>##            ITSA4.SA.High
+## 2018-01-02       10.0273
+## 2018-01-03       10.1818
+## 2018-01-04       10.3636
+## 2018-01-05       10.3545
+## 2018-01-08       10.3455
+## 2018-01-09       10.3545</code></pre>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="fontes-de-dados-financeiros.html#cb338-1"></a><span class="co"># serie de preços ajustados</span></span>
+<span id="cb338-2"><a href="fontes-de-dados-financeiros.html#cb338-2"></a><span class="kw">head</span>(<span class="kw">Ad</span>(itausa))</span></code></pre></div>
+<pre><code>##            ITSA4.SA.Adjusted
+## 2018-01-02          8.456573
+## 2018-01-03          8.556257
+## 2018-01-04          8.717254
+## 2018-01-05          8.732521
+## 2018-01-08          8.724931
+## 2018-01-09          8.586872</code></pre>
+</div>
+<div id="funções-de-gráficos-xts" class="section level2">
+<h2><span class="header-section-number">3.4</span> Funções de gráficos xts</h2>
+<p>Plotar um objeto xts é muito simples, basta usar a função <code>plot()</code>:</p>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="fontes-de-dados-financeiros.html#cb340-1"></a><span class="kw">plot</span>(itausa)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>O pacote <code>quantmod</code> possui outras funções interessantes para produzir gráficos de ativos financeiros:</p>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="fontes-de-dados-financeiros.html#cb341-1"></a><span class="kw">chartSeries</span>(itausa)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="fontes-de-dados-financeiros.html#cb342-1"></a><span class="co"># candleChart dos 30 últitmos dias de itausa:</span></span>
+<span id="cb342-2"><a href="fontes-de-dados-financeiros.html#cb342-2"></a><span class="kw">candleChart</span>(<span class="kw">tail</span>(itausa, <span class="dv">30</span>), <span class="dt">type =</span> <span class="st">&quot;candlesticks&quot;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p>Também é possível fazer rapidamente gráficos de indicadores de análise técnica:</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="fontes-de-dados-financeiros.html#cb343-1"></a><span class="kw">chartSeries</span>(itausa)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="fontes-de-dados-financeiros.html#cb344-1"></a><span class="kw">addSMA</span>()</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-49-2.png" width="672" /></p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="fontes-de-dados-financeiros.html#cb345-1"></a><span class="kw">addMACD</span>()</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-49-3.png" width="672" /></p>
+</div>
+<div id="juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento." class="section level2">
+<h2><span class="header-section-number">3.5</span> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</h2>
+<p>A função <code>merge()</code> é usada para juntar dois objetos <code>xts</code> em um só:</p>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="fontes-de-dados-financeiros.html#cb346-1"></a>petr3 &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;PETR3.SA&quot;</span>, </span>
+<span id="cb346-2"><a href="fontes-de-dados-financeiros.html#cb346-2"></a>                     <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb346-3"><a href="fontes-de-dados-financeiros.html#cb346-3"></a>                     <span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>,</span>
+<span id="cb346-4"><a href="fontes-de-dados-financeiros.html#cb346-4"></a>                     <span class="dt">to =</span> <span class="st">&quot;2020-01-01&quot;</span>, </span>
+<span id="cb346-5"><a href="fontes-de-dados-financeiros.html#cb346-5"></a>                     <span class="dt">periodicity =</span> <span class="st">&quot;monthly&quot;</span>)</span>
+<span id="cb346-6"><a href="fontes-de-dados-financeiros.html#cb346-6"></a>petr3 &lt;-<span class="st"> </span><span class="kw">Ad</span>(petr3)</span>
+<span id="cb346-7"><a href="fontes-de-dados-financeiros.html#cb346-7"></a></span>
+<span id="cb346-8"><a href="fontes-de-dados-financeiros.html#cb346-8"></a>bbdc &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;BBDC4.SA&quot;</span>, </span>
+<span id="cb346-9"><a href="fontes-de-dados-financeiros.html#cb346-9"></a>                     <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb346-10"><a href="fontes-de-dados-financeiros.html#cb346-10"></a>                     <span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>,</span>
+<span id="cb346-11"><a href="fontes-de-dados-financeiros.html#cb346-11"></a>                     <span class="dt">to =</span> <span class="st">&quot;2020-01-01&quot;</span>, </span>
+<span id="cb346-12"><a href="fontes-de-dados-financeiros.html#cb346-12"></a>                     <span class="dt">periodicity =</span> <span class="st">&quot;monthly&quot;</span>)</span>
+<span id="cb346-13"><a href="fontes-de-dados-financeiros.html#cb346-13"></a>bbdc &lt;-<span class="st"> </span><span class="kw">Ad</span>(bbdc)</span>
+<span id="cb346-14"><a href="fontes-de-dados-financeiros.html#cb346-14"></a></span>
+<span id="cb346-15"><a href="fontes-de-dados-financeiros.html#cb346-15"></a>ibov &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;^BVSP&quot;</span>, </span>
+<span id="cb346-16"><a href="fontes-de-dados-financeiros.html#cb346-16"></a>                     <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>, </span>
+<span id="cb346-17"><a href="fontes-de-dados-financeiros.html#cb346-17"></a>                     <span class="dt">from =</span> <span class="st">&quot;2018-01-01&quot;</span>,</span>
+<span id="cb346-18"><a href="fontes-de-dados-financeiros.html#cb346-18"></a>                     <span class="dt">to =</span> <span class="st">&quot;2020-01-01&quot;</span>, </span>
+<span id="cb346-19"><a href="fontes-de-dados-financeiros.html#cb346-19"></a>                     <span class="dt">periodicity =</span> <span class="st">&quot;monthly&quot;</span>)</span>
+<span id="cb346-20"><a href="fontes-de-dados-financeiros.html#cb346-20"></a>ibov &lt;-<span class="st"> </span><span class="kw">Ad</span>(ibov)</span></code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="fontes-de-dados-financeiros.html#cb347-1"></a>portfolio &lt;-<span class="st"> </span><span class="kw">merge</span>(petr3, bbdc, ibov)</span>
+<span id="cb347-2"><a href="fontes-de-dados-financeiros.html#cb347-2"></a><span class="kw">head</span>(portfolio)</span></code></pre></div>
+<pre><code>##            PETR3.SA.Adjusted BBDC4.SA.Adjusted BVSP.Adjusted
+## 2018-01-01          16.25078          31.02850         84913
+## 2018-02-01          21.70834          26.35257         85481
+## 2018-03-01          21.90526          26.86041         85366
+## 2018-04-01          23.09617          25.87021         86115
+## 2018-05-01          20.80812          21.83974         76754
+## 2018-06-01          18.24192          20.15056         72763</code></pre>
+</div>
+<div id="case" class="section level2">
+<h2><span class="header-section-number">3.6</span> Case</h2>
+<p>Calcular o IBOVESPA em Dólar</p>
+<p>Dicas : Obter ^BVSP com quantmod, obter USDBRL com rbcb usando preço de venda (Ask) e fazer a conversão do IBOVESPA em dólar.</p>
+
+</div>
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="novos-passos-com-r-part2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="returns.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["curso_r_financas.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

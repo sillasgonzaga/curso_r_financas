@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 2 Novos passos com R {part2} | Tópicos de Finanças com R</title>
+  <meta name="description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 2 Novos passos com R {part2} | Tópicos de Finanças com R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 2 Novos passos com R {part2} | Tópicos de Finanças com R" />
+  
+  <meta name="twitter:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+<meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="intro.html"/>
+<link rel="next" href="fontes-de-dados-financeiros.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tópicos de Finanças com R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Boas-vindas</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#sobre-os-instrutores"><i class="fa fa-check"></i>Sobre os instrutores</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Primeiros passos com R</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-que-é-r-e-por-que-devo-aprendê-lo"><i class="fa fa-check"></i><b>1.1</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#introdução-ao-rstudio"><i class="fa fa-check"></i><b>1.2</b> Introdução ao Rstudio</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#operações-aritméticas"><i class="fa fa-check"></i><b>1.3</b> Operações aritméticas</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#criação-de-variáveis-e-objetos"><i class="fa fa-check"></i><b>1.4</b> Criação de variáveis e objetos</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#estruturas-de-dados"><i class="fa fa-check"></i><b>1.5</b> Estruturas de dados</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#operadores-de-comparação"><i class="fa fa-check"></i><b>1.6</b> Operadores de comparação</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#conversões-de-tipos-de-variáveis"><i class="fa fa-check"></i><b>1.7</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="1.8" data-path="intro.html"><a href="intro.html#vetores"><i class="fa fa-check"></i><b>1.8</b> Vetores</a></li>
+<li class="chapter" data-level="1.9" data-path="intro.html"><a href="intro.html#matrizes"><i class="fa fa-check"></i><b>1.9</b> Matrizes</a></li>
+<li class="chapter" data-level="1.10" data-path="intro.html"><a href="intro.html#data-frames"><i class="fa fa-check"></i><b>1.10</b> Data frames</a></li>
+<li class="chapter" data-level="1.11" data-path="intro.html"><a href="intro.html#funções"><i class="fa fa-check"></i><b>1.11</b> Funções</a></li>
+<li class="chapter" data-level="1.12" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>1.12</b> Pacotes</a></li>
+<li class="chapter" data-level="1.13" data-path="intro.html"><a href="intro.html#exercícios"><i class="fa fa-check"></i><b>1.13</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html"><i class="fa fa-check"></i><b>2</b> Novos passos com R {part2}</a><ul>
+<li class="chapter" data-level="2.1" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#leitura-de-arquivos-csv"><i class="fa fa-check"></i><b>2.1</b> Leitura de arquivos csv</a></li>
+<li class="chapter" data-level="2.2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#gráficos-com-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Gráficos com ggplot2</a></li>
+<li class="chapter" data-level="2.3" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#trabalhando-com-datas"><i class="fa fa-check"></i><b>2.3</b> Trabalhando com datas</a></li>
+<li class="chapter" data-level="2.4" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#parsear-datas-e-horários"><i class="fa fa-check"></i><b>2.4</b> ‘Parsear’ datas e horários</a></li>
+<li class="chapter" data-level="2.5" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#extrair-componentes-de-uma-data"><i class="fa fa-check"></i><b>2.5</b> Extrair componentes de uma data</a></li>
+<li class="chapter" data-level="2.6" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#operações-matemáticas-com-datas"><i class="fa fa-check"></i><b>2.6</b> Operações matemáticas com datas</a></li>
+<li class="chapter" data-level="2.7" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#if-else"><i class="fa fa-check"></i><b>2.7</b> If-else</a></li>
+<li class="chapter" data-level="2.8" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#loops"><i class="fa fa-check"></i><b>2.8</b> Loops</a></li>
+<li class="chapter" data-level="2.9" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#criado-suas-próprias-funções"><i class="fa fa-check"></i><b>2.9</b> Criado suas próprias funções</a></li>
+<li class="chapter" data-level="2.10" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#listas"><i class="fa fa-check"></i><b>2.10</b> Listas</a></li>
+<li class="chapter" data-level="2.11" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#purrrmap"><i class="fa fa-check"></i><b>2.11</b> purrr::map</a></li>
+<li class="chapter" data-level="2.12" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-1"><i class="fa fa-check"></i><b>2.12</b> Case 1</a></li>
+<li class="chapter" data-level="2.13" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-2"><i class="fa fa-check"></i><b>2.13</b> Case 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html"><i class="fa fa-check"></i><b>3</b> Fontes de dados financeiros</a><ul>
+<li class="chapter" data-level="3.1" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>3.1</b> Pacotes</a></li>
+<li class="chapter" data-level="3.2" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#manipulação-de-dados-com-xts-e-quantmod"><i class="fa fa-check"></i><b>3.2</b> Manipulação de dados com xts e quantmod</a></li>
+<li class="chapter" data-level="3.3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#helpers-do-quantmod-cl-op-hi-lo"><i class="fa fa-check"></i><b>3.3</b> Helpers do quantmod: Cl, Op, Hi, Lo</a></li>
+<li class="chapter" data-level="3.4" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#funções-de-gráficos-xts"><i class="fa fa-check"></i><b>3.4</b> Funções de gráficos xts</a></li>
+<li class="chapter" data-level="3.5" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento."><i class="fa fa-check"></i><b>3.5</b> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</a></li>
+<li class="chapter" data-level="3.6" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#case"><i class="fa fa-check"></i><b>3.6</b> Case</a></li>
+</ul></li>
+<li class="part"><span><b>I Aplicações</b></span></li>
+<li class="chapter" data-level="4" data-path="returns.html"><a href="returns.html"><i class="fa fa-check"></i><b>4</b> Análise de Retornos</a><ul>
+<li class="chapter" data-level="4.1" data-path="returns.html"><a href="returns.html#retornos-simples"><i class="fa fa-check"></i><b>4.1</b> Retornos simples</a></li>
+<li class="chapter" data-level="4.2" data-path="returns.html"><a href="returns.html#retornos-logaritimicos"><i class="fa fa-check"></i><b>4.2</b> Retornos logaritimicos</a></li>
+<li class="chapter" data-level="4.3" data-path="returns.html"><a href="returns.html#s:equivalent-returns"><i class="fa fa-check"></i><b>4.3</b> Relação entre os retornos simples e logaritimicos</a></li>
+<li class="chapter" data-level="4.4" data-path="returns.html"><a href="returns.html#porque-formas-diferentes-de-calcular-os-retornos"><i class="fa fa-check"></i><b>4.4</b> Porque formas diferentes de calcular os retornos?</a></li>
+<li class="chapter" data-level="4.5" data-path="returns.html"><a href="returns.html#retorno-esperado"><i class="fa fa-check"></i><b>4.5</b> Retorno esperado</a></li>
+<li class="chapter" data-level="4.6" data-path="returns.html"><a href="returns.html#risco-esperado"><i class="fa fa-check"></i><b>4.6</b> Risco esperado</a></li>
+<li class="chapter" data-level="4.7" data-path="returns.html"><a href="returns.html#exercícios---análise-de-retornos"><i class="fa fa-check"></i><b>4.7</b> Exercícios - Análise de Retornos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análise-de-risco.html"><a href="análise-de-risco.html"><i class="fa fa-check"></i><b>5</b> Análise de Risco</a><ul>
+<li class="chapter" data-level="5.1" data-path="análise-de-risco.html"><a href="análise-de-risco.html#visualização-dos-retornos"><i class="fa fa-check"></i><b>5.1</b> Visualização dos Retornos</a></li>
+<li class="chapter" data-level="5.2" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-estatística-dos-retornos"><i class="fa fa-check"></i><b>5.2</b> Análise Estatística dos Retornos</a></li>
+<li class="chapter" data-level="5.3" data-path="análise-de-risco.html"><a href="análise-de-risco.html#medidas-de-risco"><i class="fa fa-check"></i><b>5.3</b> Medidas de Risco</a></li>
+<li class="chapter" data-level="5.4" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-em-janela-móvel"><i class="fa fa-check"></i><b>5.4</b> Análise em Janela Móvel</a></li>
+<li class="chapter" data-level="5.5" data-path="análise-de-risco.html"><a href="análise-de-risco.html#túnel-de-volatilidade"><i class="fa fa-check"></i><b>5.5</b> Túnel de Volatilidade</a></li>
+<li class="chapter" data-level="5.6" data-path="análise-de-risco.html"><a href="análise-de-risco.html#comparando-ativos"><i class="fa fa-check"></i><b>5.6</b> Comparando Ativos</a></li>
+<li class="chapter" data-level="5.7" data-path="análise-de-risco.html"><a href="análise-de-risco.html#exercícios---análise-de-risco"><i class="fa fa-check"></i><b>5.7</b> Exercícios - Análise de Risco</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html"><i class="fa fa-check"></i><b>6</b> Análise de Carteiras</a><ul>
+<li class="chapter" data-level="6.1" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-de-ativos"><i class="fa fa-check"></i><b>6.1</b> Carteira de ativos</a></li>
+<li class="chapter" data-level="6.2" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-com-2-ativos"><i class="fa fa-check"></i><b>6.2</b> Carteira com 2 ativos</a></li>
+<li class="chapter" data-level="6.3" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#montando-uma-carteira"><i class="fa fa-check"></i><b>6.3</b> Montando uma carteira</a></li>
+<li class="chapter" data-level="6.4" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#rebalanceamento-da-carteira"><i class="fa fa-check"></i><b>6.4</b> Rebalanceamento da carteira</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tópicos de Finanças com R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="novos-passos-com-r-part2" class="section level1">
+<h1><span class="header-section-number">Capítulo 2</span> Novos passos com R {part2}</h1>
+<div id="leitura-de-arquivos-csv" class="section level2">
+<h2><span class="header-section-number">2.1</span> Leitura de arquivos csv</h2>
+<p>Para ler arquivos csv com o R, usamos o pacote <code>readr</code>, que faz parte do <code>tidyverse</code>.</p>
+<p>Caso as colunas do arquivo que se deseja ler sejam separadas por vírgula, usa-se a função <code>readr::read_csv()</code>. Caso o separador seja ponto e vírgula (o padrão brasileiro), usa-se <code>readr::read_csv2()</code>.</p>
+<p>Vamos ler o arquivo de exemplo deste módulo:</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="novos-passos-com-r-part2.html#cb122-1"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## -- Attaching packages --------- tidyverse 1.3.0 --</code></pre>
+<pre><code>## v ggplot2 3.3.2     v purrr   0.3.4
+## v tibble  3.0.1     v dplyr   1.0.0
+## v tidyr   1.1.0     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.5.0</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## Warning: package &#39;forcats&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## -- Conflicts ------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="novos-passos-com-r-part2.html#cb132-1"></a>df &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;abev3_petr4.csv&quot;</span>)</span></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   data = col_date(format = &quot;&quot;),
+##   petr4 = col_double(),
+##   abev3 = col_double(),
+##   retorno_diario_petr4 = col_double(),
+##   retorno_diario_abev3 = col_double()
+## )</code></pre>
+</div>
+<div id="gráficos-com-ggplot2" class="section level2">
+<h2><span class="header-section-number">2.2</span> Gráficos com ggplot2</h2>
+<p>O <code>ggplot2</code> é uma poderosa ferramenta para fazer gráficos a partir de objetos da classe <code>data.frame</code>. Gráficos no R são um assunto bem extenso, e muito se poderia falar sobre o tema. Neste material, o pacote será apresentado de forma breve. Para um conteúdo mais abrangente sobre o tema, recomenda-se a leitura <a href="http://sillasgonzaga.com/material/cdr/ggplot2.html">deste material</a>.</p>
+<div id="como-usar-o-ggplot2" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Como usar o ggplot2:</h3>
+<p>Gráficos no ggplot são feitos nesta sintaxe:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="novos-passos-com-r-part2.html#cb134-1"></a><span class="kw">ggplot</span>(<span class="op">&lt;</span>NOME DO DATAFRAME<span class="op">&gt;</span>, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="op">&lt;</span>VARIAVEL DO EIXO X<span class="op">&gt;</span>,</span>
+<span id="cb134-2"><a href="novos-passos-com-r-part2.html#cb134-2"></a>                                <span class="dt">y =</span> <span class="op">&lt;</span>VARIAVEL DO EIXO Y<span class="op">&gt;</span>)) <span class="op">+</span></span>
+<span id="cb134-3"><a href="novos-passos-com-r-part2.html#cb134-3"></a><span class="st">  </span><span class="er">&lt;</span>TIPO DO GRÁFICO<span class="op">&gt;</span><span class="st"> </span><span class="op">+</span></span>
+<span id="cb134-4"><a href="novos-passos-com-r-part2.html#cb134-4"></a><span class="st">  </span><span class="er">&lt;</span>CUSTOMIZAÇÕES EXTRAS<span class="op">&gt;</span></span></code></pre></div>
+</div>
+<div id="gráfico-de-dispersão-ou-gráfico-de-pontos" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Gráfico de dispersão ou gráfico de pontos</h3>
+<p>A sintaxe para se fazer um gráfico de pontos é:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="novos-passos-com-r-part2.html#cb135-1"></a><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> petr4, <span class="dt">y =</span> abev3)) <span class="op">+</span></span>
+<span id="cb135-2"><a href="novos-passos-com-r-part2.html#cb135-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<pre><code>## Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="gráfico-de-linha" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Gráfico de linha</h3>
+<p>A sintaxe para fazer um gráfico de linha é semelhante ao de pontos. Contudo, esse tipo de gráfico é mais usado quando a variável do eixo x é do tipo Date.</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="novos-passos-com-r-part2.html#cb137-1"></a><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> data, <span class="dt">y =</span> petr4)) <span class="op">+</span></span>
+<span id="cb137-2"><a href="novos-passos-com-r-part2.html#cb137-2"></a><span class="st">  </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="histogramas" class="section level3">
+<h3><span class="header-section-number">2.2.4</span> Histogramas</h3>
+<p>Os histogramas são utilizados para representar-se a distribuição de dados de uma variável quantitativa em intervalos contínuos. Esses intervalos são chamados de <code>bins</code>. Para cada bin, será apresentada a quantidade de valores que estão naquele intervalo.</p>
+<p>No mercado financeiro, uma aplicação comum de histogramas é analisar a distribuição de retornos diários de um ativo:</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="novos-passos-com-r-part2.html#cb138-1"></a><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> retorno_diario_petr4)) <span class="op">+</span></span>
+<span id="cb138-2"><a href="novos-passos-com-r-part2.html#cb138-2"></a><span class="st">  </span><span class="kw">geom_histogram</span>()</span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## Warning: Removed 7 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+</div>
+<div id="trabalhando-com-datas" class="section level2">
+<h2><span class="header-section-number">2.3</span> Trabalhando com datas</h2>
+<p>Datas são um caso a parte no R. Existe uma própria classe para objetos desse tipo, chamada <code>Date</code>, com D maiúsculo. O R lida com datas no formato AAAA-MM-DD (Ano, Mês e Dia).</p>
+<p>Abaixo, definimos um vetor com datas</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="novos-passos-com-r-part2.html#cb141-1"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;2014-07-15&quot;</span>, <span class="st">&quot;2018/03/20&quot;</span>, <span class="st">&quot;2019-12-31&quot;</span>, <span class="st">&quot;20170511&quot;</span>)</span>
+<span id="cb141-2"><a href="novos-passos-com-r-part2.html#cb141-2"></a><span class="kw">as.Date</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;2014-07-15&quot; NA           &quot;2019-12-31&quot; NA</code></pre>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="novos-passos-com-r-part2.html#cb143-1"></a><span class="kw">class</span>(<span class="kw">as.Date</span>(x))</span></code></pre></div>
+<pre><code>## [1] &quot;Date&quot;</code></pre>
+<p>Perceba que o R nativamente não aceita qualquer separador entre o ano, o mês e o dia, apenas o traço. O pacote <code>lubridate</code>, que faz parte da família <code>tidyverse</code>, possui uma versão mais generalizável para isso:</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="novos-passos-com-r-part2.html#cb145-1"></a><span class="kw">library</span>(lubridate)</span></code></pre></div>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="novos-passos-com-r-part2.html#cb149-1"></a>lubridate<span class="op">::</span><span class="kw">as_date</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;2014-07-15&quot; &quot;2018-03-20&quot; &quot;2019-12-31&quot; &quot;2017-05-11&quot;</code></pre>
+<p>A propósito, dominar o pacote <code>lubridate</code>, que possui funções muito simples de usar, é a única coisa necessária para saber lidar com datas no R. Por isso, vamos mostrar as principais funções do pacote.</p>
+<div id="gerar-um-vetor-sequencial-de-datas" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Gerar um vetor sequencial de datas</h3>
+<p>Essa tarefa é feita usando uma função nativa do R chamada <code>seq.Date()</code>, que possui quatro argumentos principais, sendo que três deles precisam ser especificados.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="novos-passos-com-r-part2.html#cb151-1"></a><span class="kw">args</span>(seq.Date)</span></code></pre></div>
+<pre><code>## function (from, to, by, length.out = NULL, along.with = NULL, 
+##     ...) 
+## NULL</code></pre>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="novos-passos-com-r-part2.html#cb153-1"></a><span class="co"># gerar vetor de datas separadas por mes</span></span>
+<span id="cb153-2"><a href="novos-passos-com-r-part2.html#cb153-2"></a><span class="kw">seq.Date</span>(<span class="dt">from =</span> <span class="kw">as_date</span>(<span class="st">&quot;2020-01-01&quot;</span>),</span>
+<span id="cb153-3"><a href="novos-passos-com-r-part2.html#cb153-3"></a>         <span class="dt">to =</span> <span class="kw">as_date</span>(<span class="st">&quot;2020-12-01&quot;</span>),</span>
+<span id="cb153-4"><a href="novos-passos-com-r-part2.html#cb153-4"></a>         <span class="dt">by =</span> <span class="st">&quot;1 month&quot;</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;2020-01-01&quot; &quot;2020-02-01&quot; &quot;2020-03-01&quot; &quot;2020-04-01&quot; &quot;2020-05-01&quot;
+##  [6] &quot;2020-06-01&quot; &quot;2020-07-01&quot; &quot;2020-08-01&quot; &quot;2020-09-01&quot; &quot;2020-10-01&quot;
+## [11] &quot;2020-11-01&quot; &quot;2020-12-01&quot;</code></pre>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="novos-passos-com-r-part2.html#cb155-1"></a><span class="co"># gerar vetor de datas separadas por dia</span></span>
+<span id="cb155-2"><a href="novos-passos-com-r-part2.html#cb155-2"></a><span class="kw">seq.Date</span>(<span class="dt">from =</span> <span class="kw">as_date</span>(<span class="st">&quot;2020-01-01&quot;</span>),</span>
+<span id="cb155-3"><a href="novos-passos-com-r-part2.html#cb155-3"></a>         <span class="dt">to =</span> <span class="kw">as_date</span>(<span class="st">&quot;2020-01-20&quot;</span>),</span>
+<span id="cb155-4"><a href="novos-passos-com-r-part2.html#cb155-4"></a>         <span class="dt">by =</span> <span class="st">&quot;1 day&quot;</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;2020-01-01&quot; &quot;2020-01-02&quot; &quot;2020-01-03&quot; &quot;2020-01-04&quot; &quot;2020-01-05&quot;
+##  [6] &quot;2020-01-06&quot; &quot;2020-01-07&quot; &quot;2020-01-08&quot; &quot;2020-01-09&quot; &quot;2020-01-10&quot;
+## [11] &quot;2020-01-11&quot; &quot;2020-01-12&quot; &quot;2020-01-13&quot; &quot;2020-01-14&quot; &quot;2020-01-15&quot;
+## [16] &quot;2020-01-16&quot; &quot;2020-01-17&quot; &quot;2020-01-18&quot; &quot;2020-01-19&quot; &quot;2020-01-20&quot;</code></pre>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="novos-passos-com-r-part2.html#cb157-1"></a><span class="co"># gerar vetor de datas separadas por 3 dias</span></span>
+<span id="cb157-2"><a href="novos-passos-com-r-part2.html#cb157-2"></a><span class="kw">seq.Date</span>(<span class="dt">from =</span> <span class="kw">as_date</span>(<span class="st">&quot;2020-01-01&quot;</span>),</span>
+<span id="cb157-3"><a href="novos-passos-com-r-part2.html#cb157-3"></a>         <span class="dt">to =</span> <span class="kw">as_date</span>(<span class="st">&quot;2020-01-20&quot;</span>),</span>
+<span id="cb157-4"><a href="novos-passos-com-r-part2.html#cb157-4"></a>         <span class="dt">by =</span> <span class="st">&quot;3 day&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2020-01-01&quot; &quot;2020-01-04&quot; &quot;2020-01-07&quot; &quot;2020-01-10&quot; &quot;2020-01-13&quot;
+## [6] &quot;2020-01-16&quot; &quot;2020-01-19&quot;</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="novos-passos-com-r-part2.html#cb159-1"></a><span class="co"># gerar um vetor de 7 semanas separados por 1 semana</span></span>
+<span id="cb159-2"><a href="novos-passos-com-r-part2.html#cb159-2"></a><span class="kw">seq.Date</span>(<span class="dt">from =</span> <span class="kw">as_date</span>(<span class="st">&quot;2020-01-01&quot;</span>),</span>
+<span id="cb159-3"><a href="novos-passos-com-r-part2.html#cb159-3"></a>         <span class="dt">length.out =</span> <span class="dv">7</span>,</span>
+<span id="cb159-4"><a href="novos-passos-com-r-part2.html#cb159-4"></a>         <span class="dt">by =</span> <span class="st">&quot;1 week&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2020-01-01&quot; &quot;2020-01-08&quot; &quot;2020-01-15&quot; &quot;2020-01-22&quot; &quot;2020-01-29&quot;
+## [6] &quot;2020-02-05&quot; &quot;2020-02-12&quot;</code></pre>
+</div>
+</div>
+<div id="parsear-datas-e-horários" class="section level2">
+<h2><span class="header-section-number">2.4</span> ‘Parsear’ datas e horários</h2>
+<p>Para fazer o R converter (ou parsear na linguagem de programação) um string em data, basta usar as funções correspondentes do lubridate.</p>
+<p>Por exemplo, no vetor de exemplo <code>x</code>, definido acima, as datas já estavam definidas no formato correto: AAAA-MM-DD. Aqui no Brasil usamos outro formato: DD/MM/AAAA. O <code>lubridate</code> possui uma função pronta para essa situação:</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="novos-passos-com-r-part2.html#cb161-1"></a><span class="co"># observer como usamos diferentes separadores</span></span>
+<span id="cb161-2"><a href="novos-passos-com-r-part2.html#cb161-2"></a>datas_brasil &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;01/12/2019&quot;</span>, <span class="st">&quot;20/11/2018&quot;</span>, <span class="st">&quot;30011990&quot;</span>, <span class="st">&quot;17-03-2000&quot;</span>)</span>
+<span id="cb161-3"><a href="novos-passos-com-r-part2.html#cb161-3"></a><span class="co"># parseando o vetor acima para Data</span></span>
+<span id="cb161-4"><a href="novos-passos-com-r-part2.html#cb161-4"></a><span class="kw">dmy</span>(datas_brasil)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-12-01&quot; &quot;2018-11-20&quot; &quot;1990-01-30&quot; &quot;2000-03-17&quot;</code></pre>
+<p>Caso o vetor também contenha dados de horário, basta incluir o sufixo referente a hora, minuto e segundo:</p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="novos-passos-com-r-part2.html#cb163-1"></a><span class="kw">dmy_hms</span>(<span class="st">&quot;30-09-2019 14:51:39&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-09-30 14:51:39 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="novos-passos-com-r-part2.html#cb165-1"></a><span class="co"># sem o segundo</span></span>
+<span id="cb165-2"><a href="novos-passos-com-r-part2.html#cb165-2"></a><span class="kw">dmy_hm</span>(<span class="st">&quot;30-09-2019 14:15&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-09-30 14:15:00 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="novos-passos-com-r-part2.html#cb167-1"></a><span class="co"># apenas a hora</span></span>
+<span id="cb167-2"><a href="novos-passos-com-r-part2.html#cb167-2"></a><span class="kw">dmy_h</span>(<span class="st">&quot;30-09-2019 15&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-09-30 15:00:00 UTC&quot;</code></pre>
+</div>
+<div id="extrair-componentes-de-uma-data" class="section level2">
+<h2><span class="header-section-number">2.5</span> Extrair componentes de uma data</h2>
+<p>É possível extrair qualquer tipo de componente de uma data ou de um vetor de datas com o lubridate. Veja alguns exemplos:</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="novos-passos-com-r-part2.html#cb169-1"></a>datas_brasil &lt;-<span class="st"> </span><span class="kw">dmy_hms</span>(<span class="kw">c</span>(<span class="st">&quot;01/12/2019 13:51:15&quot;</span>, <span class="st">&quot;20/11/2018 00:00:00&quot;</span>, <span class="st">&quot;30011990 080000&quot;</span>, <span class="st">&quot;17-03-2000 203000&quot;</span>))</span>
+<span id="cb169-2"><a href="novos-passos-com-r-part2.html#cb169-2"></a>datas_brasil</span></code></pre></div>
+<pre><code>## [1] &quot;2019-12-01 13:51:15 UTC&quot; &quot;2018-11-20 00:00:00 UTC&quot;
+## [3] &quot;1990-01-30 08:00:00 UTC&quot; &quot;2000-03-17 20:30:00 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="novos-passos-com-r-part2.html#cb171-1"></a><span class="co"># extrair componentes da data:</span></span>
+<span id="cb171-2"><a href="novos-passos-com-r-part2.html#cb171-2"></a><span class="co"># ano</span></span>
+<span id="cb171-3"><a href="novos-passos-com-r-part2.html#cb171-3"></a><span class="kw">year</span>(datas_brasil)</span></code></pre></div>
+<pre><code>## [1] 2019 2018 1990 2000</code></pre>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="novos-passos-com-r-part2.html#cb173-1"></a><span class="co"># mes</span></span>
+<span id="cb173-2"><a href="novos-passos-com-r-part2.html#cb173-2"></a><span class="kw">month</span>(datas_brasil)</span></code></pre></div>
+<pre><code>## [1] 12 11  1  3</code></pre>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="novos-passos-com-r-part2.html#cb175-1"></a><span class="co"># dia</span></span>
+<span id="cb175-2"><a href="novos-passos-com-r-part2.html#cb175-2"></a><span class="kw">day</span>(datas_brasil)</span></code></pre></div>
+<pre><code>## [1]  1 20 30 17</code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="novos-passos-com-r-part2.html#cb177-1"></a><span class="co"># semana do ano</span></span>
+<span id="cb177-2"><a href="novos-passos-com-r-part2.html#cb177-2"></a><span class="kw">week</span>(datas_brasil)</span></code></pre></div>
+<pre><code>## [1] 48 47  5 11</code></pre>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="novos-passos-com-r-part2.html#cb179-1"></a><span class="co"># dia da semana</span></span>
+<span id="cb179-2"><a href="novos-passos-com-r-part2.html#cb179-2"></a><span class="kw">wday</span>(datas_brasil, <span class="dt">label =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] dom ter ter sex
+## Levels: dom &lt; seg &lt; ter &lt; qua &lt; qui &lt; sex &lt; sáb</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="novos-passos-com-r-part2.html#cb181-1"></a><span class="co"># trimestre</span></span>
+<span id="cb181-2"><a href="novos-passos-com-r-part2.html#cb181-2"></a><span class="kw">quarter</span>(datas_brasil)</span></code></pre></div>
+<pre><code>## [1] 4 4 1 1</code></pre>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="novos-passos-com-r-part2.html#cb183-1"></a><span class="co"># hora</span></span>
+<span id="cb183-2"><a href="novos-passos-com-r-part2.html#cb183-2"></a><span class="kw">hour</span>(datas_brasil)</span></code></pre></div>
+<pre><code>## [1] 13  0  8 20</code></pre>
+</div>
+<div id="operações-matemáticas-com-datas" class="section level2">
+<h2><span class="header-section-number">2.6</span> Operações matemáticas com datas</h2>
+<p>Geralmente se está interessado em fazer três tipos de operações matemáticas com datas:</p>
+<ul>
+<li><strong>Adicionar uma quantidade N de dias/meses/anos/etc em uma data</strong>:</li>
+</ul>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="novos-passos-com-r-part2.html#cb185-1"></a><span class="co"># adicionar 1 semana nas datas</span></span>
+<span id="cb185-2"><a href="novos-passos-com-r-part2.html#cb185-2"></a>datas_brasil <span class="op">+</span><span class="st"> </span><span class="kw">ddays</span>(<span class="dv">7</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-12-08 13:51:15 UTC&quot; &quot;2018-11-27 00:00:00 UTC&quot;
+## [3] &quot;1990-02-06 08:00:00 UTC&quot; &quot;2000-03-24 20:30:00 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="novos-passos-com-r-part2.html#cb187-1"></a><span class="co"># adicionar 3 meses</span></span>
+<span id="cb187-2"><a href="novos-passos-com-r-part2.html#cb187-2"></a>datas_brasil <span class="op">+</span><span class="st"> </span><span class="kw">ddays</span>(<span class="dv">90</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2020-02-29 13:51:15 UTC&quot; &quot;2019-02-18 00:00:00 UTC&quot;
+## [3] &quot;1990-04-30 08:00:00 UTC&quot; &quot;2000-06-15 20:30:00 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="novos-passos-com-r-part2.html#cb189-1"></a><span class="co"># adicionar 1 ano</span></span>
+<span id="cb189-2"><a href="novos-passos-com-r-part2.html#cb189-2"></a>datas_brasil <span class="op">+</span><span class="st"> </span><span class="kw">dyears</span>(<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2020-11-30 19:51:15 UTC&quot; &quot;2019-11-20 06:00:00 UTC&quot;
+## [3] &quot;1991-01-30 14:00:00 UTC&quot; &quot;2001-03-18 02:30:00 UTC&quot;</code></pre>
+<ul>
+<li><strong>Calcular a diferença de tempo entre duas datas</strong>:</li>
+</ul>
+<p>No R, subtrair datas segue a mesma sintaxe de subtrair números:</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="novos-passos-com-r-part2.html#cb191-1"></a>data1 &lt;-<span class="st"> </span><span class="kw">dmy_hms</span>(<span class="st">&quot;01/09/1993 20:00:00&quot;</span>)</span>
+<span id="cb191-2"><a href="novos-passos-com-r-part2.html#cb191-2"></a>data2 &lt;-<span class="st"> </span><span class="kw">dmy_hms</span>(<span class="st">&quot;24-06-2018 17:00:00&quot;</span>)</span>
+<span id="cb191-3"><a href="novos-passos-com-r-part2.html#cb191-3"></a></span>
+<span id="cb191-4"><a href="novos-passos-com-r-part2.html#cb191-4"></a>dif &lt;-<span class="st"> </span>data2 <span class="op">-</span><span class="st"> </span>data1</span>
+<span id="cb191-5"><a href="novos-passos-com-r-part2.html#cb191-5"></a>dif</span></code></pre></div>
+<pre><code>## Time difference of 9061.875 days</code></pre>
+<p>Por padrão, o R retorna a diferença em dias, mas em um objeto de classe <code>difftime</code>.</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="novos-passos-com-r-part2.html#cb193-1"></a><span class="kw">class</span>(dif)</span></code></pre></div>
+<pre><code>## [1] &quot;difftime&quot;</code></pre>
+<p>Recomenda-se então converter o output para a classe <code>numeric</code>:</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="novos-passos-com-r-part2.html#cb195-1"></a><span class="kw">as.numeric</span>(dif)</span></code></pre></div>
+<pre><code>## [1] 9061.875</code></pre>
+<p>Caso se deseje calcular essa diferença em outras unidades de tempo, como meses ou semanas, basta fazer a divisão correspondente:</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="novos-passos-com-r-part2.html#cb197-1"></a><span class="co"># conveter para semanas</span></span>
+<span id="cb197-2"><a href="novos-passos-com-r-part2.html#cb197-2"></a><span class="kw">as.numeric</span>(dif) <span class="op">/</span><span class="st"> </span><span class="dv">7</span></span></code></pre></div>
+<pre><code>## [1] 1294.554</code></pre>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="novos-passos-com-r-part2.html#cb199-1"></a><span class="co"># converter para meses</span></span>
+<span id="cb199-2"><a href="novos-passos-com-r-part2.html#cb199-2"></a><span class="kw">as.numeric</span>(dif) <span class="op">/</span><span class="st"> </span><span class="dv">30</span></span></code></pre></div>
+<pre><code>## [1] 302.0625</code></pre>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="novos-passos-com-r-part2.html#cb201-1"></a><span class="co"># converter para anos</span></span>
+<span id="cb201-2"><a href="novos-passos-com-r-part2.html#cb201-2"></a><span class="kw">as.numeric</span>(dif) <span class="op">/</span><span class="st"> </span><span class="dv">365</span></span></code></pre></div>
+<pre><code>## [1] 24.82705</code></pre>
+<ul>
+<li><strong>Arredondar datas</strong>:</li>
+</ul>
+<p>Para arredondar uma data, por exemplo, retornar o primeiro ou último dia da semana/mês/trimestre/etc de uma data de referência, usa-se as funções <code>ceiling_date()</code> (arredondar para cima) e <code>floor_date()</code> (para baixo):</p>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="novos-passos-com-r-part2.html#cb203-1"></a><span class="co"># retornar a primeira data da semana:</span></span>
+<span id="cb203-2"><a href="novos-passos-com-r-part2.html#cb203-2"></a><span class="kw">floor_date</span>(datas_brasil, <span class="st">&quot;week&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-12-01 UTC&quot; &quot;2018-11-18 UTC&quot; &quot;1990-01-28 UTC&quot; &quot;2000-03-12 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="novos-passos-com-r-part2.html#cb205-1"></a><span class="co"># retornar a ultima data do mês</span></span>
+<span id="cb205-2"><a href="novos-passos-com-r-part2.html#cb205-2"></a><span class="co"># por padrao, ceiling_date retorna a primeira data do próximo mês,</span></span>
+<span id="cb205-3"><a href="novos-passos-com-r-part2.html#cb205-3"></a><span class="co"># por isso é necessario subtrair o resultado por 1</span></span>
+<span id="cb205-4"><a href="novos-passos-com-r-part2.html#cb205-4"></a><span class="kw">ceiling_date</span>(datas_brasil, <span class="st">&quot;month&quot;</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
+<pre><code>## [1] &quot;2019-12-31 23:59:59 UTC&quot; &quot;2018-11-30 23:59:59 UTC&quot;
+## [3] &quot;1990-01-31 23:59:59 UTC&quot; &quot;2000-03-31 23:59:59 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="novos-passos-com-r-part2.html#cb207-1"></a><span class="co"># arredondar usando a hora como referencia</span></span>
+<span id="cb207-2"><a href="novos-passos-com-r-part2.html#cb207-2"></a><span class="kw">floor_date</span>(datas_brasil, <span class="st">&quot;hour&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;2019-12-01 13:00:00 UTC&quot; &quot;2018-11-20 00:00:00 UTC&quot;
+## [3] &quot;1990-01-30 08:00:00 UTC&quot; &quot;2000-03-17 20:00:00 UTC&quot;</code></pre>
+</div>
+<div id="if-else" class="section level2">
+<h2><span class="header-section-number">2.7</span> If-else</h2>
+<p>A estrutura condicional é algo bastante intuitivo. A estrutura de if (se) e else (então) usa os operadores lógicos apresentados anteriormente. Se a condição do <code>if()</code> for verdadeira, executa-se uma tarefa específica, se for falsa, executa-se uma tarefa diferente. A estrutura parece algo do tipo:</p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="novos-passos-com-r-part2.html#cb209-1"></a><span class="cf">if</span>( variavel <span class="op">&gt;=</span><span class="st"> </span><span class="dv">500</span> ) {</span>
+<span id="cb209-2"><a href="novos-passos-com-r-part2.html#cb209-2"></a>  <span class="co">#executa uma tarefa se operação resultar TRUE</span></span>
+<span id="cb209-3"><a href="novos-passos-com-r-part2.html#cb209-3"></a>} <span class="cf">else</span> {</span>
+<span id="cb209-4"><a href="novos-passos-com-r-part2.html#cb209-4"></a>  <span class="co">#executa outra tarefa se operação resultar FALSE</span></span>
+<span id="cb209-5"><a href="novos-passos-com-r-part2.html#cb209-5"></a>}</span></code></pre></div>
+<p>Da mesma forma, existe uma função que gera o mesmo resultado, o <code>ifelse()</code> (e uma do pacote <code>dplyr</code>, o <code>if_else()</code>).</p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="novos-passos-com-r-part2.html#cb210-1"></a><span class="kw">ifelse</span>(variavel <span class="op">&gt;=</span><span class="st"> </span><span class="dv">500</span>, <span class="st">&#39;executa essa tarefa se TRUE&#39;</span>, <span class="st">&#39;executa outra se FALSE&#39;</span>)</span></code></pre></div>
+<p>Existe uma diferença entre as duas formas de “if else”: a estrutura <code>if() {} else {}</code> só opera variáveis, uma por uma, já a estrutura <code>ifelse()</code> opera vetores, ou seja, consegue fazer a comparação para todos os elementos. Isso faz com que a forma <code>if() {} else {}</code> seja mais utilizada para comparações fora dos dados, com variáveis avulsas. Já a estrutura <code>ifelse()</code> é mais usada para comparações dentro dos dados, com colunas, vetores e linhas.</p>
+<p>Qualquer uma dessas estruturas pode ser “aninhada”, ou seja, encadeada. Por exemplo:</p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="novos-passos-com-r-part2.html#cb211-1"></a>a &lt;-<span class="st"> </span><span class="dv">9823</span></span>
+<span id="cb211-2"><a href="novos-passos-com-r-part2.html#cb211-2"></a></span>
+<span id="cb211-3"><a href="novos-passos-com-r-part2.html#cb211-3"></a><span class="cf">if</span>(a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10000</span>) {</span>
+<span id="cb211-4"><a href="novos-passos-com-r-part2.html#cb211-4"></a>  b &lt;-<span class="st"> &#39;VALOR ALTO&#39;</span></span>
+<span id="cb211-5"><a href="novos-passos-com-r-part2.html#cb211-5"></a>} <span class="cf">else</span> <span class="cf">if</span>(a <span class="op">&lt;</span><span class="st"> </span><span class="dv">10000</span> <span class="op">&amp;</span><span class="st"> </span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1000</span>) {</span>
+<span id="cb211-6"><a href="novos-passos-com-r-part2.html#cb211-6"></a>  b &lt;-<span class="st"> &#39;VALOR MEDIO&#39;</span> </span>
+<span id="cb211-7"><a href="novos-passos-com-r-part2.html#cb211-7"></a>} <span class="cf">else</span> <span class="cf">if</span>(a <span class="op">&lt;</span><span class="st"> </span><span class="dv">1000</span>) {</span>
+<span id="cb211-8"><a href="novos-passos-com-r-part2.html#cb211-8"></a>  b &lt;-<span class="st"> &#39;VALOR BAIXO&#39;</span></span>
+<span id="cb211-9"><a href="novos-passos-com-r-part2.html#cb211-9"></a>}</span>
+<span id="cb211-10"><a href="novos-passos-com-r-part2.html#cb211-10"></a></span>
+<span id="cb211-11"><a href="novos-passos-com-r-part2.html#cb211-11"></a>b</span></code></pre></div>
+<pre><code>## [1] &quot;VALOR MEDIO&quot;</code></pre>
+<p>Ou ainda:</p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="novos-passos-com-r-part2.html#cb213-1"></a>a &lt;-<span class="st"> </span><span class="dv">839</span></span>
+<span id="cb213-2"><a href="novos-passos-com-r-part2.html#cb213-2"></a>c &lt;-<span class="st"> </span><span class="kw">ifelse</span>(a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10000</span>, <span class="st">&#39;VALOR ALTO&#39;</span>, <span class="kw">ifelse</span>(a <span class="op">&lt;</span><span class="st"> </span><span class="dv">10000</span> <span class="op">&amp;</span><span class="st"> </span>a <span class="op">&gt;=</span><span class="st"> </span><span class="dv">1000</span>, <span class="st">&#39;VALOR MEDIO&#39;</span>, <span class="st">&#39;VALOR BAIXO&#39;</span>))</span>
+<span id="cb213-3"><a href="novos-passos-com-r-part2.html#cb213-3"></a>c</span></code></pre></div>
+<pre><code>## [1] &quot;VALOR BAIXO&quot;</code></pre>
+</div>
+<div id="loops" class="section level2">
+<h2><span class="header-section-number">2.8</span> Loops</h2>
+<p>Trata-se de um dos conceitos mais importantes de qualquer linguagem de programação, em R não é diferente. Loops (ou laços) repetem uma sequência de comando quantas vezes você desejar, ou até que uma condição aconteça, variando-se alguns aspectos entre uma repetição e outra.</p>
+<p>Supondo que você tenha que ler 400 arquivos de dados que você obteve de um cliente. Você vai escrever 400 vezes a funcão de leitura? Nesse caso, basta fazer um loop para percorrer todos os arquivos da pasta e ler um por um com a função de leitura.</p>
+<p>O <code>for()</code> é usado para realizar uma série de ordens para uma determinada sequência ou índices (vetor). Sua sintaxe é bem simples:</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="novos-passos-com-r-part2.html#cb215-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)) {</span>
+<span id="cb215-2"><a href="novos-passos-com-r-part2.html#cb215-2"></a>  <span class="kw">print</span>(i<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb215-3"><a href="novos-passos-com-r-part2.html#cb215-3"></a>}</span></code></pre></div>
+<pre><code>## [1] 1
+## [1] 4
+## [1] 9
+## [1] 16
+## [1] 25</code></pre>
+<p>Para cada valor (chamamos esse valor de <code>i</code>) dentro do vetor <code>c(1, 2, 3, 4, 5)</code>, execute o comando <code>print(i^2)</code>. Qualquer outro comando dentro das chaves <code>{ ... }</code> seria executado para cada valor do vetor.</p>
+<p>Para entendermos melhor, vamos repensar o exemplo das séries usando o <code>for()</code>.</p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="novos-passos-com-r-part2.html#cb217-1"></a>lista.de.arquivos &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="st">&#39;dados/dados_loop&#39;</span>) <span class="co">#lista todos os arquivos de uma pasta</span></span>
+<span id="cb217-2"><a href="novos-passos-com-r-part2.html#cb217-2"></a><span class="kw">is.vector</span>(lista.de.arquivos)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="novos-passos-com-r-part2.html#cb219-1"></a><span class="cf">for</span>(i <span class="cf">in</span> lista.de.arquivos) {</span>
+<span id="cb219-2"><a href="novos-passos-com-r-part2.html#cb219-2"></a>  <span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&#39;Leia o arquivo:&#39;</span>, i))</span>
+<span id="cb219-3"><a href="novos-passos-com-r-part2.html#cb219-3"></a>  <span class="co">#exemplo: read_delim(i, delim = &quot;|&quot;)</span></span>
+<span id="cb219-4"><a href="novos-passos-com-r-part2.html#cb219-4"></a>}</span></code></pre></div>
+<p>Também é possível utilizar loop com if. No exemplo a seguir, queremos ver todos os números de 1 a 1000 que são divisíveis por 29 e por 3 ao mesmo tempo. Para isso, utilizaremos o operador <code>%%</code>, que mostra o resto da divisão. Se o resto for zero, é divisível.</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="novos-passos-com-r-part2.html#cb220-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>){</span>
+<span id="cb220-2"><a href="novos-passos-com-r-part2.html#cb220-2"></a>  <span class="cf">if</span>((i <span class="op">%%</span><span class="st"> </span><span class="dv">29</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) <span class="op">&amp;</span><span class="st"> </span>(i <span class="op">%%</span><span class="st"> </span><span class="dv">3</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)){</span>
+<span id="cb220-3"><a href="novos-passos-com-r-part2.html#cb220-3"></a>    <span class="kw">print</span>(i)</span>
+<span id="cb220-4"><a href="novos-passos-com-r-part2.html#cb220-4"></a>  }</span>
+<span id="cb220-5"><a href="novos-passos-com-r-part2.html#cb220-5"></a>}</span></code></pre></div>
+<pre><code>## [1] 87
+## [1] 174
+## [1] 261
+## [1] 348
+## [1] 435
+## [1] 522
+## [1] 609
+## [1] 696
+## [1] 783
+## [1] 870
+## [1] 957</code></pre>
+</div>
+<div id="criado-suas-próprias-funções" class="section level2">
+<h2><span class="header-section-number">2.9</span> Criado suas próprias funções</h2>
+<p>Funções “encapsulam” uma sequência de comandos e instruções. É uma estrutura nomeada, que recebe parâmetros para iniciar sua execução e retorna um resultado ao final. Até o momento, você já usou diversas funções. Vejamos então como criar uma função:</p>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="novos-passos-com-r-part2.html#cb222-1"></a>sua_funcao &lt;-<span class="st"> </span><span class="cf">function</span>(parametro1, parametro2){</span>
+<span id="cb222-2"><a href="novos-passos-com-r-part2.html#cb222-2"></a>  </span>
+<span id="cb222-3"><a href="novos-passos-com-r-part2.html#cb222-3"></a>  <span class="co"># sequência de tarefas</span></span>
+<span id="cb222-4"><a href="novos-passos-com-r-part2.html#cb222-4"></a>  </span>
+<span id="cb222-5"><a href="novos-passos-com-r-part2.html#cb222-5"></a>  <span class="kw">return</span>(valores_retornados)</span>
+<span id="cb222-6"><a href="novos-passos-com-r-part2.html#cb222-6"></a>}</span>
+<span id="cb222-7"><a href="novos-passos-com-r-part2.html#cb222-7"></a></span>
+<span id="cb222-8"><a href="novos-passos-com-r-part2.html#cb222-8"></a><span class="co"># chamada da função</span></span>
+<span id="cb222-9"><a href="novos-passos-com-r-part2.html#cb222-9"></a>sua_funcao</span></code></pre></div>
+<p>Por exemplo, vamos criar uma função que, dado uma série temporal de retornos, exibe algumas estatísticas:</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="novos-passos-com-r-part2.html#cb223-1"></a>analisar_retorno &lt;-<span class="st"> </span><span class="cf">function</span>(x){</span>
+<span id="cb223-2"><a href="novos-passos-com-r-part2.html#cb223-2"></a>  <span class="co"># x é um nome qualquer que, no escopo da função, diz respeito ao objeto</span></span>
+<span id="cb223-3"><a href="novos-passos-com-r-part2.html#cb223-3"></a>  <span class="co"># que será passado como input</span></span>
+<span id="cb223-4"><a href="novos-passos-com-r-part2.html#cb223-4"></a>  <span class="kw">print</span>(<span class="st">&quot;Média: &quot;</span> )</span>
+<span id="cb223-5"><a href="novos-passos-com-r-part2.html#cb223-5"></a>  <span class="kw">print</span>(<span class="kw">mean</span>(x))</span>
+<span id="cb223-6"><a href="novos-passos-com-r-part2.html#cb223-6"></a>  <span class="kw">print</span>(<span class="st">&quot;Desvio padrão: &quot;</span>)</span>
+<span id="cb223-7"><a href="novos-passos-com-r-part2.html#cb223-7"></a>  <span class="kw">print</span>(<span class="kw">sd</span>(x))</span>
+<span id="cb223-8"><a href="novos-passos-com-r-part2.html#cb223-8"></a>  <span class="kw">print</span>(<span class="st">&quot;Mediana: &quot;</span>)</span>
+<span id="cb223-9"><a href="novos-passos-com-r-part2.html#cb223-9"></a>  <span class="kw">print</span>(<span class="kw">median</span>(x))</span>
+<span id="cb223-10"><a href="novos-passos-com-r-part2.html#cb223-10"></a>  </span>
+<span id="cb223-11"><a href="novos-passos-com-r-part2.html#cb223-11"></a>}</span></code></pre></div>
+<p>Vamos então aplicar às séries de retorno do nosso dataset:</p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="novos-passos-com-r-part2.html#cb224-1"></a><span class="kw">analisar_retorno</span>(df<span class="op">$</span>retorno_diario_petr4)</span></code></pre></div>
+<pre><code>## [1] &quot;Média: &quot;
+## [1] NA
+## [1] &quot;Desvio padrão: &quot;
+## [1] NA
+## [1] &quot;Mediana: &quot;
+## [1] NA</code></pre>
+<p>Veja que é necessário alterar o corpo da função para que as funções ignorem a presença de <code>NA</code>s nos dados.</p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="novos-passos-com-r-part2.html#cb226-1"></a>analisar_retorno &lt;-<span class="st"> </span><span class="cf">function</span>(x){</span>
+<span id="cb226-2"><a href="novos-passos-com-r-part2.html#cb226-2"></a>  <span class="co"># x é um nome qualquer que, no escopo da função, diz respeito ao objeto</span></span>
+<span id="cb226-3"><a href="novos-passos-com-r-part2.html#cb226-3"></a>  <span class="co"># que será passado como input</span></span>
+<span id="cb226-4"><a href="novos-passos-com-r-part2.html#cb226-4"></a>  <span class="kw">print</span>(<span class="st">&quot;Média: &quot;</span> )</span>
+<span id="cb226-5"><a href="novos-passos-com-r-part2.html#cb226-5"></a>  <span class="kw">print</span>(<span class="kw">mean</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb226-6"><a href="novos-passos-com-r-part2.html#cb226-6"></a>  <span class="kw">print</span>(<span class="st">&quot;Desvio padrão: &quot;</span>)</span>
+<span id="cb226-7"><a href="novos-passos-com-r-part2.html#cb226-7"></a>  <span class="kw">print</span>(<span class="kw">sd</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb226-8"><a href="novos-passos-com-r-part2.html#cb226-8"></a>  <span class="kw">print</span>(<span class="st">&quot;Mediana: &quot;</span>)</span>
+<span id="cb226-9"><a href="novos-passos-com-r-part2.html#cb226-9"></a>  <span class="kw">print</span>(<span class="kw">median</span>(x, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb226-10"><a href="novos-passos-com-r-part2.html#cb226-10"></a>  </span>
+<span id="cb226-11"><a href="novos-passos-com-r-part2.html#cb226-11"></a>}</span></code></pre></div>
+<p>Agora sim:</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="novos-passos-com-r-part2.html#cb227-1"></a><span class="kw">analisar_retorno</span>(df<span class="op">$</span>retorno_diario_abev3)</span></code></pre></div>
+<pre><code>## [1] &quot;Média: &quot;
+## [1] 0.0002691528
+## [1] &quot;Desvio padrão: &quot;
+## [1] 0.01713899
+## [1] &quot;Mediana: &quot;
+## [1] 0</code></pre>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="novos-passos-com-r-part2.html#cb229-1"></a><span class="kw">analisar_retorno</span>(df<span class="op">$</span>retorno_diario_petr4)</span></code></pre></div>
+<pre><code>## [1] &quot;Média: &quot;
+## [1] 0.001309632
+## [1] &quot;Desvio padrão: &quot;
+## [1] 0.03378723
+## [1] &quot;Mediana: &quot;
+## [1] 0.001014129</code></pre>
+</div>
+<div id="listas" class="section level2">
+<h2><span class="header-section-number">2.10</span> Listas</h2>
+<p>Nós já falamos sobre vetores, que são as principais estruturas unidimensionais de dados e que só aceitam elementos da mesma classe:</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="novos-passos-com-r-part2.html#cb231-1"></a>a &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="st">&quot;c&quot;</span>, <span class="dv">4</span>)</span>
+<span id="cb231-2"><a href="novos-passos-com-r-part2.html#cb231-2"></a><span class="kw">class</span>(a)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>O R também possui uma estrutura de dados que pode armazenar, literalmente, qualquer tipo de objeto: as listas, criadas com a função <code>list()</code>.</p>
+<p>No exemplo abaixo uma série de objetos de classes diferentes são armazenadas:</p>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="novos-passos-com-r-part2.html#cb233-1"></a>data_frame &lt;-<span class="st"> </span><span class="kw">head</span>(iris)</span>
+<span id="cb233-2"><a href="novos-passos-com-r-part2.html#cb233-2"></a>elemento_unico_inteiro &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb233-3"><a href="novos-passos-com-r-part2.html#cb233-3"></a>um_na &lt;-<span class="st"> </span><span class="ot">NA</span></span>
+<span id="cb233-4"><a href="novos-passos-com-r-part2.html#cb233-4"></a>vetor_string &lt;-<span class="st"> </span>letters[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</span>
+<span id="cb233-5"><a href="novos-passos-com-r-part2.html#cb233-5"></a></span>
+<span id="cb233-6"><a href="novos-passos-com-r-part2.html#cb233-6"></a>minha_lista &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">data_frame =</span> data_frame, </span>
+<span id="cb233-7"><a href="novos-passos-com-r-part2.html#cb233-7"></a>                    <span class="dt">elemento_unico_inteiro =</span> elemento_unico_inteiro, </span>
+<span id="cb233-8"><a href="novos-passos-com-r-part2.html#cb233-8"></a>                    <span class="co"># este elemento abaixo não vai possuir um nome</span></span>
+<span id="cb233-9"><a href="novos-passos-com-r-part2.html#cb233-9"></a>                    um_na, </span>
+<span id="cb233-10"><a href="novos-passos-com-r-part2.html#cb233-10"></a>                    <span class="dt">vetor_string =</span> vetor_string)</span>
+<span id="cb233-11"><a href="novos-passos-com-r-part2.html#cb233-11"></a></span>
+<span id="cb233-12"><a href="novos-passos-com-r-part2.html#cb233-12"></a><span class="co"># Conferindo o output: </span></span>
+<span id="cb233-13"><a href="novos-passos-com-r-part2.html#cb233-13"></a>minha_lista</span></code></pre></div>
+<pre><code>## $data_frame
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa
+## 
+## $elemento_unico_inteiro
+## [1] 1
+## 
+## [[3]]
+## [1] NA
+## 
+## $vetor_string
+## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
+<p>Pelo output já percebemos que a maneira como extraímos um elemento de um vetor é diferente da de uma lista. No primeiro, usamos um par de colchetes (<code>[]</code>), no segundo usamos dois pares (<code>[[]]</code>) ou também cifrão (<code>$</code>), que só funciona caso o elemento da lista possua um nome.</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="novos-passos-com-r-part2.html#cb235-1"></a>minha_lista[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="novos-passos-com-r-part2.html#cb237-1"></a>minha_lista<span class="op">$</span>vetor_string</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="novos-passos-com-r-part2.html#cb239-1"></a><span class="co"># o comando abaixo retorna NULL pq &quot;um_na&quot; não é um nome de</span></span>
+<span id="cb239-2"><a href="novos-passos-com-r-part2.html#cb239-2"></a><span class="co"># nenhum elemento da lista</span></span>
+<span id="cb239-3"><a href="novos-passos-com-r-part2.html#cb239-3"></a>minha_lista<span class="op">$</span>um_na</span></code></pre></div>
+<pre><code>## NULL</code></pre>
+<p>A maneira mais produtiva de se usar listas em seus projetos é para automatizar a aplicação de uma determinada função (ou funções) para todos os elementos de uma lista. Suponha, por exemplo, que você precise importar dezenas de arquivos csv, fazer algumas limpezas e manipulações de dados, construir modelos de Machine Learning e depois salvar os resultados no computador. Seria muito tedioso fazer isso manualmente, mas é para esse tipo de operação que listas se tornam muito úteis.</p>
+<p>O pacote <code>purrr</code> possui uma série de comandos para aplicar funções a elementos de uma lista. O R base até possui as funções da família <em>apply</em> (<code>apply()</code>, <code>tapply()</code>, <code>lapply()</code>, etc), mas estas estão entrando em desuso devido à adoção do <code>purrr</code>.</p>
+</div>
+<div id="purrrmap" class="section level2">
+<h2><span class="header-section-number">2.11</span> purrr::map</h2>
+<p>Nós já vimos que o R aplica uma função a cada elemento de um vetor de uma forma muito simples:</p>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="novos-passos-com-r-part2.html#cb241-1"></a>meu_vetor &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">-3</span>, <span class="dv">5</span>, <span class="dv">-10</span>)</span>
+<span id="cb241-2"><a href="novos-passos-com-r-part2.html#cb241-2"></a><span class="co"># extrair o modulo de cada elemento do vetor acima</span></span>
+<span id="cb241-3"><a href="novos-passos-com-r-part2.html#cb241-3"></a><span class="kw">abs</span>(meu_vetor)</span></code></pre></div>
+<pre><code>## [1]  1  3  5 10</code></pre>
+<p>No caso de listas, não é bem assim que funciona:</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="novos-passos-com-r-part2.html#cb243-1"></a>minha_lista &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
+<span id="cb243-2"><a href="novos-passos-com-r-part2.html#cb243-2"></a><span class="kw">abs</span>(minha_lista)</span></code></pre></div>
+<pre><code>## Error in abs(minha_lista): non-numeric argument to mathematical function</code></pre>
+<p>É necessário usar uma outra função para aplicar uma função a cada elemento da lista. É aqui que introduzimos a função <code>map()</code>, do pacote <code>purrr</code>. O primeiro argumento é a estrutura de dados sobre a qual se deseja iterar e o segundo é a função que será aplicada a cada elemento.</p>
+<p>O pacote <code>purrr</code> faz parte do <code>tidyverse</code>.</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="novos-passos-com-r-part2.html#cb245-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb245-2"><a href="novos-passos-com-r-part2.html#cb245-2"></a><span class="kw">library</span>(purrr)</span>
+<span id="cb245-3"><a href="novos-passos-com-r-part2.html#cb245-3"></a><span class="kw">map</span>(minha_lista, abs)</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 3
+## 
+## [[3]]
+## [1] 5
+## 
+## [[4]]
+## [1] 10</code></pre>
+<p>Veja a diferença no output:</p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="novos-passos-com-r-part2.html#cb247-1"></a><span class="kw">class</span>(minha_lista)</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="novos-passos-com-r-part2.html#cb249-1"></a><span class="kw">map</span>(minha_lista, class)</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] &quot;numeric&quot;
+## 
+## [[2]]
+## [1] &quot;numeric&quot;
+## 
+## [[3]]
+## [1] &quot;numeric&quot;
+## 
+## [[4]]
+## [1] &quot;numeric&quot;</code></pre>
+<p>De maneira genérica, é assim que são usados os parâmetros de <code>map()</code>:</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="novos-passos-com-r-part2.html#cb251-1"></a><span class="kw">map</span>(.x, .f, ...)</span>
+<span id="cb251-2"><a href="novos-passos-com-r-part2.html#cb251-2"></a><span class="co"># ou </span></span>
+<span id="cb251-3"><a href="novos-passos-com-r-part2.html#cb251-3"></a><span class="kw">map</span>(VETOR_OU_LISTA, FUNCAO_PARA_APLICAR, ARGUMENTOS_OPCIONAIS)</span>
+<span id="cb251-4"><a href="novos-passos-com-r-part2.html#cb251-4"></a><span class="co"># que é equivalente a </span></span>
+<span id="cb251-5"><a href="novos-passos-com-r-part2.html#cb251-5"></a>VETOR_OU_LISTA <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">map</span>(FUNCAO_PARA_APLICAR, ARGUMENTOS_OPCIONAIS)</span></code></pre></div>
+<p>Existem duas maneiras de especificar a função para usar no <code>map()</code>:</p>
+<ul>
+<li>Uma função existente</li>
+</ul>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="novos-passos-com-r-part2.html#cb252-1"></a><span class="co"># definir uma lista composta por vetores</span></span>
+<span id="cb252-2"><a href="novos-passos-com-r-part2.html#cb252-2"></a>v &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">v1 =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>), <span class="dt">v2 =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>), <span class="dt">v3 =</span> <span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>))</span>
+<span id="cb252-3"><a href="novos-passos-com-r-part2.html#cb252-3"></a><span class="co"># aplicar a raiz quadrada a todos os vetores</span></span>
+<span id="cb252-4"><a href="novos-passos-com-r-part2.html#cb252-4"></a><span class="kw">map</span>(v, sqrt)</span></code></pre></div>
+<pre><code>## $v1
+## [1] 1.000000 1.732051 2.236068
+## 
+## $v2
+## [1] 1.414214 2.000000 2.449490
+## 
+## $v3
+## [1] 2.645751 2.828427 3.000000</code></pre>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="novos-passos-com-r-part2.html#cb254-1"></a><span class="co"># calcular a soma dos elementos de cada vetor</span></span>
+<span id="cb254-2"><a href="novos-passos-com-r-part2.html#cb254-2"></a><span class="kw">map</span>(v, sum)</span></code></pre></div>
+<pre><code>## $v1
+## [1] 9
+## 
+## $v2
+## [1] 12
+## 
+## $v3
+## [1] 24</code></pre>
+<ul>
+<li>Uma função “anônima”, definida dentro da própria <code>map()</code>. Veja que, em <code>function(x)</code> abaixo, <code>x</code> é como se fosse uma representação genérica de cada elemento da lista <code>v</code>. Em inglês isso se chama placeholder.</li>
+</ul>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="novos-passos-com-r-part2.html#cb256-1"></a><span class="co"># elevar cada elemento de cada vetor ao quadrado</span></span>
+<span id="cb256-2"><a href="novos-passos-com-r-part2.html#cb256-2"></a><span class="kw">map</span>(v, <span class="cf">function</span>(x) x<span class="op">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## $v1
+## [1]  1  9 25
+## 
+## $v2
+## [1]  4 16 36
+## 
+## $v3
+## [1] 49 64 81</code></pre>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="novos-passos-com-r-part2.html#cb258-1"></a><span class="co"># elevar a soma dos elementos do vetor ao quadrado</span></span>
+<span id="cb258-2"><a href="novos-passos-com-r-part2.html#cb258-2"></a><span class="kw">map</span>(v, <span class="cf">function</span>(x) <span class="kw">sum</span>(x)<span class="op">^</span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## $v1
+## [1] 81
+## 
+## $v2
+## [1] 144
+## 
+## $v3
+## [1] 576</code></pre>
+</div>
+<div id="case-1" class="section level2">
+<h2><span class="header-section-number">2.12</span> Case 1</h2>
+<p>Dada série de preços de 2 ativos: f
+* fazer gráfico com 2 ativos<br />
+* calcular série de variação de preços dos ativos (retorno aritimético) - fazer gráfico do retorno<br />
+* com retornos dos 2 ativos calcular série de índices (usando cumprod) para cada ativo - fazer gráfico comparando 2 ativos dá até pra criar uma série de taxa de juros fixa acumulada (simulando um CDI no período)</p>
+</div>
+<div id="case-2" class="section level2">
+<h2><span class="header-section-number">2.13</span> Case 2</h2>
+<p>Dada uma matriz de variação de preços de ativos calcular para cada ativo as estatísticas descritivas: média, desvio padrão, máximo, mínimo e mediana.
+Calcular o IBOVESPA: pegar, no site da B3, os ativos que constituem o IBOVESPA, os pesos e as cotações e calcular o valor do índice.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fontes-de-dados-financeiros.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["curso_r_financas.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

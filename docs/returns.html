@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 4 Análise de Retornos | Tópicos de Finanças com R</title>
+  <meta name="description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 4 Análise de Retornos | Tópicos de Finanças com R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 4 Análise de Retornos | Tópicos de Finanças com R" />
+  
+  <meta name="twitter:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+<meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="fontes-de-dados-financeiros.html"/>
+<link rel="next" href="análise-de-risco.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tópicos de Finanças com R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Boas-vindas</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#sobre-os-instrutores"><i class="fa fa-check"></i>Sobre os instrutores</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Primeiros passos com R</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-que-é-r-e-por-que-devo-aprendê-lo"><i class="fa fa-check"></i><b>1.1</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#introdução-ao-rstudio"><i class="fa fa-check"></i><b>1.2</b> Introdução ao Rstudio</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#operações-aritméticas"><i class="fa fa-check"></i><b>1.3</b> Operações aritméticas</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#criação-de-variáveis-e-objetos"><i class="fa fa-check"></i><b>1.4</b> Criação de variáveis e objetos</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#estruturas-de-dados"><i class="fa fa-check"></i><b>1.5</b> Estruturas de dados</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#operadores-de-comparação"><i class="fa fa-check"></i><b>1.6</b> Operadores de comparação</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#conversões-de-tipos-de-variáveis"><i class="fa fa-check"></i><b>1.7</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="1.8" data-path="intro.html"><a href="intro.html#vetores"><i class="fa fa-check"></i><b>1.8</b> Vetores</a></li>
+<li class="chapter" data-level="1.9" data-path="intro.html"><a href="intro.html#matrizes"><i class="fa fa-check"></i><b>1.9</b> Matrizes</a></li>
+<li class="chapter" data-level="1.10" data-path="intro.html"><a href="intro.html#data-frames"><i class="fa fa-check"></i><b>1.10</b> Data frames</a></li>
+<li class="chapter" data-level="1.11" data-path="intro.html"><a href="intro.html#funções"><i class="fa fa-check"></i><b>1.11</b> Funções</a></li>
+<li class="chapter" data-level="1.12" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>1.12</b> Pacotes</a></li>
+<li class="chapter" data-level="1.13" data-path="intro.html"><a href="intro.html#exercícios"><i class="fa fa-check"></i><b>1.13</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html"><i class="fa fa-check"></i><b>2</b> Novos passos com R {part2}</a><ul>
+<li class="chapter" data-level="2.1" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#leitura-de-arquivos-csv"><i class="fa fa-check"></i><b>2.1</b> Leitura de arquivos csv</a></li>
+<li class="chapter" data-level="2.2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#gráficos-com-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Gráficos com ggplot2</a></li>
+<li class="chapter" data-level="2.3" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#trabalhando-com-datas"><i class="fa fa-check"></i><b>2.3</b> Trabalhando com datas</a></li>
+<li class="chapter" data-level="2.4" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#parsear-datas-e-horários"><i class="fa fa-check"></i><b>2.4</b> ‘Parsear’ datas e horários</a></li>
+<li class="chapter" data-level="2.5" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#extrair-componentes-de-uma-data"><i class="fa fa-check"></i><b>2.5</b> Extrair componentes de uma data</a></li>
+<li class="chapter" data-level="2.6" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#operações-matemáticas-com-datas"><i class="fa fa-check"></i><b>2.6</b> Operações matemáticas com datas</a></li>
+<li class="chapter" data-level="2.7" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#if-else"><i class="fa fa-check"></i><b>2.7</b> If-else</a></li>
+<li class="chapter" data-level="2.8" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#loops"><i class="fa fa-check"></i><b>2.8</b> Loops</a></li>
+<li class="chapter" data-level="2.9" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#criado-suas-próprias-funções"><i class="fa fa-check"></i><b>2.9</b> Criado suas próprias funções</a></li>
+<li class="chapter" data-level="2.10" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#listas"><i class="fa fa-check"></i><b>2.10</b> Listas</a></li>
+<li class="chapter" data-level="2.11" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#purrrmap"><i class="fa fa-check"></i><b>2.11</b> purrr::map</a></li>
+<li class="chapter" data-level="2.12" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-1"><i class="fa fa-check"></i><b>2.12</b> Case 1</a></li>
+<li class="chapter" data-level="2.13" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-2"><i class="fa fa-check"></i><b>2.13</b> Case 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html"><i class="fa fa-check"></i><b>3</b> Fontes de dados financeiros</a><ul>
+<li class="chapter" data-level="3.1" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>3.1</b> Pacotes</a></li>
+<li class="chapter" data-level="3.2" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#manipulação-de-dados-com-xts-e-quantmod"><i class="fa fa-check"></i><b>3.2</b> Manipulação de dados com xts e quantmod</a></li>
+<li class="chapter" data-level="3.3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#helpers-do-quantmod-cl-op-hi-lo"><i class="fa fa-check"></i><b>3.3</b> Helpers do quantmod: Cl, Op, Hi, Lo</a></li>
+<li class="chapter" data-level="3.4" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#funções-de-gráficos-xts"><i class="fa fa-check"></i><b>3.4</b> Funções de gráficos xts</a></li>
+<li class="chapter" data-level="3.5" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento."><i class="fa fa-check"></i><b>3.5</b> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</a></li>
+<li class="chapter" data-level="3.6" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#case"><i class="fa fa-check"></i><b>3.6</b> Case</a></li>
+</ul></li>
+<li class="part"><span><b>I Aplicações</b></span></li>
+<li class="chapter" data-level="4" data-path="returns.html"><a href="returns.html"><i class="fa fa-check"></i><b>4</b> Análise de Retornos</a><ul>
+<li class="chapter" data-level="4.1" data-path="returns.html"><a href="returns.html#retornos-simples"><i class="fa fa-check"></i><b>4.1</b> Retornos simples</a></li>
+<li class="chapter" data-level="4.2" data-path="returns.html"><a href="returns.html#retornos-logaritimicos"><i class="fa fa-check"></i><b>4.2</b> Retornos logaritimicos</a></li>
+<li class="chapter" data-level="4.3" data-path="returns.html"><a href="returns.html#s:equivalent-returns"><i class="fa fa-check"></i><b>4.3</b> Relação entre os retornos simples e logaritimicos</a></li>
+<li class="chapter" data-level="4.4" data-path="returns.html"><a href="returns.html#porque-formas-diferentes-de-calcular-os-retornos"><i class="fa fa-check"></i><b>4.4</b> Porque formas diferentes de calcular os retornos?</a></li>
+<li class="chapter" data-level="4.5" data-path="returns.html"><a href="returns.html#retorno-esperado"><i class="fa fa-check"></i><b>4.5</b> Retorno esperado</a></li>
+<li class="chapter" data-level="4.6" data-path="returns.html"><a href="returns.html#risco-esperado"><i class="fa fa-check"></i><b>4.6</b> Risco esperado</a></li>
+<li class="chapter" data-level="4.7" data-path="returns.html"><a href="returns.html#exercícios---análise-de-retornos"><i class="fa fa-check"></i><b>4.7</b> Exercícios - Análise de Retornos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análise-de-risco.html"><a href="análise-de-risco.html"><i class="fa fa-check"></i><b>5</b> Análise de Risco</a><ul>
+<li class="chapter" data-level="5.1" data-path="análise-de-risco.html"><a href="análise-de-risco.html#visualização-dos-retornos"><i class="fa fa-check"></i><b>5.1</b> Visualização dos Retornos</a></li>
+<li class="chapter" data-level="5.2" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-estatística-dos-retornos"><i class="fa fa-check"></i><b>5.2</b> Análise Estatística dos Retornos</a></li>
+<li class="chapter" data-level="5.3" data-path="análise-de-risco.html"><a href="análise-de-risco.html#medidas-de-risco"><i class="fa fa-check"></i><b>5.3</b> Medidas de Risco</a></li>
+<li class="chapter" data-level="5.4" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-em-janela-móvel"><i class="fa fa-check"></i><b>5.4</b> Análise em Janela Móvel</a></li>
+<li class="chapter" data-level="5.5" data-path="análise-de-risco.html"><a href="análise-de-risco.html#túnel-de-volatilidade"><i class="fa fa-check"></i><b>5.5</b> Túnel de Volatilidade</a></li>
+<li class="chapter" data-level="5.6" data-path="análise-de-risco.html"><a href="análise-de-risco.html#comparando-ativos"><i class="fa fa-check"></i><b>5.6</b> Comparando Ativos</a></li>
+<li class="chapter" data-level="5.7" data-path="análise-de-risco.html"><a href="análise-de-risco.html#exercícios---análise-de-risco"><i class="fa fa-check"></i><b>5.7</b> Exercícios - Análise de Risco</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html"><i class="fa fa-check"></i><b>6</b> Análise de Carteiras</a><ul>
+<li class="chapter" data-level="6.1" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-de-ativos"><i class="fa fa-check"></i><b>6.1</b> Carteira de ativos</a></li>
+<li class="chapter" data-level="6.2" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-com-2-ativos"><i class="fa fa-check"></i><b>6.2</b> Carteira com 2 ativos</a></li>
+<li class="chapter" data-level="6.3" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#montando-uma-carteira"><i class="fa fa-check"></i><b>6.3</b> Montando uma carteira</a></li>
+<li class="chapter" data-level="6.4" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#rebalanceamento-da-carteira"><i class="fa fa-check"></i><b>6.4</b> Rebalanceamento da carteira</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tópicos de Finanças com R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="returns" class="section level1">
+<h1><span class="header-section-number">Capítulo 4</span> Análise de Retornos</h1>
+<p>Vamos considerar os seguintes investimentos em ações:</p>
+<ul>
+<li>Investimento em WEGE3 a R$ 42,03 em junho/2020 e venda em julho/2020 a R$ 67,32, lucro de R$ 25,29 por ação em 2 meses.</li>
+<li>Investimento em OIBR3 a R$ 0,49 em abril/2020 e venda em junho/2020 a R$ 1,20, lucro de R$ 0,71 por ação em 3 meses.</li>
+<li>Investimento em VVAR3 a R$ 4,65 em abril/2020 e venda em setembro/2020 a R$ 17,87, lucro de R$ 13,22 por ação em 6 meses.</li>
+</ul>
+<p>Qual investimento tem o melhor <em>retorno</em>?</p>
+<p>O investimento em WEGE3 apresenta o melhor resultado financeiro, pois é o que paga o maior <em>retorno</em> por ação, R$ 25,29.</p>
+<p>Calculando o resultado percentual temos</p>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="returns.html#cb349-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb349-2"><a href="returns.html#cb349-2"></a>  <span class="dt">WEGE3 =</span> (<span class="fl">67.32</span> <span class="op">-</span><span class="st"> </span><span class="fl">42.03</span>) <span class="op">/</span><span class="st"> </span><span class="fl">42.03</span>,</span>
+<span id="cb349-3"><a href="returns.html#cb349-3"></a>  <span class="dt">OIBR3 =</span> (<span class="fl">1.20</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.49</span>) <span class="op">/</span><span class="st"> </span><span class="fl">0.49</span>,</span>
+<span id="cb349-4"><a href="returns.html#cb349-4"></a>  <span class="dt">VVAR3 =</span> (<span class="fl">17.87</span> <span class="op">-</span><span class="st"> </span><span class="fl">4.65</span>) <span class="op">/</span><span class="st"> </span><span class="fl">4.65</span></span>
+<span id="cb349-5"><a href="returns.html#cb349-5"></a>)</span></code></pre></div>
+<pre><code>##     WEGE3     OIBR3     VVAR3 
+##  60.17131 144.89796 284.30108</code></pre>
+<p>O <em>retorno</em> <em>percentual</em> no período total da VVAR3 foi o dobro da OIBR3 e o quatro vezes o da WEGE3.</p>
+<p>Se ainda considerarmos o prazo do investimento de forma linear, ou seja, dividindo o retorno percentual pelo prazo em meses do investimento, temos:</p>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="returns.html#cb351-1"></a>meses &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">6</span>)</span>
+<span id="cb351-2"><a href="returns.html#cb351-2"></a></span>
+<span id="cb351-3"><a href="returns.html#cb351-3"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb351-4"><a href="returns.html#cb351-4"></a>  <span class="dt">WEGE3 =</span> (<span class="fl">67.32</span> <span class="op">-</span><span class="st"> </span><span class="fl">42.03</span>) <span class="op">/</span><span class="st"> </span><span class="fl">42.03</span>,</span>
+<span id="cb351-5"><a href="returns.html#cb351-5"></a>  <span class="dt">OIBR3 =</span> (<span class="fl">1.20</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.49</span>) <span class="op">/</span><span class="st"> </span><span class="fl">0.49</span>,</span>
+<span id="cb351-6"><a href="returns.html#cb351-6"></a>  <span class="dt">VVAR3 =</span> (<span class="fl">17.87</span> <span class="op">-</span><span class="st"> </span><span class="fl">4.65</span>) <span class="op">/</span><span class="st"> </span><span class="fl">4.65</span></span>
+<span id="cb351-7"><a href="returns.html#cb351-7"></a>) <span class="op">/</span><span class="st"> </span>meses</span></code></pre></div>
+<pre><code>##    WEGE3    OIBR3    VVAR3 
+## 30.08565 48.29932 47.38351</code></pre>
+<p>O <em>retorno</em> por mês da OIBR3 é um pouco maior que o retorno da VVAR3, na prática muito próximos.</p>
+<p>O que podemos extrair desses exemplos?</p>
+<ul>
+<li>Há diversas formas de avaliar o resultado entregue por um investimento: financeiro, percentual, ajustado ao prazo e outras formas.</li>
+<li><strong>retorno</strong> é um termo utilizado para fazer referência ao resultado de um investimento.</li>
+</ul>
+<p>Veremos nas próximas seções algumas formas de calcular o retorno de um investimento e como utilizar o retorno para fazer a análise de risco do investimento.</p>
+<p>O que são retornos?</p>
+<blockquote>
+<p>Os retornos (retornos financeiros) representam a variação no preço dos nossos investimentos.</p>
+</blockquote>
+<p>Exemplo: Variação do preço de fechamento do ETF BOVA11 entre 31-01-2020 e 30-09-2020.</p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="returns.html#cb353-1"></a><span class="kw">getSymbols</span>(<span class="st">&quot;BOVA11.SA&quot;</span>,</span>
+<span id="cb353-2"><a href="returns.html#cb353-2"></a>           <span class="dt">from =</span> <span class="st">&quot;2020-01-31&quot;</span>,</span>
+<span id="cb353-3"><a href="returns.html#cb353-3"></a>           <span class="dt">to =</span> <span class="st">&quot;2020-10-01&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;BOVA11.SA&quot;</code></pre>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="returns.html#cb355-1"></a><span class="kw">Cl</span>(BOVA11.SA)[<span class="kw">c</span>(<span class="st">&quot;2020-01-31&quot;</span>, <span class="st">&quot;2020-09-30&quot;</span>)] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
+<pre><code>## [1] 108.90  91.05</code></pre>
+<p>Vamos calcular a variação total dos preços usando a função <code>diff</code></p>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="returns.html#cb357-1"></a><span class="kw">Cl</span>(BOVA11.SA)[<span class="kw">c</span>(<span class="st">&quot;2020-01-31&quot;</span>, <span class="st">&quot;2020-09-30&quot;</span>)] <span class="op">%&gt;%</span></span>
+<span id="cb357-2"><a href="returns.html#cb357-2"></a><span class="st">  </span><span class="kw">as.numeric</span>() <span class="op">%&gt;%</span></span>
+<span id="cb357-3"><a href="returns.html#cb357-3"></a><span class="st">  </span><span class="kw">diff</span>()</span></code></pre></div>
+<pre><code>## [1] -17.85</code></pre>
+<p>Entre as datas 31-01-2020 e 30-09-2020 o cotação do BOVA11 perdeu R$ 17,85, pois temos uma variação negativa.
+Essa é a variação total, simplismente a diferença dos preços em instantes de tempo diferentes.</p>
+<p>Exemplo: Variação da cotação do Dólar Americano em Reais entre 31-01-2020 e 30-09-2020.</p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="returns.html#cb359-1"></a>USDBRL &lt;-<span class="st"> </span><span class="kw">get_currency</span>(<span class="st">&quot;USD&quot;</span>, <span class="dt">start_date =</span> <span class="st">&quot;2020-01-31&quot;</span>, <span class="dt">end_date =</span> <span class="st">&quot;2020-10-01&quot;</span>, <span class="dt">as =</span> <span class="st">&quot;xts&quot;</span>)</span>
+<span id="cb359-2"><a href="returns.html#cb359-2"></a></span>
+<span id="cb359-3"><a href="returns.html#cb359-3"></a><span class="kw">Ask</span>(USDBRL)[<span class="kw">c</span>(<span class="st">&quot;2020-01-31&quot;</span>, <span class="st">&quot;2020-09-30&quot;</span>)] <span class="op">%&gt;%</span></span>
+<span id="cb359-4"><a href="returns.html#cb359-4"></a><span class="st">  </span><span class="kw">as.numeric</span>()</span></code></pre></div>
+<pre><code>## [1] 4.2695 5.6407</code></pre>
+<p>Vamos calcular a variação total dos preços usando a função <code>diff</code></p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="returns.html#cb361-1"></a><span class="kw">Ask</span>(USDBRL)[<span class="kw">c</span>(<span class="st">&quot;2020-01-31&quot;</span>, <span class="st">&quot;2020-09-30&quot;</span>)] <span class="op">%&gt;%</span></span>
+<span id="cb361-2"><a href="returns.html#cb361-2"></a><span class="st">  </span><span class="kw">as.numeric</span>() <span class="op">%&gt;%</span></span>
+<span id="cb361-3"><a href="returns.html#cb361-3"></a><span class="st">  </span><span class="kw">diff</span>()</span></code></pre></div>
+<pre><code>## [1] 1.3712</code></pre>
+<p>Note que entre as datas 31-01-2020 e 30-09-2020 o cotação do Dólar Americano perdeu R$ 1,3712, pelo menos 1 ordem de grandeza menor que o BOVA11, em módulo.</p>
+<p>A variação total pode ser considerada uma medida de retorno, entretanto, ela está muito vinculada ao valor do ativo.
+Vamos considerar <span class="math inline">\(P_t\)</span> o valor do ativo em um instante <span class="math inline">\(t\)</span> qualquer.
+A <strong>variação</strong> deste ativo entre os instantes <span class="math inline">\(t\)</span> e <span class="math inline">\(t-1\)</span> é dada por:</p>
+<p><span class="math display">\[
+\Delta P_t = P_t - P_{t-1}
+\]</span></p>
+<p>Chamamos esta variação total de <span class="math inline">\(\Delta P_t\)</span> onde <span class="math inline">\(t\)</span> representa um instante qualquer no tempo e <span class="math inline">\(t-1\)</span> é o instante anterior na série.
+Em nosso exemplo <span class="math inline">\(t\)</span> é a primeira data e <span class="math inline">\(t-1\)</span> a segunda.</p>
+<p>Como observamos, no mesmo período, os dois ativos apresentam medidas muito diferentes, logo, com esta medida é difícil comparar os 2 ativos.</p>
+<!-- Pergunta: Quanto de retorno teríamos se tivessemos investido a mesma quantia em ambos os ativos? -->
+<p>Há duas formas de calcular os retornos de maneira que possamos comparar os investimentos.</p>
+<ol style="list-style-type: decimal">
+<li>Retornos Simples: calculados a partir da variação percentual dos preços com referência ao valor inicial</li>
+<li>Retornos Logarítimicos: calculados a partir da variação do logarítimo dos preços</li>
+</ol>
+<p>Nas próximas seções vamos detalhar estes tipos de retornos e como calculá-los.</p>
+<div id="retornos-simples" class="section level2">
+<h2><span class="header-section-number">4.1</span> Retornos simples</h2>
+<p>Os retornos simples são a variação percentual dos preços de um ativo.</p>
+<p>Do exemplo do BOVA11 temos a diferença dos preços nas datas 31-01-2020 e 30-09-2020.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="returns.html#cb363-1"></a><span class="kw">Cl</span>(BOVA11.SA)[<span class="kw">c</span>(<span class="st">&quot;2020-01-31&quot;</span>, <span class="st">&quot;2020-09-30&quot;</span>)] <span class="op">%&gt;%</span></span>
+<span id="cb363-2"><a href="returns.html#cb363-2"></a><span class="st">  </span><span class="kw">as.numeric</span>() <span class="op">%&gt;%</span></span>
+<span id="cb363-3"><a href="returns.html#cb363-3"></a><span class="st">  </span><span class="kw">diff</span>()</span></code></pre></div>
+<pre><code>## [1] -17.85</code></pre>
+<p>Dada a diferença, só precisamos dividir pelo preço inicial, na data 31-01-2020.</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="returns.html#cb365-1"></a>diff_ &lt;-<span class="st"> </span><span class="kw">Cl</span>(BOVA11.SA)[<span class="kw">c</span>(<span class="st">&quot;2020-01-31&quot;</span>, <span class="st">&quot;2020-09-30&quot;</span>)] <span class="op">%&gt;%</span></span>
+<span id="cb365-2"><a href="returns.html#cb365-2"></a><span class="st">  </span><span class="kw">as.numeric</span>() <span class="op">%&gt;%</span></span>
+<span id="cb365-3"><a href="returns.html#cb365-3"></a><span class="st">  </span><span class="kw">diff</span>()</span>
+<span id="cb365-4"><a href="returns.html#cb365-4"></a></span>
+<span id="cb365-5"><a href="returns.html#cb365-5"></a>ini_price &lt;-<span class="st"> </span><span class="kw">Cl</span>(BOVA11.SA)[<span class="st">&quot;2020-01-31&quot;</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span>
+<span id="cb365-6"><a href="returns.html#cb365-6"></a></span>
+<span id="cb365-7"><a href="returns.html#cb365-7"></a>diff_ <span class="op">/</span><span class="st"> </span>ini_price</span></code></pre></div>
+<pre><code>## [1] -0.1639118</code></pre>
+<p>O BOVA11 apresentou uma variação negativa de 16,39% no período.</p>
+<p>Usando os dados do Dólar Americano temos</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="returns.html#cb367-1"></a>diff_ &lt;-<span class="st"> </span><span class="kw">Ask</span>(USDBRL)[<span class="kw">c</span>(<span class="st">&quot;2020-01-31&quot;</span>, <span class="st">&quot;2020-09-30&quot;</span>)] <span class="op">%&gt;%</span></span>
+<span id="cb367-2"><a href="returns.html#cb367-2"></a><span class="st">  </span><span class="kw">as.numeric</span>() <span class="op">%&gt;%</span></span>
+<span id="cb367-3"><a href="returns.html#cb367-3"></a><span class="st">  </span><span class="kw">diff</span>()</span>
+<span id="cb367-4"><a href="returns.html#cb367-4"></a></span>
+<span id="cb367-5"><a href="returns.html#cb367-5"></a>ini_price &lt;-<span class="st"> </span><span class="kw">Ask</span>(USDBRL)[<span class="st">&quot;2020-01-31&quot;</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span>
+<span id="cb367-6"><a href="returns.html#cb367-6"></a></span>
+<span id="cb367-7"><a href="returns.html#cb367-7"></a>diff_ <span class="op">/</span><span class="st"> </span>ini_price</span></code></pre></div>
+<pre><code>## [1] 0.3211617</code></pre>
+<p>O Dólar Americano apresentou uma variação positiva de 32,11% no período, aproximadamente o dobro da variação do BOVA11, em módulo.</p>
+<p>Colocando em equação, a variação percentual é dada pela divisão de <span class="math inline">\(\Delta P_t\)</span> pelo seu valor inicial, <span class="math inline">\(P_{t-1}\)</span>, dessa forma calculamos o retorno simples <span class="math inline">\(R_t\)</span>.</p>
+<p><span class="math display" id="eq:simple-return">\[\begin{equation}
+R_t = \frac{\Delta P_t}{P_{t-1}} = \frac{P_t - P_{t-1}}{P_{t-1}} = \frac{P_t}{P_{t-1}} - 1
+\tag{4.1}
+\end{equation}\]</span></p>
+<p>O cálculo do retorno simples para dois instantes de tempo é útil para cálculos isolados, na prática queremos calcular retornos compostos em diferentes períodos em sequência.
+Queremos responder a perguntas como:</p>
+<ul>
+<li>Para uma série de preços diários de um ativo, calculamos os retornos simples diários, qual é a média dos retornos diários no período?</li>
+<li>Para uma série de retornos diários de um ativo, como calcular o retorno mensal?</li>
+<li>Dado o retorno mensal, qual é o retorno médio diário?</li>
+</ul>
+<div id="retornos-simples-multiperíodo" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Retornos Simples Multiperíodo</h3>
+<p>Vamos calcular os retornos simples a partir de uma série de preços.
+Com uma série temporal no R calculamos a variação usando a função <code>diff</code> para a série do Dólar Americano entre as datas 01-09-2020 e 04-09-2020.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="returns.html#cb369-1"></a>USDBRL &lt;-<span class="st"> </span><span class="kw">get_currency</span>(<span class="st">&quot;USD&quot;</span>,</span>
+<span id="cb369-2"><a href="returns.html#cb369-2"></a>                       <span class="dt">start_date =</span> <span class="st">&quot;2020-09-01&quot;</span>,</span>
+<span id="cb369-3"><a href="returns.html#cb369-3"></a>                       <span class="dt">end_date =</span> <span class="st">&quot;2020-09-04&quot;</span>,</span>
+<span id="cb369-4"><a href="returns.html#cb369-4"></a>                       <span class="dt">as =</span> <span class="st">&quot;xts&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb369-5"><a href="returns.html#cb369-5"></a><span class="st">  </span><span class="kw">Ask</span>()</span>
+<span id="cb369-6"><a href="returns.html#cb369-6"></a><span class="kw">merge</span>(</span>
+<span id="cb369-7"><a href="returns.html#cb369-7"></a>  USDBRL <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setNames</span>(<span class="st">&quot;P_t&quot;</span>),</span>
+<span id="cb369-8"><a href="returns.html#cb369-8"></a>  <span class="kw">diff</span>(USDBRL) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setNames</span>(<span class="st">&quot;diff&quot;</span>)</span>
+<span id="cb369-9"><a href="returns.html#cb369-9"></a>)</span></code></pre></div>
+<pre><code>##               P_t    diff
+## 2020-09-01 5.3732      NA
+## 2020-09-02 5.3741  0.0009
+## 2020-09-03 5.3079 -0.0662
+## 2020-09-04 5.2848 -0.0231</code></pre>
+<p>O primeiro elemento do vetor de diferenças é um <code>NA</code> porque o cálculo das diferenças é entre o elemento corrente com o anterior e para o primeiro elemento não há um elemento anterior para realizar o cálculo, dessa forma o R mantém a estrutura de índices e indica que o resultado para o índice em questão não está disponível.</p>
+<blockquote>
+<p>Usamos <code>setNames</code> para renomear <code>diff(USDBRL)</code> que vem com o nome <code>ask</code>, que é o mesmo da série original.
+Isso é interessante e uma ótima alternativa para organizar a apresentação dos dados.
+Usamos também a função <code>merge</code> para <em>juntar</em> as séries de preço e diferenças.</p>
+</blockquote>
+<p>A série <code>diff</code> é a série de diferenças, logo, representa <span class="math inline">\(\Delta P_t\)</span>.</p>
+<p>Para realizar este cálculo de <span class="math inline">\(R_t\)</span> no R é necessário obter a série de <span class="math inline">\(P_{t-1}\)</span>.
+Isso pode ser feito com a função <code>lag.xts</code> da série temporal.</p>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="returns.html#cb371-1"></a><span class="kw">merge</span>(</span>
+<span id="cb371-2"><a href="returns.html#cb371-2"></a>  USDBRL <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setNames</span>(<span class="st">&quot;P_t&quot;</span>),</span>
+<span id="cb371-3"><a href="returns.html#cb371-3"></a>  <span class="kw">lag.xts</span>(USDBRL) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setNames</span>(<span class="st">&quot;P_t1&quot;</span>),</span>
+<span id="cb371-4"><a href="returns.html#cb371-4"></a>  <span class="kw">diff</span>(USDBRL) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setNames</span>(<span class="st">&quot;diff&quot;</span>)</span>
+<span id="cb371-5"><a href="returns.html#cb371-5"></a>)</span></code></pre></div>
+<pre><code>##               P_t   P_t1    diff
+## 2020-09-01 5.3732     NA      NA
+## 2020-09-02 5.3741 5.3732  0.0009
+## 2020-09-03 5.3079 5.3741 -0.0662
+## 2020-09-04 5.2848 5.3079 -0.0231</code></pre>
+<p>Note que essa função desloca a série tempora em 1 elemento adiante.
+Aqui a coluna <code>P_t1</code> refere-se a <span class="math inline">\(P_{t-1}\)</span>.
+Uma boa forma de ler esse resultado é que em <span class="math inline">\(t\)</span> igual a <code>2020-09-02</code>, <span class="math inline">\(P_{t-1}\)</span> é <code>5.3732</code>, que é o valor de <span class="math inline">\(P_t\)</span> quando <span class="math inline">\(t\)</span> é <code>2020-09-01</code>, ou seja, o instante anterior.</p>
+<p>Assim, o retorno <span class="math inline">\(R_t\)</span> é calculado no R da seguinte maneira:</p>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="returns.html#cb373-1"></a>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">diff</span>(USDBRL) <span class="op">/</span><span class="st"> </span><span class="kw">lag.xts</span>(USDBRL)) <span class="op">%&gt;%</span></span>
+<span id="cb373-2"><a href="returns.html#cb373-2"></a><span class="st">  </span><span class="kw">setNames</span>(<span class="st">&quot;R_t&quot;</span>)</span></code></pre></div>
+<pre><code>##                   R_t
+## 2020-09-01         NA
+## 2020-09-02  0.0167498
+## 2020-09-03 -1.2318342
+## 2020-09-04 -0.4352004</code></pre>
+<p>Note a multiplicação por 100 no código R, isso ajuda a interpretar o resultado.
+De forma prática observamos que do segundo para o terceiro dia tivemos um retorno negativo de mais de 1% na cotação do dólar, por exemplo.</p>
+<p>Uma outra forma de calcular retornos simples é utilizando a função <code>Return.calculate</code> do pacote <code>PerformanceAnalytics</code>.</p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="returns.html#cb375-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">Return.calculate</span>(USDBRL, <span class="dt">method =</span> <span class="st">&quot;discrete&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb375-2"><a href="returns.html#cb375-2"></a><span class="st">  </span><span class="kw">setNames</span>(<span class="st">&quot;R_t&quot;</span>)</span></code></pre></div>
+<pre><code>##                   R_t
+## 2020-09-01         NA
+## 2020-09-02  0.0167498
+## 2020-09-03 -1.2318342
+## 2020-09-04 -0.4352004</code></pre>
+<p>Dessa forma calculamos os retornos simples para uma série temporal.
+Neste exemplo calculamos os retornos diários, pois a série é de cotações diárias.
+É comum trabalharmos com séries com períodos maiores como séries semanais, mensais ou anuais.
+Logo, utilizando ainda a série do Dólar Americano, vamos obter a série mensal de preços e desta série vamos obter a série de retornos mensais para o ano de 2019.</p>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="returns.html#cb377-1"></a>USDBRL_<span class="dv">2019</span> &lt;-<span class="st"> </span><span class="kw">get_currency</span>(<span class="st">&quot;USD&quot;</span>,</span>
+<span id="cb377-2"><a href="returns.html#cb377-2"></a>                            <span class="dt">start_date =</span> <span class="st">&quot;2018-12-31&quot;</span>,</span>
+<span id="cb377-3"><a href="returns.html#cb377-3"></a>                            <span class="dt">end_date =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
+<span id="cb377-4"><a href="returns.html#cb377-4"></a>                            <span class="dt">as =</span> <span class="st">&quot;xts&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb377-5"><a href="returns.html#cb377-5"></a><span class="st">  </span><span class="kw">Ask</span>()</span>
+<span id="cb377-6"><a href="returns.html#cb377-6"></a>USDBRL_<span class="dv">2019</span>_monthly &lt;-<span class="st"> </span><span class="kw">to.monthly</span>(USDBRL_<span class="dv">2019</span>, <span class="dt">indexAt =</span> <span class="st">&quot;firstof&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb377-7"><a href="returns.html#cb377-7"></a><span class="st">  </span><span class="kw">Cl</span>()</span>
+<span id="cb377-8"><a href="returns.html#cb377-8"></a>USDBRL_<span class="dv">2019</span>_monthly</span></code></pre></div>
+<pre><code>##            USDBRL_2019.Close
+## 2018-12-01            3.8748
+## 2019-01-01            3.6519
+## 2019-02-01            3.7385
+## 2019-03-01            3.8967
+## 2019-04-01            3.9453
+## 2019-05-01            3.9407
+## 2019-06-01            3.8322
+## 2019-07-01            3.7649
+## 2019-08-01            4.1385
+## 2019-09-01            4.1644
+## 2019-10-01            4.0041
+## 2019-11-01            4.2240
+## 2019-12-01            4.0307</code></pre>
+<p>Note que aqui o argumento <code>start_date = "2018-12-31"</code>, definimos dessa maneira para que a série de preços começe com os dados de dezembro/2018 e assim ao construirmos a série mensal para o cálculo dos retornos tenhamos o retorno de janeiro/2019.
+De outra forma teríamos o retorno de janeiro/2019 igual a <code>NA</code>.</p>
+<p>Agora, utilizando a função <code>Return.calculate</code>, vamos calcular os retornos simples para a série mensal de cotações do Dólar Americano.</p>
+<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="returns.html#cb379-1"></a><span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>_monthly, <span class="dt">method =</span> <span class="st">&quot;discrete&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb379-2"><a href="returns.html#cb379-2"></a><span class="st">  </span><span class="kw">setNames</span>(<span class="st">&quot;R_t&quot;</span>) -&gt;<span class="st"> </span>USDBRL_<span class="dv">2019</span>_monthly_returns</span>
+<span id="cb379-3"><a href="returns.html#cb379-3"></a></span>
+<span id="cb379-4"><a href="returns.html#cb379-4"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>USDBRL_<span class="dv">2019</span>_monthly_returns</span></code></pre></div>
+<pre><code>##                   R_t
+## 2018-12-01         NA
+## 2019-01-01 -5.7525550
+## 2019-02-01  2.3713683
+## 2019-03-01  4.2316437
+## 2019-04-01  1.2472092
+## 2019-05-01 -0.1165944
+## 2019-06-01 -2.7533179
+## 2019-07-01 -1.7561714
+## 2019-08-01  9.9232383
+## 2019-09-01  0.6258306
+## 2019-10-01 -3.8492940
+## 2019-11-01  5.4918708
+## 2019-12-01 -4.5762311</code></pre>
+<p>Visualizando os dados em um gráfico de barras.</p>
+<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="returns.html#cb381-1"></a><span class="kw">barplot</span>(USDBRL_<span class="dv">2019</span>_monthly_returns <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="dt">las =</span> <span class="dv">2</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">10</span>))</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+</div>
+<div id="entendendo-os-preços-em-função-dos-retornos" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Entendendo os preços em função dos retornos</h3>
+<p>Vimos com escrever os retornos em função dos preços, uma outra forma de entender os retornos simples é inverter a Eq.<a href="returns.html#eq:simple-return">(4.1)</a> e escrevê-la em termos do preço <span class="math inline">\(P_t\)</span>.</p>
+<p><span class="math display" id="eq:arithmetic-price">\[\begin{equation}
+P_t = P_{t-1} (1 + R_t) = P_{t-1} + R_t P_{t-1}
+\tag{4.2}
+\end{equation}\]</span></p>
+<p>O preço <span class="math inline">\(P_t\)</span> pode ser interpretado como um choque do retorno <span class="math inline">\(R_t\)</span> no preço <span class="math inline">\(P_{t-1}\)</span>.
+O retorno <span class="math inline">\(R_t\)</span> está associado ao período entre os instantes <span class="math inline">\(t\)</span> e <span class="math inline">\(t-1\)</span>, de forma análoga, <span class="math inline">\(R_{t-1}\)</span> está associado aos instantes <span class="math inline">\(t-1\)</span> e <span class="math inline">\(t-2\)</span>, e assim por diante para diferentes valores de <span class="math inline">\(t\)</span>.
+Por isso o retorno simples também é conhecido como <strong>retorno discreto</strong>, pois, para cada período entre instantes dois instantes de tempo temos um choque discreto associado a cada movimento dos preços.
+Note que na função <code>Return.calculate</code> temos o argumento <code>method="discrete"</code>.</p>
+</div>
+<div id="composição-de-retornos-simples" class="section level3">
+<h3><span class="header-section-number">4.1.3</span> Composição de retornos simples</h3>
+<p>Vimos como obter a série de retornos a partir da série de preços de um ativo.
+Agora vamos ver como obter a série de preços a partir da série de retornos e para isso é necessário entender como compor os retornos.</p>
+<p>A composição de retornos ajuda a responder a pergunta: Dado que temos os retornos simples de dois meses consecutivos, qual é o retorno total nos dois meses?
+Para obter os retornos mensais partimos da série de preços diários, para obter os retornos de 2 meses podemos partir da série de preços de 2 meses, mas este período não possui uma função com <code>to.monthly</code> de forma que dificulta um pouco o trabalho.
+Contudo, podemos partir da série de retornos mensais e criar uma série de retornos bimestrais compondo os retornos mensais.
+Isso vale para dois meses e vale para <span class="math inline">\(N\)</span> meses, podemos construir séries de retornos trimestrais, semestrais e assim por diante.</p>
+<p>Vamos começar com um exemplo estático.
+Da série <code>USDBRL_2019_monthly_returns</code> vamos pegar os retonos dos últimos 2 meses, novembro e dezembro de 2019.</p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="returns.html#cb382-1"></a><span class="kw">last</span>(USDBRL_<span class="dv">2019</span>_monthly_returns <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##                  R_t
+## 2019-11-01  5.491871
+## 2019-12-01 -4.576231</code></pre>
+<p>Em novembro/2019 tivemos um retorno de 5,49% e em dezembro/2019 um retorno negativo de -4,57%.
+O retorno total no período é dado pela equação</p>
+<p><span class="math display" id="eq:simple-return-composed-2-months">\[\begin{equation}
+R_{nov-dez/19} = (1 + R_{nov/19})(1 + R_{dez/19}) - 1
+\tag{4.3}
+\end{equation}\]</span></p>
+<p>Dessa forma, no R, utilizamos a função <code>prod</code> para calcular o retorno composto para este período.</p>
+<p>Modo base R:</p>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="returns.html#cb384-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>(<span class="kw">prod</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">last</span>(USDBRL_<span class="dv">2019</span>_monthly_returns, <span class="dv">2</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 0.6643191</code></pre>
+<p>Modo tidyverse:</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="returns.html#cb386-1"></a><span class="kw">last</span>(USDBRL_<span class="dv">2019</span>_monthly_returns, <span class="dv">2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb386-2"><a href="returns.html#cb386-2"></a><span class="st">  `</span><span class="dt">+</span><span class="st">`</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb386-3"><a href="returns.html#cb386-3"></a><span class="st">  </span><span class="kw">prod</span>() <span class="op">%&gt;%</span></span>
+<span id="cb386-4"><a href="returns.html#cb386-4"></a><span class="st">  `</span><span class="dt">-</span><span class="st">`</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb386-5"><a href="returns.html#cb386-5"></a><span class="st">  `</span><span class="dt">*</span><span class="st">`</span>(<span class="dv">100</span>)</span></code></pre></div>
+<pre><code>## [1] 0.6643191</code></pre>
+<p>O retorno total é de 0,66%, praticamente zero, devido a queda de dezembro.</p>
+<p>Mas de onde vem a Eq.<a href="returns.html#eq:simple-return-composed-2-months">(4.3)</a>?
+Vamos demostrar.</p>
+<p>Temos os retonos <span class="math inline">\(R_t\)</span> e <span class="math inline">\(R_{t-1}\)</span> referentes aos meses de novembro e dezembro de 2019.
+Vamos começar escrevendo o preço <span class="math inline">\(P_t\)</span> conforme a Eq.<a href="returns.html#eq:arithmetic-price">(4.2)</a>.</p>
+<p><span class="math display">\[\begin{equation}
+P_t = P_{t-1} (1 + R_t)
+\end{equation}\]</span></p>
+<p>Aqui temos o preço de dezembro/2019 (<span class="math inline">\(t\)</span>) como função do preço de novembro/2019 (<span class="math inline">\(t-1\)</span>).
+Vamos escrever <span class="math inline">\(P_{t-1}\)</span> também segundo a Eq.<a href="returns.html#eq:arithmetic-price">(4.2)</a> substituindo na equação acima.</p>
+<p><span class="math display">\[\begin{equation}
+P_t = P_{t-2} (1 + R_{t-1}) (1 + R_t)
+\end{equation}\]</span></p>
+<p>Agora temos o preço de dezembro/2019 (<span class="math inline">\(t\)</span>) como função do preço de outubro/2019 (<span class="math inline">\(t-2\)</span>)
+Temos também os retornos <span class="math inline">\(R_t\)</span> e <span class="math inline">\(R_{t-1}\)</span> compostos produzindo o retorno total no período de novembro-dezembro/2019.
+Para simplificar podemos escrever</p>
+<p><span class="math display">\[\begin{equation}
+P_t = P_{t-2} (1 + \bar{R}_{2})
+\end{equation}\]</span></p>
+<p>onde <span class="math inline">\((1 + \bar{R}_{2})\)</span> é o retorno total no período de dois meses.</p>
+<p>Generalizando para <span class="math inline">\(N\)</span> meses (ou dias, ou anos) temos que o retorno total neste período é dado por:</p>
+<p><span class="math display" id="eq:simple-return-composed">\[\begin{equation}
+(1 + \bar{R}_{N}) = \prod_{i=0}^{N-1} (1 + R_{t-i})
+\tag{4.4}
+\end{equation}\]</span></p>
+<p>Podemos calcular o retorno simples para todo o ano de 2019 utilizando a função <code>prod</code>.</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="returns.html#cb388-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>(<span class="kw">prod</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">na.trim</span>(USDBRL_<span class="dv">2019</span>_monthly_returns)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] 4.023433</code></pre>
+<p>Dessa forma descobrimos que no ano de 2019 o Dólar Americano teve uma valorização de 4,02%.</p>
+<p>Foi necessário utilizar o método <code>na.trim</code> para remover o <code>NA</code> do primeiro elemento do cálculo dos produtos acumulados.</p>
+<blockquote>
+<p>As funções <code>cumsum</code>, <code>cumprod</code>, <code>cummax</code> e <code>cummin</code> não possuem o argumento <code>na.rm</code> que exclui os elementos com <code>NA</code> da operação, como acontece com as funções <code>sum</code>, <code>prod</code>, <code>max</code> e <code>min</code>.
+Por este motivo é importante fazer este tratamento antes de executar estas funções.</p>
+</blockquote>
+<p>No R ainda calcular o calcular a série de retornos simples compostos usando a função <code>cumprod</code>:</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="returns.html#cb390-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>(<span class="kw">cumprod</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">na.trim</span>(USDBRL_<span class="dv">2019</span>_monthly_returns)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span></code></pre></div>
+<pre><code>##                   R_t
+## 2019-01-01 -5.7525550
+## 2019-02-01 -3.5176009
+## 2019-03-01  0.5651905
+## 2019-04-01  1.8194487
+## 2019-05-01  1.7007329
+## 2019-06-01 -1.0994116
+## 2019-07-01 -2.8362754
+## 2019-08-01  6.8055125
+## 2019-09-01  7.4739341
+## 2019-10-01  3.3369464
+## 2019-11-01  9.0120780
+## 2019-12-01  4.0234335</code></pre>
+<p>Isso fica legal de ver em um gráfico de barras.</p>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="returns.html#cb392-1"></a><span class="kw">barplot</span>(<span class="dv">100</span> <span class="op">*</span><span class="st"> </span>(<span class="kw">cumprod</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">na.trim</span>(USDBRL_<span class="dv">2019</span>_monthly_returns)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>),</span>
+<span id="cb392-2"><a href="returns.html#cb392-2"></a>        <span class="dt">las =</span> <span class="dv">2</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span>, <span class="dv">10</span>))</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p>É possível notar que o grande resultado para o ano do Dólar Americano ocorreu em julho/2019, após este mês ele ficou de lado mantendo esse resultado.</p>
+</div>
+<div id="retorno-médio" class="section level3">
+<h3><span class="header-section-number">4.1.4</span> Retorno médio</h3>
+<p>Outra pergunta interessante para se fazer aqui é: Tá ok, eu sei que o retorno simples para o Dólar Americano em 2019 foi de 10,37%, mas qual é o retorno mensal médio de 2019?
+Este seria o retorno que poderíamos comparar com outros investimentos que também apresentam retornos mensais, como a Poupança por exemplo.</p>
+<p>Sabendo que o retorno simples no período é dado pela Eq.<a href="returns.html#eq:simple-return-composed">(4.4)</a>, podemos considerar que os retornos <span class="math inline">\(R_t\)</span> são constantes e iguais a <span class="math inline">\(\hat{R}\)</span>.
+Assim teríamos,</p>
+<p><span class="math display">\[\begin{equation}
+\begin{array}{lcr}
+(1 + \bar{R}_{N}) &amp; = &amp; \prod_{i=0}^{N-1} (1 + \hat{R}) \\
+                  &amp; = &amp; (1 + \hat{R})^N
+\end{array}
+\end{equation}\]</span></p>
+<p>Consequentemente temos</p>
+<p><span class="math display" id="eq:simple-mean-return-composed">\[\begin{equation}
+(1 + \hat{R}) = (1 + \bar{R}_{N})^{\frac{1}{N}}
+\tag{4.5}
+\end{equation}\]</span></p>
+<p>É uma média geométrica dos retornos simples</p>
+<p><span class="math display">\[
+1 + \hat{R} = \left( \prod_{i=0}^{N-1} (1 + R_{t-i}) \right)^{\frac{1}{N}}
+\]</span></p>
+<blockquote>
+<p>Esta é a razão pela qual é incorreto calcular a média aritimética dos retornos simples.</p>
+</blockquote>
+<p>No R calculamos essa operação usando o operado de exponenciação <code>^</code>.</p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="returns.html#cb393-1"></a>R_med &lt;-<span class="st"> </span>( <span class="kw">prod</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">na.trim</span>(USDBRL_<span class="dv">2019</span>_monthly_returns)) ) <span class="op">^</span><span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="kw">length</span>(<span class="kw">na.trim</span>(USDBRL_<span class="dv">2019</span>_monthly_returns))) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb393-2"><a href="returns.html#cb393-2"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>R_med</span></code></pre></div>
+<pre><code>## [1] 0.3292576</code></pre>
+<p>Obtemos 0,33% ao mês! Para efeito de comparação, vamos considerar a taxa SELIC (taxa básica de juros na economia), esta taxa é de 2,0% ao ano.
+Podemos calcular o seu equivalente mensal aplicando a mesma fórmula.</p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="returns.html#cb395-1"></a>SELIC &lt;-<span class="st"> </span><span class="fl">0.02</span></span>
+<span id="cb395-2"><a href="returns.html#cb395-2"></a>SELIC_med &lt;-<span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>SELIC) <span class="op">^</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">12</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb395-3"><a href="returns.html#cb395-3"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>SELIC_med</span></code></pre></div>
+<pre><code>## [1] 0.1651581</code></pre>
+<p>Temos 0,17%, aproximadamente a metade do retorno obtido com o Dólar Americano no ano de 2019.</p>
+</div>
+</div>
+<div id="retornos-logaritimicos" class="section level2">
+<h2><span class="header-section-number">4.2</span> Retornos logaritimicos</h2>
+<p>Os retornos logaritimicos são dados pela diferença entre os logarítimos dos preços dos ativos.</p>
+<p><span class="math display" id="eq:log-return">\[\begin{equation}
+r_t = \log \left( \frac{P_t}{P_{t-1}} \right) = \log P_t - \log P_{t-1} = p_t - p_{t-1}
+\tag{4.6}
+\end{equation}\]</span></p>
+<p>No R fazemos como na equação acima, tiramos a diferença dos logaritimos dos preços <span class="math inline">\(P_t\)</span></p>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="returns.html#cb397-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">diff</span>(<span class="kw">log</span>(USDBRL)) <span class="op">%&gt;%</span></span>
+<span id="cb397-2"><a href="returns.html#cb397-2"></a><span class="st">  </span><span class="kw">setNames</span>(<span class="st">&quot;r_t&quot;</span>)</span></code></pre></div>
+<pre><code>##                    r_t
+## 2020-09-01          NA
+## 2020-09-02  0.01674839
+## 2020-09-03 -1.23948413
+## 2020-09-04 -0.43615012</code></pre>
+<p>Os valores são bastante próximos aos dos retornos simples.</p>
+<p>Também podemos usar a função <code>Return.calculate</code> do pacote <code>PerformanceAnalytics</code> para calcular os retornos logaritimicos, só que neste caso, passando o argumento <code>method = "log"</code>.</p>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="returns.html#cb399-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">Return.calculate</span>(USDBRL, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb399-2"><a href="returns.html#cb399-2"></a><span class="st">  </span><span class="kw">setNames</span>(<span class="st">&quot;r_t&quot;</span>)</span></code></pre></div>
+<pre><code>##                    r_t
+## 2020-09-01          NA
+## 2020-09-02  0.01674839
+## 2020-09-03 -1.23948413
+## 2020-09-04 -0.43615012</code></pre>
+<p>Como o termo <em>retorno logaritimico</em> é muito extenso pra escrever e falar, vamos usar com mais frequência o termo <strong>log-retorno</strong>.</p>
+<div id="entendendo-os-preços-em-função-dos-retornos-1" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Entendendo os preços em função dos retornos</h3>
+<p>Invertendo a Eq.<a href="returns.html#eq:log-return">(4.6)</a> para obter a equação dos preços, da mesma maneira que fizemos na Eq.<a href="returns.html#eq:arithmetic-price">(4.2)</a>, temos:</p>
+<p><span class="math display" id="eq:log-price">\[\begin{equation}
+P_t =  P_{t-1} \exp\left( r_t \right)
+\tag{4.7}
+\end{equation}\]</span></p>
+</div>
+<div id="composição-dos-log-retornos" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> Composição dos log-retornos</h3>
+<p>A composição dos log-retornos se dá da seguinte forma:</p>
+<p><span class="math display">\[\begin{equation}
+\exp(\bar{r}_{N}) = \prod_{i=0}^{N-1} \exp(r_{t-i}) = \exp\left(\sum_{i=0}^{N-1} r_{t-i}\right)
+\end{equation}\]</span></p>
+<p>Dessa forma temos que o log-retorno no período, <span class="math inline">\(\bar{r}_{N}\)</span>, é dado pela <strong>soma</strong> dos retornos</p>
+<p><span class="math display" id="eq:log-return-composed">\[\begin{equation}
+\bar{r}_{N} = \sum_{i=0}^{N-1} r_{t-i}
+\tag{4.8}
+\end{equation}\]</span></p>
+<p>No R podemos calcular o log-retorno no período usando a função <code>sum</code>.
+Usando a série de preços do Dólar Americano em 2019, temos:</p>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="returns.html#cb401-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(<span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>_monthly, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 3.944601</code></pre>
+<blockquote>
+<p>Note que aqui usamos <code>na.rm = TRUE</code> para indicar para a função <code>sum</code> que os elementos com <code>NA</code> deve ser excluídos da amostra. A função <code>mean</code> também apresenta este argumento.</p>
+</blockquote>
+<p>Note que o log-retorno referente a 2019 é 3.94%, ligeiramente menor que o obtido com o retorno simples, que foi de 4,02%.
+Entretanto, estas duas abordagens são equivalentes, vamos ver isso em mais detalhes na Seção<a href="returns.html#s:equivalent-returns">4.3</a>.</p>
+<p>Podemos ainda no R calcular a série de log-retornos compostos usando a função <code>cumsum</code>, da mesma forma que fizemos com os retornos simples.</p>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="returns.html#cb403-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">cumsum</span>(<span class="kw">na.trim</span>(<span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>_monthly, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>)))</span></code></pre></div>
+<pre><code>##            USDBRL_2019.Close
+## 2019-01-01        -5.9246468
+## 2019-02-01        -3.5809587
+## 2019-03-01         0.5635993
+## 2019-04-01         1.8030948
+## 2019-05-01         1.6864324
+## 2019-06-01        -1.1054998
+## 2019-07-01        -2.8772748
+## 2019-08-01         6.5839355
+## 2019-09-01         7.2078159
+## 2019-10-01         3.2824788
+## 2019-11-01         8.6288498
+## 2019-12-01         3.9446010</code></pre>
+</div>
+<div id="log-retorno-médio" class="section level3">
+<h3><span class="header-section-number">4.2.3</span> Log-retorno médio</h3>
+<p>Voltando a pergunta: <em>Tá ok, eu sei que o log-retorno para o Dólar Americano em 2019 foi de 9,87%, mas qual é o retorno mensal médio de 2019?</em></p>
+<p>Dado que o log-retorno para um período com múltiplos retornos é dado pela soma dos retornos, temos que o log-retorno médio é dado pela média aritimética dos log-retornos.</p>
+<p><span class="math display" id="eq:mean-log-return-composed">\[\begin{equation}
+\hat{r} = \frac{1}{N} \sum_{i=0}^{N-1} r_{t-i}
+\tag{4.9}
+\end{equation}\]</span></p>
+<p>Utilizamos a função <code>mean</code> no R para calcular o log-retorno médio para uma série de retornos</p>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="returns.html#cb405-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(<span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>_monthly, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.3287167</code></pre>
+<p>Obtivemos 0,33%, praticamente o mesmo resultado obtido com o retorno simples, que arredondado também ficou em 0,33%.</p>
+</div>
+</div>
+<div id="s:equivalent-returns" class="section level2">
+<h2><span class="header-section-number">4.3</span> Relação entre os retornos simples e logaritimicos</h2>
+<p>Como vimos anteriormente, os retornos simples e logaritimicos, são diferentes, mesmo quando se referem ao mesmo período.</p>
+<p>Bem, vamos ver aqui que são duas formulações equivalentes, pois ambas são obtidas a partir dos mesmos preços.</p>
+<p>Como <span class="math inline">\(P_t\)</span> deve ser sempre o mesmo, independente do retorno que estamos utilizando, então, usando as Eqs.<a href="returns.html#eq:arithmetic-price">(4.2)</a> e <a href="returns.html#eq:log-price">(4.7)</a>, podemos obter a relação entre os retornos simples e logaritimicos.</p>
+<p><span class="math display" id="eq:arithmetic-log-return-relation">\[\begin{equation}
+1 + R_t =  \exp\left( r_t \right)
+\tag{4.10}
+\end{equation}\]</span></p>
+</div>
+<div id="porque-formas-diferentes-de-calcular-os-retornos" class="section level2">
+<h2><span class="header-section-number">4.4</span> Porque formas diferentes de calcular os retornos?</h2>
+<p>Bem, faz sentido trabalhar com duas formas diferentes de calcular retornos?
+Honestamente, não!
+Entretanto, os retornos simples são mais intuitivos de serem utilizados nos cálculos de retornos, por outro lado os log-retornos são mais fáceis de manipular nos cálculos, principalmente devido ao fato de que podem ser somados.</p>
+<p>Devido a simplicidade de uso dos log-retornos, a grande maioria dos estudos de alocação de ativos e risco de investimentos utiliza os log-retornos.</p>
+<p>Nas próximas seções vamos abordar os conceitos de <strong>retorno esperado</strong> e <strong>risco esperado</strong> para ativos e veremos que a utilização de log-retornos é fundamental.</p>
+</div>
+<div id="retorno-esperado" class="section level2">
+<h2><span class="header-section-number">4.5</span> Retorno esperado</h2>
+<p>O <strong>retorno esperado</strong> é equivalente ao <em>retorno médio</em>.
+Há diversas outras formas de estimar o retorno esperado, desde modelos matemáticos complexos até hipóteses bem fundamentadas sobre o comportamento dos ativos.
+Aqui vamos considerar a análise estatística em que, dada uma amostra de retornos, o retorno médio é um bom estimador para retornos futuros.
+Justamente por ser o valor médio, o mais comum, o <em>esperado</em> para essa amostra.</p>
+<p>Na estatística, a média aritimética é estimador para a média consistente para a média de uma amostra.
+Por esse motivo os log-retornos são utilizado para o cálculo do retorno esperado, pois são equivalentes a média aritimética dos retornos.</p>
+<p><span class="math display">\[\begin{equation}
+\hat{r} = \frac{1}{N} \sum_{i=0}^{N-1} r_{t-i}
+\end{equation}\]</span></p>
+<p>A partir daqui vamos assumir que o retorno esperado é a média aritimética dos log-retornos.</p>
+<div id="retornos-anualizados" class="section level3">
+<h3><span class="header-section-number">4.5.1</span> Retornos anualizados</h3>
+<p>Outro conceito importante é o de retorno anualizado.
+Primeiro: porque anualizar os retornos?
+No mercado financeiro é muito comum se trabalhar com taxas ao ano como a SELIC e o CDI, que são taxas básicas de juros e sempre são cotadas ao ano.
+Dessa forma, é interessante converter os retornos para uma base anual de maneira que seja possível comparar os retornos esperados com retornos de outros investimentos.</p>
+<p>Para calcular o retorno anualizado, multiplicamos o retorno esperado pela quantidade de períodos que temos em 1 ano.
+Por exemplo:</p>
+<ul>
+<li>retorno esperado diário - multiplicamos por 252, que é uma convenção adotada no mercado brasileiro que significa 252 dias úteis por ano.</li>
+<li>retorno esperado mensal - multiplicamos por 12, pois 1 ano tem 12 meses.</li>
+</ul>
+<p>Vamos utilizar a nossa série <code>USDBRL_2019</code> com as cotações do Dólar Americano para 2019.
+Primeiro vamos calcular os retornos diários</p>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="returns.html#cb407-1"></a>USDBRL_<span class="dv">2019</span>_daily_returns &lt;-<span class="st"> </span><span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>)</span>
+<span id="cb407-2"><a href="returns.html#cb407-2"></a>USDBRL_<span class="dv">2019</span>_daily_mean_return &lt;-<span class="st"> </span><span class="kw">mean</span>(USDBRL_<span class="dv">2019</span>_daily_returns, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb407-3"><a href="returns.html#cb407-3"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>USDBRL_<span class="dv">2019</span>_daily_mean_return</span></code></pre></div>
+<pre><code>## [1] 0.01559131</code></pre>
+<p>Note que o retorno diário para o USDBRL em 2019 foi de 0,0156%.
+Vamos multiplicá-lo por 252 para encontrar o retorno anualizado</p>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="returns.html#cb409-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>USDBRL_<span class="dv">2019</span>_daily_mean_return <span class="op">*</span><span class="st"> </span><span class="dv">252</span></span></code></pre></div>
+<pre><code>## [1] 3.92901</code></pre>
+<p>Obtivemos 3,93% com retorno diário anualizado, ficou bastante próximo do retorno anual calculado com a composição dos retornos mensais que ficou em 3,94%.</p>
+<p>Utilizando os retornos mensais</p>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="returns.html#cb411-1"></a><span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>_monthly, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb411-2"><a href="returns.html#cb411-2"></a><span class="st">  </span><span class="kw">setNames</span>(<span class="st">&quot;R_t&quot;</span>) -&gt;<span class="st"> </span>USDBRL_<span class="dv">2019</span>_monthly_log_returns</span>
+<span id="cb411-3"><a href="returns.html#cb411-3"></a></span>
+<span id="cb411-4"><a href="returns.html#cb411-4"></a>USDBRL_<span class="dv">2019</span>_monthly_mean_return &lt;-<span class="st"> </span><span class="kw">mean</span>(USDBRL_<span class="dv">2019</span>_monthly_log_returns, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb411-5"><a href="returns.html#cb411-5"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>USDBRL_<span class="dv">2019</span>_monthly_mean_return</span></code></pre></div>
+<pre><code>## [1] 0.3287167</code></pre>
+<p>Multiplicando <code>USDBRL_2019_monthly_mean_return</code> por 12 para anualizar o retorno temos</p>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="returns.html#cb413-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span>USDBRL_<span class="dv">2019</span>_monthly_mean_return <span class="op">*</span><span class="st"> </span><span class="dv">12</span></span></code></pre></div>
+<pre><code>## [1] 3.944601</code></pre>
+<p>Novamente a estimativa do retorno anualizado ficou muito próximo dos valores já encontrados, 3,94%.</p>
+<p>A anualização dos retornos é muito útil para converter os retornos entre períodos diários, mensais e anuais com contas simples que podem produzir análises interessantes para comparação de investimentos.</p>
+</div>
+</div>
+<div id="risco-esperado" class="section level2">
+<h2><span class="header-section-number">4.6</span> Risco esperado</h2>
+<p>Há diversas formas de calcular o risco esperado de um ativo.
+Aqui vamos considerar que a volatilidade dos log-retornos será a medida de <strong>risco esperado</strong> para o ativo.</p>
+<p>Para calcular a volatilidade precisamos calcular a variância dos log-retornos, que é dada pela fórmula:</p>
+<p><span class="math display">\[
+\textrm{Var}(r_t) = \frac{1}{N-1}\sum_{i=0}^{N-1}\left( r_{t-i} - \bar{r} \right)^2
+\]</span>
+A <strong>volatilidade</strong> dos retornos é dada pela raiz quadrada da variância e representada por <span class="math inline">\(\sigma\)</span>.</p>
+<p><span class="math display">\[
+\sigma = \sqrt{\textrm{Var}(r_t)}
+\]</span></p>
+<p>A volatilidade também é conhecida como desvio padrão dos retornos, na verdade é o contrário, mas a ordem dos fatores não altera o produto.
+A volatilidade é um conceito amplo para descrever o comportamento da dinâmica de um ativo.
+Há diversas formas de estimar a volatilidade, aqui estamos assumindo a raiz quadrada da variância amostral.
+Contudo, a volatilidade <strong>não é observada</strong>, diferente dos preços dos ativos e das taxas de juros, logo, sua estimação é sempre calcada em um conjunto de hipóteses.
+Em termos gerais, o objetivo de caracterizar o risco esperado em termos da volatilidade é que a partir dessa medida possamos definir perdas esperadas associadas a probabilidades.
+Ou mesmo que não defina-se uma perda esperada, conhecendo a volatilidade de diferentes ativos é possível comparar os ativos por uma métrica de risco esperado potencial.</p>
+<p>No R utilizamos a função <code>sd</code> (de <em>standard deviation</em> e assim com <code>sum</code> e <code>mean</code> também possui um argumento <code>na.rm</code>)</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="returns.html#cb415-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.6971556</code></pre>
+<p>O desvio padrão tem uma relação direta com os retornos, eles estão na mesma <em>unidade</em>.
+Aqui temos uma volatilidade de 0,69% para um retorno esperado de 0,0156%.
+Já já vamos saber como avaliar se isso é bom ou ruim, comparado a que?</p>
+<p>Por esse motivo o desvio padrão é utilizado para definir um <strong>intervalo de confiança</strong> para o retorno esperado.
+Por ora vamos segurar um pouco aqui, mais adiante vamos trazer uma abordagem estatística sobre os retornos e vamos falar mais sobre o desvio padrão.</p>
+<div id="volatilidade-anualizada" class="section level3">
+<h3><span class="header-section-number">4.6.1</span> Volatilidade anualizada</h3>
+<p>Da mesma maneira que anualizamos os retornos, é necessário anualizar a volatilidade para evitar que façamos comparações de maçãs com bananas.</p>
+<p>A conta aqui é menos direta então vou colocar direto a equação.
+Para anualizar volatilidade diária (obtida de retornos diários) multiplicamos por raiz quadrada de 252 (quantidade de dias úteis no ano).</p>
+<p><span class="math display">\[\begin{equation}
+\sigma_a = \sigma_d\sqrt{252}
+\end{equation}\]</span></p>
+<p>Para anualizar volatilidade mensal multiplicamos por raiz quadrada de 12 (número de meses no ano)</p>
+<p><span class="math display">\[\begin{equation}
+\sigma_a = \sigma_m\sqrt{12}
+\end{equation}\]</span></p>
+<p>No exemplo acima, temos a volatilidade diária, logo, para anualizar a volatilidade vamos multiplicar por <span class="math inline">\(\sqrt{252}\)</span>.</p>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="returns.html#cb417-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw">Return.calculate</span>(USDBRL_<span class="dv">2019</span>, <span class="dt">method =</span> <span class="st">&quot;log&quot;</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">252</span>)</span></code></pre></div>
+<pre><code>## [1] 11.067</code></pre>
+<p>Com a volatilidade anualizada podemos escrever que o retorno anualizado é de 3,9% com uma volatilidade de 11%.
+Nas próximas seções vamos entender como comparar ativos com diferentes medidas de risco e retorno.</p>
+</div>
+</div>
+<div id="exercícios---análise-de-retornos" class="section level2">
+<h2><span class="header-section-number">4.7</span> Exercícios - Análise de Retornos</h2>
+<ol style="list-style-type: decimal">
+<li>Obtenha as séries de preços de Petrobrás PN (PETR4.SA), Lojas Renner (LREN3.SA), Ambev (ABEV3.SA), da ETF BOVA11 (BOVA11.SA) e do Índice IBOVESPA (^BVSP), para o período de 2010-01-01 a 2020-01-01 (10 anos de dados). Use a função <code>getSymbols</code> passando os símbolos dados. Estas séries possuem valores faltantes <code>NA</code>, é necessário fazer o tratamento. Para cada uma destas séries faça:
+<ol style="list-style-type: decimal">
+<li>Limpeza dos dados faltantes</li>
+<li>Cálculo do log-retorno diário</li>
+<li>Cálculo do retorno esperado anualizado</li>
+<li>Cálculo da volatilidade esperada anualizada</li>
+</ol></li>
+<li>Com as séries dos exercício anterior, faça para cada uma delas:
+<ol style="list-style-type: decimal">
+<li>Limpeza dos dados faltantes</li>
+<li>Cálculo do log-retorno diário</li>
+<li>Dividir as séries em 5 períodos de 2 anos cada (lembre de usar a indexação dos objetos xts) e calcule as estatísticas: retorno esperado e volatilidade anualizados, para cada sub-período.</li>
+<li>O que você observa? As medidas permanecem constantes ao longo do tempo?</li>
+<li>Fazer a mesma análise para retornos diários simples - as medidas mudam substancialmente? Dica: calcule a volatilidade usando o desvio padrão dos retornos, não é exato, mas é uma boa aproximação.</li>
+</ol></li>
+<li>Obtenha as séries de preços de Banco Itaú PN (ITUB4.SA), VALE (LREN3.SA), da ETF IVVB11 (IVVB11.SA) (replica o índice S&amp;P 500), da ETF PIBB11 (PIBB11.SA) (replica o índice IBrX50), para o período de 2015-01-01 a 2020-01-01 (5 anos de dados). Use a função <code>getSymbols</code> passando os símbolos dados. Estas séries possuem valores faltantes <code>NA</code>, é necessário fazer o tratamento. Para cada uma destas séries faça:
+<ol style="list-style-type: decimal">
+<li>Limpeza dos dados faltantes</li>
+<li>Cálculo da série de preços mensais</li>
+<li>Cálculo do log-retorno mensal</li>
+<li>Cálculo do retorno esperado e volatilidade mensal</li>
+<li>Cálculo do retorno esperado e volatilidade anualizados</li>
+</ol></li>
+<li>Repira a análise do segundo exercício utilizando as moedas USD, EUR, CNY, GBP e CHF. Dica: as moedas podem ser obtidas com a função <code>get_currency</code> do pacote <code>rbcb</code>. Use a função <code>list_currencies</code> do <code>rbcb</code> para descobrir os paises dessas moedas. Avalie as características das moedas.</li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="fontes-de-dados-financeiros.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="análise-de-risco.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["curso_r_financas.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

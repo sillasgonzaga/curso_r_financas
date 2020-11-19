@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 1 Primeiros passos com R | Tópicos de Finanças com R</title>
+  <meta name="description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 1 Primeiros passos com R | Tópicos de Finanças com R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 1 Primeiros passos com R | Tópicos de Finanças com R" />
+  
+  <meta name="twitter:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+<meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="novos-passos-com-r-part2.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tópicos de Finanças com R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Boas-vindas</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#sobre-os-instrutores"><i class="fa fa-check"></i>Sobre os instrutores</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Primeiros passos com R</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-que-é-r-e-por-que-devo-aprendê-lo"><i class="fa fa-check"></i><b>1.1</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#introdução-ao-rstudio"><i class="fa fa-check"></i><b>1.2</b> Introdução ao Rstudio</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#operações-aritméticas"><i class="fa fa-check"></i><b>1.3</b> Operações aritméticas</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#criação-de-variáveis-e-objetos"><i class="fa fa-check"></i><b>1.4</b> Criação de variáveis e objetos</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#estruturas-de-dados"><i class="fa fa-check"></i><b>1.5</b> Estruturas de dados</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#operadores-de-comparação"><i class="fa fa-check"></i><b>1.6</b> Operadores de comparação</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#conversões-de-tipos-de-variáveis"><i class="fa fa-check"></i><b>1.7</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="1.8" data-path="intro.html"><a href="intro.html#vetores"><i class="fa fa-check"></i><b>1.8</b> Vetores</a></li>
+<li class="chapter" data-level="1.9" data-path="intro.html"><a href="intro.html#matrizes"><i class="fa fa-check"></i><b>1.9</b> Matrizes</a></li>
+<li class="chapter" data-level="1.10" data-path="intro.html"><a href="intro.html#data-frames"><i class="fa fa-check"></i><b>1.10</b> Data frames</a></li>
+<li class="chapter" data-level="1.11" data-path="intro.html"><a href="intro.html#funções"><i class="fa fa-check"></i><b>1.11</b> Funções</a></li>
+<li class="chapter" data-level="1.12" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>1.12</b> Pacotes</a></li>
+<li class="chapter" data-level="1.13" data-path="intro.html"><a href="intro.html#exercícios"><i class="fa fa-check"></i><b>1.13</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html"><i class="fa fa-check"></i><b>2</b> Novos passos com R {part2}</a><ul>
+<li class="chapter" data-level="2.1" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#leitura-de-arquivos-csv"><i class="fa fa-check"></i><b>2.1</b> Leitura de arquivos csv</a></li>
+<li class="chapter" data-level="2.2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#gráficos-com-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Gráficos com ggplot2</a></li>
+<li class="chapter" data-level="2.3" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#trabalhando-com-datas"><i class="fa fa-check"></i><b>2.3</b> Trabalhando com datas</a></li>
+<li class="chapter" data-level="2.4" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#parsear-datas-e-horários"><i class="fa fa-check"></i><b>2.4</b> ‘Parsear’ datas e horários</a></li>
+<li class="chapter" data-level="2.5" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#extrair-componentes-de-uma-data"><i class="fa fa-check"></i><b>2.5</b> Extrair componentes de uma data</a></li>
+<li class="chapter" data-level="2.6" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#operações-matemáticas-com-datas"><i class="fa fa-check"></i><b>2.6</b> Operações matemáticas com datas</a></li>
+<li class="chapter" data-level="2.7" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#if-else"><i class="fa fa-check"></i><b>2.7</b> If-else</a></li>
+<li class="chapter" data-level="2.8" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#loops"><i class="fa fa-check"></i><b>2.8</b> Loops</a></li>
+<li class="chapter" data-level="2.9" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#criado-suas-próprias-funções"><i class="fa fa-check"></i><b>2.9</b> Criado suas próprias funções</a></li>
+<li class="chapter" data-level="2.10" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#listas"><i class="fa fa-check"></i><b>2.10</b> Listas</a></li>
+<li class="chapter" data-level="2.11" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#purrrmap"><i class="fa fa-check"></i><b>2.11</b> purrr::map</a></li>
+<li class="chapter" data-level="2.12" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-1"><i class="fa fa-check"></i><b>2.12</b> Case 1</a></li>
+<li class="chapter" data-level="2.13" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-2"><i class="fa fa-check"></i><b>2.13</b> Case 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html"><i class="fa fa-check"></i><b>3</b> Fontes de dados financeiros</a><ul>
+<li class="chapter" data-level="3.1" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>3.1</b> Pacotes</a></li>
+<li class="chapter" data-level="3.2" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#manipulação-de-dados-com-xts-e-quantmod"><i class="fa fa-check"></i><b>3.2</b> Manipulação de dados com xts e quantmod</a></li>
+<li class="chapter" data-level="3.3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#helpers-do-quantmod-cl-op-hi-lo"><i class="fa fa-check"></i><b>3.3</b> Helpers do quantmod: Cl, Op, Hi, Lo</a></li>
+<li class="chapter" data-level="3.4" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#funções-de-gráficos-xts"><i class="fa fa-check"></i><b>3.4</b> Funções de gráficos xts</a></li>
+<li class="chapter" data-level="3.5" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento."><i class="fa fa-check"></i><b>3.5</b> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</a></li>
+<li class="chapter" data-level="3.6" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#case"><i class="fa fa-check"></i><b>3.6</b> Case</a></li>
+</ul></li>
+<li class="part"><span><b>I Aplicações</b></span></li>
+<li class="chapter" data-level="4" data-path="returns.html"><a href="returns.html"><i class="fa fa-check"></i><b>4</b> Análise de Retornos</a><ul>
+<li class="chapter" data-level="4.1" data-path="returns.html"><a href="returns.html#retornos-simples"><i class="fa fa-check"></i><b>4.1</b> Retornos simples</a></li>
+<li class="chapter" data-level="4.2" data-path="returns.html"><a href="returns.html#retornos-logaritimicos"><i class="fa fa-check"></i><b>4.2</b> Retornos logaritimicos</a></li>
+<li class="chapter" data-level="4.3" data-path="returns.html"><a href="returns.html#s:equivalent-returns"><i class="fa fa-check"></i><b>4.3</b> Relação entre os retornos simples e logaritimicos</a></li>
+<li class="chapter" data-level="4.4" data-path="returns.html"><a href="returns.html#porque-formas-diferentes-de-calcular-os-retornos"><i class="fa fa-check"></i><b>4.4</b> Porque formas diferentes de calcular os retornos?</a></li>
+<li class="chapter" data-level="4.5" data-path="returns.html"><a href="returns.html#retorno-esperado"><i class="fa fa-check"></i><b>4.5</b> Retorno esperado</a></li>
+<li class="chapter" data-level="4.6" data-path="returns.html"><a href="returns.html#risco-esperado"><i class="fa fa-check"></i><b>4.6</b> Risco esperado</a></li>
+<li class="chapter" data-level="4.7" data-path="returns.html"><a href="returns.html#exercícios---análise-de-retornos"><i class="fa fa-check"></i><b>4.7</b> Exercícios - Análise de Retornos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análise-de-risco.html"><a href="análise-de-risco.html"><i class="fa fa-check"></i><b>5</b> Análise de Risco</a><ul>
+<li class="chapter" data-level="5.1" data-path="análise-de-risco.html"><a href="análise-de-risco.html#visualização-dos-retornos"><i class="fa fa-check"></i><b>5.1</b> Visualização dos Retornos</a></li>
+<li class="chapter" data-level="5.2" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-estatística-dos-retornos"><i class="fa fa-check"></i><b>5.2</b> Análise Estatística dos Retornos</a></li>
+<li class="chapter" data-level="5.3" data-path="análise-de-risco.html"><a href="análise-de-risco.html#medidas-de-risco"><i class="fa fa-check"></i><b>5.3</b> Medidas de Risco</a></li>
+<li class="chapter" data-level="5.4" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-em-janela-móvel"><i class="fa fa-check"></i><b>5.4</b> Análise em Janela Móvel</a></li>
+<li class="chapter" data-level="5.5" data-path="análise-de-risco.html"><a href="análise-de-risco.html#túnel-de-volatilidade"><i class="fa fa-check"></i><b>5.5</b> Túnel de Volatilidade</a></li>
+<li class="chapter" data-level="5.6" data-path="análise-de-risco.html"><a href="análise-de-risco.html#comparando-ativos"><i class="fa fa-check"></i><b>5.6</b> Comparando Ativos</a></li>
+<li class="chapter" data-level="5.7" data-path="análise-de-risco.html"><a href="análise-de-risco.html#exercícios---análise-de-risco"><i class="fa fa-check"></i><b>5.7</b> Exercícios - Análise de Risco</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html"><i class="fa fa-check"></i><b>6</b> Análise de Carteiras</a><ul>
+<li class="chapter" data-level="6.1" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-de-ativos"><i class="fa fa-check"></i><b>6.1</b> Carteira de ativos</a></li>
+<li class="chapter" data-level="6.2" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-com-2-ativos"><i class="fa fa-check"></i><b>6.2</b> Carteira com 2 ativos</a></li>
+<li class="chapter" data-level="6.3" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#montando-uma-carteira"><i class="fa fa-check"></i><b>6.3</b> Montando uma carteira</a></li>
+<li class="chapter" data-level="6.4" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#rebalanceamento-da-carteira"><i class="fa fa-check"></i><b>6.4</b> Rebalanceamento da carteira</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tópicos de Finanças com R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="intro" class="section level1">
+<h1><span class="header-section-number">Capítulo 1</span> Primeiros passos com R</h1>
+<p>O material deste módulo introdutóri foi adaptado do excelente material didático <a href="http://sillasgonzaga.com/material/cdr/">Ciência de Dados com R - Introdução</a>.</p>
+<div id="o-que-é-r-e-por-que-devo-aprendê-lo" class="section level2">
+<h2><span class="header-section-number">1.1</span> O que é R e por que devo aprendê-lo?</h2>
+<p>R é uma linguagem de programação estatística que vem passando por diversas evoluções e se tornando cada vez mais uma linguagem de amplos objetivos. Podemos entender o R também como um conjunto de pacotes e ferramentas estatísticas, munido de funções que facilitam sua utilização, desde a criação de simples rotinas até análises de dados complexas, com visualizações bem acabadas.</p>
+<p>Segue alguns motivos para aprender-se R:</p>
+<ul>
+<li>É completamente gratuito e de livre distribuição;</li>
+<li>Curva de aprendizado bastante amigável, sendo muito fácil de se aprender;</li>
+<li>Enorme quantidade de tutoriais e ajuda disponíveis gratuitamente na internet;</li>
+<li>É excelente para criar rotinas e sistematizar tarefas repetitivas;</li>
+<li>Amplamente utilizado pela comunidade acadêmica e pelo mercado;</li>
+<li>Quantidade enorme de pacotes, para diversos tipos de necessidades;</li>
+<li>Ótima ferramenta para criar relatórios e gráficos.</li>
+</ul>
+<p>Apenas para exemplificar-se sua versatilidade, este eBook e os slides das aulas foram todos feitos em R.</p>
+</div>
+<div id="introdução-ao-rstudio" class="section level2">
+<h2><span class="header-section-number">1.2</span> Introdução ao Rstudio</h2>
+<p>O R puro se apresenta como uma simples “tela preta” com uma linha para inserir comandos. Isso é bastante assustador para quem está começando e bastante improdutivo para quem já faz uso intensivo da ferramenta. Felizmente existe o RStudio, ferramenta auxiliar que usaremos durante todo o curso.</p>
+<p>Entenda o RStudio como uma interface gráfica com diversas funcionalidades que melhoram ainda mais o uso e aprendizado do R. Na prática, o RStudio facilita muito o dia a dia de trabalho. Portanto, desde já, ao falarmos em R, falaremos automaticamente no RStudio.</p>
+<p>Essa é a “cara” do RStudio:</p>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="imagens/RStudio_001.png" alt="RStudio se divide em 4 partes"  />
+<p class="caption">
+Figure 1.1: RStudio se divide em 4 partes
+</p>
+</div>
+<p>Repare que, além da barra de menu superior, o RStudio é divido em quatro partes principais:</p>
+<h4>
+<ol style="list-style-type: decimal">
+<li>Editor de Código
+</h4>
+No editor de código, você poderá escrever e editar os scripts. Script nada mais é do que uma sequência de comandos/ordens que serão executados em sequência pelo R. O editor do RStudio oferece facilidades como organização dos comandos, “auto-complete” de comandos, destaque da sintaxe dos comandos etc. Provavelmente é a parte que mais utilizaremos.</li>
+</ol>
+<h4>
+<ol start="2" style="list-style-type: decimal">
+<li>Console
+</h4>
+É no console que o R mostrará a maioria dos resultados dos comandos. Também é possível escrever os comandos diretamente no console, sem o uso do editor de código. É muito utilizado para testes e experimentos rápidos. Um uso rápido do console é, por exemplo, chamar a ajuda do R usando o comando <code>?</code> (isso mesmo, a interrogação é um comando!). Voltaremos a falar deste comando <code>?</code> em breve.</li>
+</ol>
+<h4>
+<ol start="3" style="list-style-type: decimal">
+<li>Environment e History
+</h4>
+No Environment ficarão guardados todos os objetos que forem criados na sessão do R. Entenda sessão como o espaço de tempo entre o momento em que você inicia o R e o momento em que finaliza. Neste período, tudo que você faz usa memória RAM e o processador do computador. E na aba History, como você deve imaginar, o RStudio cria um histórico de comandos utilizados.</li>
+</ol>
+<h4>
+<ol start="4" style="list-style-type: decimal">
+<li>Files, Plots, Packages, Help e Viewer.
+</h4>
+Nesta janela, estão várias funcionalidades do RStudio. Na aba Files, você terá uma navegação de arquivos do seu computador. Também será possível definir o diretório de trabalho (você também pode definir diretamente no código, mas isto será tratado posteriormente), ou seja, o R entende o seu diretório de trabalho como ponto de partida para localizar arquivos que sejam chamados no script.</li>
+</ol>
+<h5>
+4.1 Aba Plots
+</h5>
+<p>A aba Plots trará os gráficos gerados, possibilitando a exportação para alguns formatos diferentes, como .png e .pdf.</p>
+<h5>
+4.2 Aba Packages
+</h5>
+<p>Em Packages estão listados os pacotes instalados. Você pode verificar quais estão carregados e, caso necessário, poderá carregar algum pacote necessário para a sua análise. Também é possível instalar e atualizar pacotes. Novamente, tudo isto é possível fazer diretamente no código.</p>
+<h5>
+4.3 Aba Help
+</h5>
+<p>O nome já diz tudo. Esta aba será bastante utilizada por você. Saber usar o help é fundamental para evitar desperdício de tempo. Os usuários de R, em geral, são bastante solícitos. Entretanto, uma olhadinha rápida no help pode evitar que você gaste “créditos” desnecessariamente.</p>
+<h5>
+4.4 Aba Viewer
+</h5>
+<p>Por fim, o Viewer. Esta funcionalidade é utilizada para visualizar-se localmente conteúdo web. O gráfico da figura está na aba Viewer porque é uma visualização em javascript, que pode ser adicionada a documentos html gerados usando o RMarkdown ou em aplicações web com suporte do Shiny.</p>
+</div>
+<div id="operações-aritméticas" class="section level2">
+<h2><span class="header-section-number">1.3</span> Operações aritméticas</h2>
+<p>O R pode ser usado como uma simples calculadora para fazer operações matemáticas simples:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="intro.html#cb1-1"></a><span class="dv">4</span> <span class="op">+</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="intro.html#cb3-1"></a><span class="dv">2</span> <span class="op">-</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] -1</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="intro.html#cb5-1"></a><span class="dv">4</span> <span class="op">*</span><span class="st"> </span><span class="dv">8</span></span></code></pre></div>
+<pre><code>## [1] 32</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="intro.html#cb7-1"></a><span class="dv">1</span>  <span class="op">/</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 0.3333333</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1"></a><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] 32</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="intro.html#cb11-1"></a><span class="dv">4</span> <span class="op">%%</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="intro.html#cb13-1"></a><span class="dv">9</span> <span class="op">%/%</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+</div>
+<div id="criação-de-variáveis-e-objetos" class="section level2">
+<h2><span class="header-section-number">1.4</span> Criação de variáveis e objetos</h2>
+<p>Para que o R deixe de ser uma simples calculadora, será necessário aprender, dentre outras coisas, o uso de variáveis. Se você tem alguma noção de estatística, provavelmente já tem a intuição do que é uma variável para uma linguagem de programação. No contexto do R, vamos entender variável como um objeto, ou seja, como uma estrutura predefinida que vai “receber” algum valor. Utilizando uma linguagem mais técnica, objeto (ou variável) é um pequeno espaço na memória do seu computador onde o R armazenará um valor ou o resultado de um comando, utilizando um nome que você mesmo definiu.</p>
+<p>Conhecer os tipos de objetos do R é fundamental. Para criar objetos, utiliza-se o símbolo <code>&lt;-</code>. Este provavelmente é o símbolo que você mais verá daqui para frente.</p>
+<p>Execute, no console ou no editor de códigos, o seguinte comando <code>x &lt;- 15</code>. Pronto, agora o nome <code>x</code> representa o valor <code>15</code>. Para comprovar, execute apenas o nome do objeto <code>x</code>, o R mostrará o conteúdo dele. A partir de então, você poderá utilizar esse objeto como se fosse o valor 15. Experimente os seguintes resultados:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="intro.html#cb15-1"></a>x <span class="op">+</span><span class="st"> </span><span class="dv">5</span></span>
+<span id="cb15-2"><a href="intro.html#cb15-2"></a>x <span class="op">*</span><span class="st"> </span>x <span class="op">/</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb15-3"><a href="intro.html#cb15-3"></a><span class="dv">2</span> <span class="op">^</span><span class="st"> </span>x</span>
+<span id="cb15-4"><a href="intro.html#cb15-4"></a>y &lt;-<span class="st"> </span>x <span class="op">/</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
+<p>Dê uma boa lida em <em>Dicas e boas práticas para um código organizado</em> para aprender a organizar seus objetos e funções da melhor maneira possível.</p>
+<p>Todos os objetos que você criar estarão disponíveis na aba <strong><em>Environment</em></strong>.</p>
+<p>O RStudio possui a função <em>auto complete</em>. Digite as primeiras letras de um objeto (ou função) que você criou e, em seguida, use o atalho <strong><em>ctrl + barra de espaço</em></strong>. O RStudio listará tudo que começar com essas letras no arquivo. Selecione algum item e aperte <em>enter</em> para escrevê-lo no editor de códigos.</p>
+</div>
+<div id="estruturas-de-dados" class="section level2">
+<h2><span class="header-section-number">1.5</span> Estruturas de dados</h2>
+<p>Existem diversos tipos de objetos, e cada tipo “armazena” um conteúdo diferente, desde tabelas de dados recém-carregados a textos, números, ou simplesmente a afirmação de verdadeiro ou falso (Boleano).</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="intro.html#cb16-1"></a>inteiro &lt;-<span class="st"> </span><span class="dv">928</span></span>
+<span id="cb16-2"><a href="intro.html#cb16-2"></a>outro.inteiro &lt;-<span class="st"> </span><span class="fl">5e2</span></span>
+<span id="cb16-3"><a href="intro.html#cb16-3"></a>decimal &lt;-<span class="st"> </span><span class="fl">182.93</span></span>
+<span id="cb16-4"><a href="intro.html#cb16-4"></a>caracter &lt;-<span class="st"> &#39;exportação&#39;</span></span>
+<span id="cb16-5"><a href="intro.html#cb16-5"></a>logico &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb16-6"><a href="intro.html#cb16-6"></a>outro.logico &lt;-<span class="st"> </span><span class="ot">FALSE</span></span></code></pre></div>
+<p>Repare nas atribuições acima. Usaremos a função <code>class()</code> para ver o tipo de cada uma:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro.html#cb17-1"></a><span class="kw">class</span>(inteiro)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1"></a><span class="kw">class</span>(outro.inteiro)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1"></a><span class="kw">class</span>(decimal)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro.html#cb23-1"></a><span class="kw">class</span>(caracter)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="intro.html#cb25-1"></a><span class="kw">class</span>(logico)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="intro.html#cb27-1"></a><span class="kw">class</span>(outro.logico)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<p>Esses são alguns dos tipos básicos de objetos/variáveis no R. Para valores inteiros ou decimais, <code>numeric</code> , <code>character</code> para valores textuais e <code>logical</code> para valores lógicos (verdadeiro ou falso). Existe também o tipo <code>integer</code>, que representa apenas números inteiros, sem decimais, porém, na maioria das vezes, o R interpreta o <code>integer</code> como <code>numeric</code>, pois o <code>integer</code> também é um <code>numeric</code>.</p>
+<p>Além dos tipos básicos, existem também os tipos “complexos”, que são <code>vector</code>, <code>array</code>, <code>matrix</code>, <code>list</code>, <code>data.frame</code> e <code>factor</code>.</p>
+</div>
+<div id="operadores-de-comparação" class="section level2">
+<h2><span class="header-section-number">1.6</span> Operadores de comparação</h2>
+<p>Em todas as comparações do R usamos operadores lógicos. São operações matemáticas em que o resultado é <code>TRUE</code> ou <code>FALSE</code> (tipo <code>logical</code>). Para melhor entendimento, selecionamos alguns operadores lógicos e seus significados:</p>
+<ul>
+<li><code>==</code> igual a: compara dois objetos e se forem iguais retorna TRUE, caso contrário, FALSE;</li>
+<li><code>!=</code> diferente: compara dois objetos e se forem diferentes retorna TRUE, caso contrário, FALSE;</li>
+<li><code>|</code> ou (or): compara dois objetos, se um dos dois for TRUE, retorna TRUE, se os dois forem FALSE, retorna FALSE;</li>
+<li><code>&amp;</code> e (and): compara dois objetos, se os dois forem TRUE, retorna TRUE, se um dos dois ou os dois forem FALSE, retorna FALSE;</li>
+<li><code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code> maior, maior ou igual, menor, menor ou igual: compara grandeza de dois números e retorna TRUE ou FALSE conforme a condição;</li>
+</ul>
+<p>Vejamos alguns exemplos de comparação:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="intro.html#cb29-1"></a><span class="dv">1</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="intro.html#cb31-1"></a><span class="st">&quot;b&quot;</span> <span class="op">&gt;</span><span class="st"> &quot;a&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="intro.html#cb33-1"></a><span class="dv">0</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">-1</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="intro.html#cb35-1"></a><span class="dv">1</span> <span class="op">!=</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="intro.html#cb37-1"></a><span class="dv">0</span> <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="intro.html#cb39-1"></a><span class="dv">1</span> <span class="op">!=</span><span class="st"> </span><span class="ot">TRUE</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="intro.html#cb41-1"></a>(<span class="dv">4</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>) <span class="op">|</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="intro.html#cb43-1"></a>(<span class="dv">4</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>) <span class="op">&amp;</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="intro.html#cb45-1"></a><span class="dv">2</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="conversões-de-tipos-de-variáveis" class="section level2">
+<h2><span class="header-section-number">1.7</span> Conversões de tipos de variáveis</h2>
+<p>Quando é feito o carregamento de algum arquivo de dados no R, ele tenta “deduzir” os tipos de dados de cada coluna. Nem sempre essa dedução sai correta e, eventualmente, você precisará converter de um tipo para o outro. O R tem algumas funções para fazer essas conversões.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="intro.html#cb47-1"></a><span class="kw">class</span>(<span class="st">&quot;2015&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1"></a><span class="kw">as.numeric</span>(<span class="st">&quot;2015&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 2015</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1"></a><span class="kw">class</span>(<span class="dv">55</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="intro.html#cb53-1"></a><span class="kw">as.character</span>(<span class="dv">55</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;55&quot;</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="intro.html#cb55-1"></a><span class="kw">class</span>(<span class="fl">3.14</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;numeric&quot;</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1"></a><span class="kw">as.integer</span>(<span class="fl">3.14</span>)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="intro.html#cb59-1"></a><span class="kw">as.numeric</span>(<span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="intro.html#cb61-1"></a><span class="kw">as.numeric</span>(<span class="ot">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="intro.html#cb63-1"></a><span class="kw">as.logical</span>(<span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="intro.html#cb65-1"></a><span class="kw">as.logical</span>(<span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>O R também tenta “forçar a barra”, às vezes, para te ajudar. Quando você faz uma operação entre dois tipos diferentes, ele tenta fazer algo chamado <strong>coerção de tipos</strong>, ou seja, ele tenta converter os dados para que a operação faça sentido. Caso o R não consiga fazer a coerção, ele vai mostrar uma mensagem de erro.</p>
+<p>Experimente os comandos a seguir no console:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="intro.html#cb67-1"></a><span class="dv">7</span> <span class="op">+</span><span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb67-2"><a href="intro.html#cb67-2"></a><span class="dv">2015</span> <span class="op">&gt;</span><span class="st"> &quot;2016&quot;</span></span>
+<span id="cb67-3"><a href="intro.html#cb67-3"></a><span class="st">&quot;2014&quot;</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">2017</span></span>
+<span id="cb67-4"><a href="intro.html#cb67-4"></a><span class="co"># em alguns casos a coerção irá falhar ou dar resultado indesejado</span></span>
+<span id="cb67-5"><a href="intro.html#cb67-5"></a><span class="dv">6</span> <span class="op">&gt;</span><span class="st"> &quot;100&quot;</span></span>
+<span id="cb67-6"><a href="intro.html#cb67-6"></a><span class="st">&quot;6&quot;</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span></span>
+<span id="cb67-7"><a href="intro.html#cb67-7"></a><span class="dv">1</span> <span class="op">+</span><span class="st"> &quot;1&quot;</span></span></code></pre></div>
+<p>Recomendamos fortemente que sempre se realize as conversões explicitamente com as funções apropriadas ao invés de confiar na coerção do R, a não ser que se tenha certeza do resultado.</p>
+</div>
+<div id="vetores" class="section level2">
+<h2><span class="header-section-number">1.8</span> Vetores</h2>
+<p>Vetores são sequências unidimensionais de valores de um mesmo tipo:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="intro.html#cb68-1"></a><span class="co">#faça as seguintes atribuições</span></span>
+<span id="cb68-2"><a href="intro.html#cb68-2"></a>vetor.chr &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tipo1&#39;</span>, <span class="st">&#39;tipo2&#39;</span>, <span class="st">&#39;tipo3&#39;</span>, <span class="st">&#39;tipo4&#39;</span>)</span>
+<span id="cb68-3"><a href="intro.html#cb68-3"></a>vetor.num &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">1001</span>)</span>
+<span id="cb68-4"><a href="intro.html#cb68-4"></a>vetor.num.repetidos &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">2</span>, <span class="dv">50</span>)) <span class="co">#usando funcão para repetir números</span></span>
+<span id="cb68-5"><a href="intro.html#cb68-5"></a>vetor.num.sequencia &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>, <span class="dt">to=</span><span class="dv">100</span>, <span class="dt">by=</span><span class="dv">5</span>)) <span class="co">#usando função para criar sequências</span></span>
+<span id="cb68-6"><a href="intro.html#cb68-6"></a>vetor.logical &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">FALSE</span>)</span>
+<span id="cb68-7"><a href="intro.html#cb68-7"></a><span class="co">##veja o conteúdo das variáveis</span></span>
+<span id="cb68-8"><a href="intro.html#cb68-8"></a>vetor.chr</span></code></pre></div>
+<pre><code>## [1] &quot;tipo1&quot; &quot;tipo2&quot; &quot;tipo3&quot; &quot;tipo4&quot;</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="intro.html#cb70-1"></a>vetor.num</span></code></pre></div>
+<pre><code>## [1]    1    2    5    8 1001</code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="intro.html#cb72-1"></a>vetor.num.repetidos</span></code></pre></div>
+<pre><code>##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+## [39] 2 2 2 2 2 2 2 2 2 2 2 2</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="intro.html#cb74-1"></a>vetor.num.sequencia</span></code></pre></div>
+<pre><code>##  [1]   0   5  10  15  20  25  30  35  40  45  50  55  60  65  70  75  80  85  90
+## [20]  95 100</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="intro.html#cb76-1"></a>vetor.logical</span></code></pre></div>
+<pre><code>## [1]  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
+<p>Para a criação de vetores, usamos a função de combinação de valores <code>c()</code> (combine). Esta função vai combinar todos os parâmetros em um único vetor. Lembre-se: vetores são sequências que contêm apenas um tipo de dado.</p>
+<p>Para retornar (extrair) um ou mais elementos de um vetor, usa-se colchetes:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="intro.html#cb78-1"></a>vetor &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">seq</span>(<span class="dt">from=</span><span class="dv">0</span>, <span class="dt">to=</span><span class="dv">100</span>, <span class="dt">by=</span><span class="dv">15</span>)) <span class="co">#vetor de 0 a 100, de 15 em 15.</span></span>
+<span id="cb78-2"><a href="intro.html#cb78-2"></a>vetor <span class="co">#lista todos os elementos</span></span></code></pre></div>
+<pre><code>## [1]  0 15 30 45 60 75 90</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="intro.html#cb80-1"></a>vetor[<span class="dv">1</span>] <span class="co">#mostra apenas o elemento na posição 1</span></span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="intro.html#cb82-1"></a>vetor[<span class="dv">2</span>] <span class="co">#apenas o elemento na posição 2</span></span></code></pre></div>
+<pre><code>## [1] 15</code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="intro.html#cb84-1"></a>vetor[<span class="dv">7</span>] <span class="co">#apenas o elemento na posição 7</span></span></code></pre></div>
+<pre><code>## [1] 90</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="intro.html#cb86-1"></a>vetor[<span class="dv">8</span>] <span class="co">#não existe nada na posição 8...</span></span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="intro.html#cb88-1"></a>vetor[<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">7</span>)] <span class="co">#selecionando mais de um elemento no vetor</span></span></code></pre></div>
+<pre><code>## [1] 15 90</code></pre>
+<p>Pode-se usar até lógica de programação para retornar elementos de um vetor de acordo com algum teste lógico:</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="intro.html#cb90-1"></a>vetor[vetor <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>]</span></code></pre></div>
+<pre><code>## [1]  0 15</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="intro.html#cb92-1"></a>vetor[vetor <span class="op">%%</span><span class="st"> </span><span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="dv">0</span>]</span></code></pre></div>
+<pre><code>## [1]  0 30 60 90</code></pre>
+</div>
+<div id="matrizes" class="section level2">
+<h2><span class="header-section-number">1.9</span> Matrizes</h2>
+<p>Matrizes são estruturas de dados bidimensionais: linhas e colunas.</p>
+<p>Assim como vetores, matrizes podem possuir dados de apenas uma classe (<code>numeric</code> ou <code>character</code>).</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="intro.html#cb94-1"></a><span class="co"># criando uma matriz a partir de vetores</span></span>
+<span id="cb94-2"><a href="intro.html#cb94-2"></a>v1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb94-3"><a href="intro.html#cb94-3"></a>v2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb94-4"><a href="intro.html#cb94-4"></a>v3 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>)</span>
+<span id="cb94-5"><a href="intro.html#cb94-5"></a></span>
+<span id="cb94-6"><a href="intro.html#cb94-6"></a>matriz &lt;-<span class="st"> </span><span class="kw">cbind</span>(v1, v2, v3)</span>
+<span id="cb94-7"><a href="intro.html#cb94-7"></a>matriz</span></code></pre></div>
+<pre><code>##      v1 v2 v3
+## [1,]  1  4  7
+## [2,]  2  5  8
+## [3,]  3  6  9</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="intro.html#cb96-1"></a><span class="kw">class</span>(matriz)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<p>Matrizes também podem ser indexadas com colchetes, com a diferença que é preciso especificar o elemento da linha e o da coluna:</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="intro.html#cb98-1"></a>matriz[<span class="dv">1</span>, ]</span></code></pre></div>
+<pre><code>## v1 v2 v3 
+##  1  4  7</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="intro.html#cb100-1"></a>matriz[, <span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] 4 5 6</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="intro.html#cb102-1"></a>matriz[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dv">3</span>]</span></code></pre></div>
+<pre><code>## [1] 7 8</code></pre>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="intro.html#cb104-1"></a>matriz[<span class="dv">1</span>, <span class="dv">3</span>]</span></code></pre></div>
+<pre><code>## v3 
+##  7</code></pre>
+</div>
+<div id="data-frames" class="section level2">
+<h2><span class="header-section-number">1.10</span> Data frames</h2>
+<p>Data frame é, provavelmente, o tipo de dado complexo mais utilizado em R. É nele que você armazena conjuntos de dados estruturados em linhas e colunas. Um data frame possui colunas nomeadas, sendo que todas as colunas possuem a mesma quantidade de linhas. Imagine o <code>dataframe</code> como uma tabela em que cada coluna corresponde a um vetor.</p>
+<p>Conhecendo o <code>data.frame</code> e o <code>vector</code>, você será capaz de entender como os dois se relacionam. Cada coluna de um data frame é um vetor. Um data frame pode ter colunas de diferentes tipos, mas cada coluna só pode ter registros de um único tipo.</p>
+<p>Ficará mais claro a seguir. Veja como se cria um <code>data.frame</code>:</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="intro.html#cb106-1"></a><span class="co">#cria-se diferentes vetores</span></span>
+<span id="cb106-2"><a href="intro.html#cb106-2"></a>nome &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;João&#39;</span>, <span class="st">&#39;José&#39;</span>, <span class="st">&#39;Maria&#39;</span>, <span class="st">&#39;Joana&#39;</span>)</span>
+<span id="cb106-3"><a href="intro.html#cb106-3"></a>idade &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">45</span>, <span class="dv">12</span>, <span class="dv">28</span>, <span class="dv">31</span>)</span>
+<span id="cb106-4"><a href="intro.html#cb106-4"></a>adulto &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>)</span>
+<span id="cb106-5"><a href="intro.html#cb106-5"></a>uf &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;DF&#39;</span>, <span class="st">&#39;SP&#39;</span>, <span class="st">&#39;RJ&#39;</span>, <span class="st">&#39;MG&#39;</span>)</span>
+<span id="cb106-6"><a href="intro.html#cb106-6"></a><span class="co">#cada vetor é uma combinação de elementos de um MESMO tipo de dados</span></span>
+<span id="cb106-7"><a href="intro.html#cb106-7"></a><span class="co">#sendo assim, cada vetor pode ser uma coluna de um data.frame</span></span>
+<span id="cb106-8"><a href="intro.html#cb106-8"></a>clientes &lt;-<span class="st"> </span><span class="kw">data.frame</span>(nome, idade, adulto, uf)</span>
+<span id="cb106-9"><a href="intro.html#cb106-9"></a>clientes</span></code></pre></div>
+<pre><code>##    nome idade adulto uf
+## 1  João    45   TRUE DF
+## 2  José    12  FALSE SP
+## 3 Maria    28   TRUE RJ
+## 4 Joana    31   TRUE MG</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="intro.html#cb108-1"></a><span class="kw">str</span>(clientes)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:	4 obs. of  4 variables:
+##  $ nome  : chr  &quot;João&quot; &quot;José&quot; &quot;Maria&quot; &quot;Joana&quot;
+##  $ idade : num  45 12 28 31
+##  $ adulto: logi  TRUE FALSE TRUE TRUE
+##  $ uf    : chr  &quot;DF&quot; &quot;SP&quot; &quot;RJ&quot; &quot;MG&quot;</code></pre>
+</div>
+<div id="funções" class="section level2">
+<h2><span class="header-section-number">1.11</span> Funções</h2>
+<p>Entenda função como uma sequência de comandos preparados para serem usados de forma simples e, assim, facilitar sua vida. Funções são usadas para tudo que você possa imaginar: cálculos mais complexos, estatística, análise de dados, manipulação de dados, gráficos, relatórios etc. Assim que você o instala, o R já vem configurado com várias funções prontas para uso. A partir de agora, chamaremos esse conjunto de funções que já vem por padrão com o R de <em>R Base</em>.</p>
+<p>Claro que as funções do R base não serão suficientes para resolver todos os problemas que você encontrará pela frente. Nesse sentido, o R também mostra outro ponto forte. Você pode instalar conjuntos extras de funções específicas de maneira muito simples: usando pacotes.</p>
+<p>Funcões do R base.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="intro.html#cb110-1"></a>raiz.quadrada &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">16</span>) <span class="co"># função para calcular raiz quadrada</span></span>
+<span id="cb110-2"><a href="intro.html#cb110-2"></a></span>
+<span id="cb110-3"><a href="intro.html#cb110-3"></a><span class="kw">round</span>(<span class="fl">5.3499999</span>, <span class="dv">2</span>) <span class="co"># função para arredondamento</span></span></code></pre></div>
+<p>Uma função tem dois elementos básicos: o nome e o(s) parâmetro(s) (também chamados de argumentos). Por exemplo, a função <code>log(10)</code> possui o nome <code>log()</code> e apenas um parâmetro, que é o número que você quer calcular o log. Já a função <code>round()</code> possui dois parâmetros, o número que você quer arredondar e a quantidade de dígitos para arredondamento.</p>
+<p>Quando você usa uma função, você pode informar os parâmetros de duas formas: sequencialmente, sem explicitar o nome dos parâmetros, ou na ordem que quiser, explicitando o nome dos parâmetros. Veja o exemplo a seguir:</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="intro.html#cb111-1"></a><span class="kw">round</span>(<span class="fl">5.3499999</span>, <span class="dv">2</span>)</span>
+<span id="cb111-2"><a href="intro.html#cb111-2"></a><span class="co"># o mesmo que:</span></span>
+<span id="cb111-3"><a href="intro.html#cb111-3"></a><span class="kw">round</span>(<span class="dt">digits =</span> <span class="dv">2</span>, <span class="dt">x =</span> <span class="fl">5.3499999</span>)</span></code></pre></div>
+<p>Para saber como informar os parâmetros corretamente, utilize o comando <code>?</code> (ou coloque o cursor no nome da função e pressione F1) para ver a documentação de funções, ou seja, conhecer para que serve, entender cada um dos seus parâmetros e ver exemplos de uso.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="intro.html#cb112-1"></a>?round</span>
+<span id="cb112-2"><a href="intro.html#cb112-2"></a>?rnorm</span>
+<span id="cb112-3"><a href="intro.html#cb112-3"></a>??inner_join <span class="co"># procurar ajuda de funções que não estão &quot;instaladas&quot; ainda</span></span></code></pre></div>
+<p>Vale comentar que é possível informar objetos nos parâmetros das funções.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="intro.html#cb113-1"></a>x &lt;-<span class="st"> </span><span class="fl">3.141593</span></span>
+<span id="cb113-2"><a href="intro.html#cb113-2"></a><span class="kw">round</span>(x, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 3.142</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="intro.html#cb115-1"></a><span class="kw">ceiling</span>(x)</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="intro.html#cb117-1"></a><span class="kw">floor</span>(x)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>Observe algumas das principais funções para estatísticas básicas no R:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Função R</th>
+<th align="center">Estatística</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>sum()</code></td>
+<td align="center">Soma de valores</td>
+</tr>
+<tr class="even">
+<td align="left"><code>mean()</code></td>
+<td align="center">Média</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>var()</code></td>
+<td align="center">Variância</td>
+</tr>
+<tr class="even">
+<td align="left"><code>median()</code></td>
+<td align="center">Mediana</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>summary()</code></td>
+<td align="center">Resumo Estatístico</td>
+</tr>
+<tr class="even">
+<td align="left"><code>quantile()</code></td>
+<td align="center">Quantis</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="pacotes" class="section level2">
+<h2><span class="header-section-number">1.12</span> Pacotes</h2>
+<p>Como dito antes, pacotes são conjuntos extras de funções que podem ser instalados além do R base. Existem pacotes para auxiliar as diversas linhas de estudo que você possa imaginar: estatística, econometria, ciências sociais, medicina, biologia, gráficos, machine learning etc.</p>
+<p>Caso você precise de algum pacote específico, procure no Google pelo tema que necessita. Você encontrará o nome do pacote e o instalará normalmente.</p>
+<p><a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">Nesse link</a> você pode ver uma lista de todos os pacotes disponíveis no repositório central. Além desses, ainda existe a possibilidade de instalar-se pacotes “não oficiais”, que ainda não fazem parte de um repositório central.</p>
+<p>Para instalar um pacote, execute o seguinte comando:</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="intro.html#cb119-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>) <span class="co"># instala um famoso pacote de manipulação de dados</span></span></code></pre></div>
+<p>Uma vez instalado, esse pacote estará disponível para uso sempre que quiser, sem a necessidade de instalá-lo novamente. Mas, sempre que iniciar um código novo, você precisará carregá-lo na memória. Para isso, use o seguinte comando:</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="intro.html#cb120-1"></a><span class="kw">library</span>(dplyr)</span></code></pre></div>
+<p>Para instalar um pacote, você precisa informar o nome entre aspas <code>install.packages(“readxl”)</code>, caso contrário o pacote não funcionará. Porém, para carregar o pacote em memória, você pode usar com ou sem aspas library(readxl) ou library(“readxl”), ambas as formas funcionam.</p>
+</div>
+<div id="exercícios" class="section level2">
+<h2><span class="header-section-number">1.13</span> Exercícios</h2>
+<p>Dado o vetor de retornos abaixo, use as funções <code>summary()</code> e <code>sd()</code> para calcular algumas estatísticas relevantes:</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="intro.html#cb121-1"></a>retornos &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.0102</span>, <span class="fl">0.00186</span>, <span class="fl">-0.00635</span>, <span class="fl">0.0193</span>, </span>
+<span id="cb121-2"><a href="intro.html#cb121-2"></a>              <span class="fl">0.00203</span>, <span class="fl">-0.01846</span>, <span class="fl">0.00434</span>, </span>
+<span id="cb121-3"><a href="intro.html#cb121-3"></a>              <span class="fl">-0.01256</span>, <span class="fl">-0.00944</span>, <span class="fl">-0.00087</span>)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="novos-passos-com-r-part2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["curso_r_financas.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

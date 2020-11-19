@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Tópicos de Finanças com R</title>
+  <meta name="description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Tópicos de Finanças com R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Tópicos de Finanças com R" />
+  
+  <meta name="twitter:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+<meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="intro.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tópicos de Finanças com R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Boas-vindas</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#sobre-os-instrutores"><i class="fa fa-check"></i>Sobre os instrutores</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Primeiros passos com R</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-que-é-r-e-por-que-devo-aprendê-lo"><i class="fa fa-check"></i><b>1.1</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#introdução-ao-rstudio"><i class="fa fa-check"></i><b>1.2</b> Introdução ao Rstudio</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#operações-aritméticas"><i class="fa fa-check"></i><b>1.3</b> Operações aritméticas</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#criação-de-variáveis-e-objetos"><i class="fa fa-check"></i><b>1.4</b> Criação de variáveis e objetos</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#estruturas-de-dados"><i class="fa fa-check"></i><b>1.5</b> Estruturas de dados</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#operadores-de-comparação"><i class="fa fa-check"></i><b>1.6</b> Operadores de comparação</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#conversões-de-tipos-de-variáveis"><i class="fa fa-check"></i><b>1.7</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="1.8" data-path="intro.html"><a href="intro.html#vetores"><i class="fa fa-check"></i><b>1.8</b> Vetores</a></li>
+<li class="chapter" data-level="1.9" data-path="intro.html"><a href="intro.html#matrizes"><i class="fa fa-check"></i><b>1.9</b> Matrizes</a></li>
+<li class="chapter" data-level="1.10" data-path="intro.html"><a href="intro.html#data-frames"><i class="fa fa-check"></i><b>1.10</b> Data frames</a></li>
+<li class="chapter" data-level="1.11" data-path="intro.html"><a href="intro.html#funções"><i class="fa fa-check"></i><b>1.11</b> Funções</a></li>
+<li class="chapter" data-level="1.12" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>1.12</b> Pacotes</a></li>
+<li class="chapter" data-level="1.13" data-path="intro.html"><a href="intro.html#exercícios"><i class="fa fa-check"></i><b>1.13</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html"><i class="fa fa-check"></i><b>2</b> Novos passos com R {part2}</a><ul>
+<li class="chapter" data-level="2.1" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#leitura-de-arquivos-csv"><i class="fa fa-check"></i><b>2.1</b> Leitura de arquivos csv</a></li>
+<li class="chapter" data-level="2.2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#gráficos-com-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Gráficos com ggplot2</a></li>
+<li class="chapter" data-level="2.3" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#trabalhando-com-datas"><i class="fa fa-check"></i><b>2.3</b> Trabalhando com datas</a></li>
+<li class="chapter" data-level="2.4" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#parsear-datas-e-horários"><i class="fa fa-check"></i><b>2.4</b> ‘Parsear’ datas e horários</a></li>
+<li class="chapter" data-level="2.5" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#extrair-componentes-de-uma-data"><i class="fa fa-check"></i><b>2.5</b> Extrair componentes de uma data</a></li>
+<li class="chapter" data-level="2.6" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#operações-matemáticas-com-datas"><i class="fa fa-check"></i><b>2.6</b> Operações matemáticas com datas</a></li>
+<li class="chapter" data-level="2.7" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#if-else"><i class="fa fa-check"></i><b>2.7</b> If-else</a></li>
+<li class="chapter" data-level="2.8" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#loops"><i class="fa fa-check"></i><b>2.8</b> Loops</a></li>
+<li class="chapter" data-level="2.9" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#criado-suas-próprias-funções"><i class="fa fa-check"></i><b>2.9</b> Criado suas próprias funções</a></li>
+<li class="chapter" data-level="2.10" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#listas"><i class="fa fa-check"></i><b>2.10</b> Listas</a></li>
+<li class="chapter" data-level="2.11" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#purrrmap"><i class="fa fa-check"></i><b>2.11</b> purrr::map</a></li>
+<li class="chapter" data-level="2.12" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-1"><i class="fa fa-check"></i><b>2.12</b> Case 1</a></li>
+<li class="chapter" data-level="2.13" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-2"><i class="fa fa-check"></i><b>2.13</b> Case 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html"><i class="fa fa-check"></i><b>3</b> Fontes de dados financeiros</a><ul>
+<li class="chapter" data-level="3.1" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>3.1</b> Pacotes</a></li>
+<li class="chapter" data-level="3.2" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#manipulação-de-dados-com-xts-e-quantmod"><i class="fa fa-check"></i><b>3.2</b> Manipulação de dados com xts e quantmod</a></li>
+<li class="chapter" data-level="3.3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#helpers-do-quantmod-cl-op-hi-lo"><i class="fa fa-check"></i><b>3.3</b> Helpers do quantmod: Cl, Op, Hi, Lo</a></li>
+<li class="chapter" data-level="3.4" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#funções-de-gráficos-xts"><i class="fa fa-check"></i><b>3.4</b> Funções de gráficos xts</a></li>
+<li class="chapter" data-level="3.5" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento."><i class="fa fa-check"></i><b>3.5</b> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</a></li>
+<li class="chapter" data-level="3.6" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#case"><i class="fa fa-check"></i><b>3.6</b> Case</a></li>
+</ul></li>
+<li class="part"><span><b>I Aplicações</b></span></li>
+<li class="chapter" data-level="4" data-path="returns.html"><a href="returns.html"><i class="fa fa-check"></i><b>4</b> Análise de Retornos</a><ul>
+<li class="chapter" data-level="4.1" data-path="returns.html"><a href="returns.html#retornos-simples"><i class="fa fa-check"></i><b>4.1</b> Retornos simples</a></li>
+<li class="chapter" data-level="4.2" data-path="returns.html"><a href="returns.html#retornos-logaritimicos"><i class="fa fa-check"></i><b>4.2</b> Retornos logaritimicos</a></li>
+<li class="chapter" data-level="4.3" data-path="returns.html"><a href="returns.html#s:equivalent-returns"><i class="fa fa-check"></i><b>4.3</b> Relação entre os retornos simples e logaritimicos</a></li>
+<li class="chapter" data-level="4.4" data-path="returns.html"><a href="returns.html#porque-formas-diferentes-de-calcular-os-retornos"><i class="fa fa-check"></i><b>4.4</b> Porque formas diferentes de calcular os retornos?</a></li>
+<li class="chapter" data-level="4.5" data-path="returns.html"><a href="returns.html#retorno-esperado"><i class="fa fa-check"></i><b>4.5</b> Retorno esperado</a></li>
+<li class="chapter" data-level="4.6" data-path="returns.html"><a href="returns.html#risco-esperado"><i class="fa fa-check"></i><b>4.6</b> Risco esperado</a></li>
+<li class="chapter" data-level="4.7" data-path="returns.html"><a href="returns.html#exercícios---análise-de-retornos"><i class="fa fa-check"></i><b>4.7</b> Exercícios - Análise de Retornos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análise-de-risco.html"><a href="análise-de-risco.html"><i class="fa fa-check"></i><b>5</b> Análise de Risco</a><ul>
+<li class="chapter" data-level="5.1" data-path="análise-de-risco.html"><a href="análise-de-risco.html#visualização-dos-retornos"><i class="fa fa-check"></i><b>5.1</b> Visualização dos Retornos</a></li>
+<li class="chapter" data-level="5.2" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-estatística-dos-retornos"><i class="fa fa-check"></i><b>5.2</b> Análise Estatística dos Retornos</a></li>
+<li class="chapter" data-level="5.3" data-path="análise-de-risco.html"><a href="análise-de-risco.html#medidas-de-risco"><i class="fa fa-check"></i><b>5.3</b> Medidas de Risco</a></li>
+<li class="chapter" data-level="5.4" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-em-janela-móvel"><i class="fa fa-check"></i><b>5.4</b> Análise em Janela Móvel</a></li>
+<li class="chapter" data-level="5.5" data-path="análise-de-risco.html"><a href="análise-de-risco.html#túnel-de-volatilidade"><i class="fa fa-check"></i><b>5.5</b> Túnel de Volatilidade</a></li>
+<li class="chapter" data-level="5.6" data-path="análise-de-risco.html"><a href="análise-de-risco.html#comparando-ativos"><i class="fa fa-check"></i><b>5.6</b> Comparando Ativos</a></li>
+<li class="chapter" data-level="5.7" data-path="análise-de-risco.html"><a href="análise-de-risco.html#exercícios---análise-de-risco"><i class="fa fa-check"></i><b>5.7</b> Exercícios - Análise de Risco</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html"><i class="fa fa-check"></i><b>6</b> Análise de Carteiras</a><ul>
+<li class="chapter" data-level="6.1" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-de-ativos"><i class="fa fa-check"></i><b>6.1</b> Carteira de ativos</a></li>
+<li class="chapter" data-level="6.2" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-com-2-ativos"><i class="fa fa-check"></i><b>6.2</b> Carteira com 2 ativos</a></li>
+<li class="chapter" data-level="6.3" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#montando-uma-carteira"><i class="fa fa-check"></i><b>6.3</b> Montando uma carteira</a></li>
+<li class="chapter" data-level="6.4" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#rebalanceamento-da-carteira"><i class="fa fa-check"></i><b>6.4</b> Rebalanceamento da carteira</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tópicos de Finanças com R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Tópicos de Finanças com R</h1>
+<p class="author"><em>Sillas Gonzaga e Wilson Freitas</em></p>
+<p class="date"><em>2020-11-19</em></p>
+</div>
+<div id="boas-vindas" class="section level1 unnumbered">
+<h1>Boas-vindas</h1>
+<p>Blá-blá-blá</p>
+<div id="sobre-os-instrutores" class="section level2 unnumbered">
+<h2>Sobre os instrutores</h2>
+<div id="sillas-gonzaga" class="section level3 unnumbered">
+<h3>Sillas Gonzaga</h3>
+<p>Sillas é sou apaixonado pelo R. Pratica essa linguagem desde 2014 e, desde então, criou o blog chamado <a href="http://sillasgonzaga.com/">Paixão por Dados</a>, já ministrou palestras sobre sua carreira com R e já publicou 4 pacotes R.</p>
+</div>
+<div id="wilson-freitas" class="section level3 unnumbered">
+<h3>Wilson Freitas</h3>
+<p>Wilson Freitas é pai, padeiro amador e corredor de rua. Profissionalmente trabalha como Quant (especialista em modelagem quantitativa em finanças) no mercado financeiro desde 2007, onde passou por diversas instituições (Itaú, B3, ModalMais, etc.). Gosta de programar quando não está correndo nem fazendo pão e sempre contribuiu com o software livre desenvolvendo pacotes para as linguagens de programação e escrevendo posts no seu blog. Mantém uma conta ativa no Github (<a href="https://github.com/wilsonfreitas">@wilsonfreitas</a>) com mais de 50 repositórios de sua autoria.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["curso_r_financas.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

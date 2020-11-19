@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 6 Análise de Carteiras | Tópicos de Finanças com R</title>
+  <meta name="description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 6 Análise de Carteiras | Tópicos de Finanças com R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 6 Análise de Carteiras | Tópicos de Finanças com R" />
+  
+  <meta name="twitter:description" content="Este livro é sobre programação em R aplicada a finanças. Como o R pode ser utilizado no tratamento de dados financeiros, nas análises financeiras e nos cálculos, modelos e simulações de investimentos." />
+  
+
+<meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
+
+
+<meta name="date" content="2020-11-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="análise-de-risco.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Tópicos de Finanças com R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Boas-vindas</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#sobre-os-instrutores"><i class="fa fa-check"></i>Sobre os instrutores</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Primeiros passos com R</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-que-é-r-e-por-que-devo-aprendê-lo"><i class="fa fa-check"></i><b>1.1</b> O que é R e por que devo aprendê-lo?</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#introdução-ao-rstudio"><i class="fa fa-check"></i><b>1.2</b> Introdução ao Rstudio</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#operações-aritméticas"><i class="fa fa-check"></i><b>1.3</b> Operações aritméticas</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#criação-de-variáveis-e-objetos"><i class="fa fa-check"></i><b>1.4</b> Criação de variáveis e objetos</a></li>
+<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#estruturas-de-dados"><i class="fa fa-check"></i><b>1.5</b> Estruturas de dados</a></li>
+<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#operadores-de-comparação"><i class="fa fa-check"></i><b>1.6</b> Operadores de comparação</a></li>
+<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#conversões-de-tipos-de-variáveis"><i class="fa fa-check"></i><b>1.7</b> Conversões de tipos de variáveis</a></li>
+<li class="chapter" data-level="1.8" data-path="intro.html"><a href="intro.html#vetores"><i class="fa fa-check"></i><b>1.8</b> Vetores</a></li>
+<li class="chapter" data-level="1.9" data-path="intro.html"><a href="intro.html#matrizes"><i class="fa fa-check"></i><b>1.9</b> Matrizes</a></li>
+<li class="chapter" data-level="1.10" data-path="intro.html"><a href="intro.html#data-frames"><i class="fa fa-check"></i><b>1.10</b> Data frames</a></li>
+<li class="chapter" data-level="1.11" data-path="intro.html"><a href="intro.html#funções"><i class="fa fa-check"></i><b>1.11</b> Funções</a></li>
+<li class="chapter" data-level="1.12" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>1.12</b> Pacotes</a></li>
+<li class="chapter" data-level="1.13" data-path="intro.html"><a href="intro.html#exercícios"><i class="fa fa-check"></i><b>1.13</b> Exercícios</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html"><i class="fa fa-check"></i><b>2</b> Novos passos com R {part2}</a><ul>
+<li class="chapter" data-level="2.1" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#leitura-de-arquivos-csv"><i class="fa fa-check"></i><b>2.1</b> Leitura de arquivos csv</a></li>
+<li class="chapter" data-level="2.2" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#gráficos-com-ggplot2"><i class="fa fa-check"></i><b>2.2</b> Gráficos com ggplot2</a></li>
+<li class="chapter" data-level="2.3" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#trabalhando-com-datas"><i class="fa fa-check"></i><b>2.3</b> Trabalhando com datas</a></li>
+<li class="chapter" data-level="2.4" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#parsear-datas-e-horários"><i class="fa fa-check"></i><b>2.4</b> ‘Parsear’ datas e horários</a></li>
+<li class="chapter" data-level="2.5" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#extrair-componentes-de-uma-data"><i class="fa fa-check"></i><b>2.5</b> Extrair componentes de uma data</a></li>
+<li class="chapter" data-level="2.6" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#operações-matemáticas-com-datas"><i class="fa fa-check"></i><b>2.6</b> Operações matemáticas com datas</a></li>
+<li class="chapter" data-level="2.7" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#if-else"><i class="fa fa-check"></i><b>2.7</b> If-else</a></li>
+<li class="chapter" data-level="2.8" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#loops"><i class="fa fa-check"></i><b>2.8</b> Loops</a></li>
+<li class="chapter" data-level="2.9" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#criado-suas-próprias-funções"><i class="fa fa-check"></i><b>2.9</b> Criado suas próprias funções</a></li>
+<li class="chapter" data-level="2.10" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#listas"><i class="fa fa-check"></i><b>2.10</b> Listas</a></li>
+<li class="chapter" data-level="2.11" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#purrrmap"><i class="fa fa-check"></i><b>2.11</b> purrr::map</a></li>
+<li class="chapter" data-level="2.12" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-1"><i class="fa fa-check"></i><b>2.12</b> Case 1</a></li>
+<li class="chapter" data-level="2.13" data-path="novos-passos-com-r-part2.html"><a href="novos-passos-com-r-part2.html#case-2"><i class="fa fa-check"></i><b>2.13</b> Case 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html"><i class="fa fa-check"></i><b>3</b> Fontes de dados financeiros</a><ul>
+<li class="chapter" data-level="3.1" data-path="intro.html"><a href="intro.html#pacotes"><i class="fa fa-check"></i><b>3.1</b> Pacotes</a></li>
+<li class="chapter" data-level="3.2" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#manipulação-de-dados-com-xts-e-quantmod"><i class="fa fa-check"></i><b>3.2</b> Manipulação de dados com xts e quantmod</a></li>
+<li class="chapter" data-level="3.3" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#helpers-do-quantmod-cl-op-hi-lo"><i class="fa fa-check"></i><b>3.3</b> Helpers do quantmod: Cl, Op, Hi, Lo</a></li>
+<li class="chapter" data-level="3.4" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#funções-de-gráficos-xts"><i class="fa fa-check"></i><b>3.4</b> Funções de gráficos xts</a></li>
+<li class="chapter" data-level="3.5" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento."><i class="fa fa-check"></i><b>3.5</b> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</a></li>
+<li class="chapter" data-level="3.6" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#case"><i class="fa fa-check"></i><b>3.6</b> Case</a></li>
+</ul></li>
+<li class="part"><span><b>I Aplicações</b></span></li>
+<li class="chapter" data-level="4" data-path="returns.html"><a href="returns.html"><i class="fa fa-check"></i><b>4</b> Análise de Retornos</a><ul>
+<li class="chapter" data-level="4.1" data-path="returns.html"><a href="returns.html#retornos-simples"><i class="fa fa-check"></i><b>4.1</b> Retornos simples</a></li>
+<li class="chapter" data-level="4.2" data-path="returns.html"><a href="returns.html#retornos-logaritimicos"><i class="fa fa-check"></i><b>4.2</b> Retornos logaritimicos</a></li>
+<li class="chapter" data-level="4.3" data-path="returns.html"><a href="returns.html#s:equivalent-returns"><i class="fa fa-check"></i><b>4.3</b> Relação entre os retornos simples e logaritimicos</a></li>
+<li class="chapter" data-level="4.4" data-path="returns.html"><a href="returns.html#porque-formas-diferentes-de-calcular-os-retornos"><i class="fa fa-check"></i><b>4.4</b> Porque formas diferentes de calcular os retornos?</a></li>
+<li class="chapter" data-level="4.5" data-path="returns.html"><a href="returns.html#retorno-esperado"><i class="fa fa-check"></i><b>4.5</b> Retorno esperado</a></li>
+<li class="chapter" data-level="4.6" data-path="returns.html"><a href="returns.html#risco-esperado"><i class="fa fa-check"></i><b>4.6</b> Risco esperado</a></li>
+<li class="chapter" data-level="4.7" data-path="returns.html"><a href="returns.html#exercícios---análise-de-retornos"><i class="fa fa-check"></i><b>4.7</b> Exercícios - Análise de Retornos</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="análise-de-risco.html"><a href="análise-de-risco.html"><i class="fa fa-check"></i><b>5</b> Análise de Risco</a><ul>
+<li class="chapter" data-level="5.1" data-path="análise-de-risco.html"><a href="análise-de-risco.html#visualização-dos-retornos"><i class="fa fa-check"></i><b>5.1</b> Visualização dos Retornos</a></li>
+<li class="chapter" data-level="5.2" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-estatística-dos-retornos"><i class="fa fa-check"></i><b>5.2</b> Análise Estatística dos Retornos</a></li>
+<li class="chapter" data-level="5.3" data-path="análise-de-risco.html"><a href="análise-de-risco.html#medidas-de-risco"><i class="fa fa-check"></i><b>5.3</b> Medidas de Risco</a></li>
+<li class="chapter" data-level="5.4" data-path="análise-de-risco.html"><a href="análise-de-risco.html#análise-em-janela-móvel"><i class="fa fa-check"></i><b>5.4</b> Análise em Janela Móvel</a></li>
+<li class="chapter" data-level="5.5" data-path="análise-de-risco.html"><a href="análise-de-risco.html#túnel-de-volatilidade"><i class="fa fa-check"></i><b>5.5</b> Túnel de Volatilidade</a></li>
+<li class="chapter" data-level="5.6" data-path="análise-de-risco.html"><a href="análise-de-risco.html#comparando-ativos"><i class="fa fa-check"></i><b>5.6</b> Comparando Ativos</a></li>
+<li class="chapter" data-level="5.7" data-path="análise-de-risco.html"><a href="análise-de-risco.html#exercícios---análise-de-risco"><i class="fa fa-check"></i><b>5.7</b> Exercícios - Análise de Risco</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html"><i class="fa fa-check"></i><b>6</b> Análise de Carteiras</a><ul>
+<li class="chapter" data-level="6.1" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-de-ativos"><i class="fa fa-check"></i><b>6.1</b> Carteira de ativos</a></li>
+<li class="chapter" data-level="6.2" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-com-2-ativos"><i class="fa fa-check"></i><b>6.2</b> Carteira com 2 ativos</a></li>
+<li class="chapter" data-level="6.3" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#montando-uma-carteira"><i class="fa fa-check"></i><b>6.3</b> Montando uma carteira</a></li>
+<li class="chapter" data-level="6.4" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#rebalanceamento-da-carteira"><i class="fa fa-check"></i><b>6.4</b> Rebalanceamento da carteira</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Tópicos de Finanças com R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="análise-de-carteiras" class="section level1">
+<h1><span class="header-section-number">Capítulo 6</span> Análise de Carteiras</h1>
+<p>Até agora em nossa jornada já vimos como calcular retornos financeiros, como fazer sua análise estatística e sua análise de risco, onde pudemos analisar diversos ativos e comparar levando em consideração o risco e retorno de cada um.
+Todos estes tópicos nos trazem a análise de carteira de ativos, onde analisamos o comportamento conjunto dos ativos e descobrimos como podemos utilizá-los conjuntamente para montar uma carteira com um risco menor do que se considerarmos o investimento nos ativos separadamente.</p>
+<p>Neste capítulo é necessário um pouco de teoria, mas garanto que já entramos nos códigos para entender como tudo isso se aplica.</p>
+<div id="carteira-de-ativos" class="section level2">
+<h2><span class="header-section-number">6.1</span> Carteira de ativos</h2>
+<p>Vamos considerar um exemplo simples onde temos um capital <span class="math inline">\(W\)</span> para ser investido em dois ativos <span class="math inline">\(P_1\)</span> e <span class="math inline">\(P_2\)</span>.
+Dessa maneira, investindo 100% do capital temos</p>
+<p><span class="math display" id="eq:total-wealth">\[\begin{equation}
+n_1 P_1 + n_2 P_2 = W
+\tag{6.1}
+\end{equation}\]</span></p>
+<p>que representa a carteira de ativos onde compramos <span class="math inline">\(n_1\)</span> quantidades do ativo <span class="math inline">\(P_1\)</span> e <span class="math inline">\(n_2\)</span> quantidades de <span class="math inline">\(P_2\)</span>.
+No ato da compra o valor da carteira é <span class="math inline">\(W\)</span>, ignorando custos de transação e portanto, a fração <span class="math inline">\(\frac{n_1 P_1}{W}\)</span> é o percentual da carteira alocado no ativo <span class="math inline">\(P_1\)</span> e <span class="math inline">\(\frac{n_2 P_2}{W}\)</span> é o percentual referente a <span class="math inline">\(P_2\)</span>.</p>
+<p>Podemos demostrar dividindo ambos os lados da Eq.<a href="análise-de-carteiras.html#eq:total-wealth">(6.1)</a> pelo capital <span class="math inline">\(W\)</span>.
+Logo temos:</p>
+<p><span class="math display">\[\begin{equation}
+\begin{array}{rcl}
+\frac{n_1 P_1 + n_2 P_2}{W}  &amp; = &amp; \frac{W}{W} \\
+\frac{n_1 P_1}{W} + \frac{n_2 P_2}{W} &amp; = &amp; 1  \\
+w_1 + w_2 &amp; = &amp; 1 \\
+\end{array}
+\end{equation}\]</span></p>
+<p><span class="math inline">\(w_1 = \frac{n_1 P_1}{W}\)</span> e <span class="math inline">\(w_2 = \frac{n_2 P_2}{W}\)</span> representam os pesos dos ativos <span class="math inline">\(P_1\)</span> e <span class="math inline">\(P_2\)</span> na carteira.</p>
+<div id="variação-do-valor-da-carteira-em-função-dos-retornos-dos-ativos" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Variação do valor da carteira em função dos retornos dos ativos</h3>
+<p>Os ativos <span class="math inline">\(P_1\)</span> e <span class="math inline">\(P_2\)</span> variam com o tempo, podendo ter variações positivas e negativas.
+Vamos escrever a variação da carteira <span class="math inline">\(W\)</span> em termo das varições dos ativos que constituem a carteira.</p>
+<p><span class="math display">\[
+dW = \frac{\partial W}{\partial P1} dP_1 + \frac{\partial W}{\partial P2} dP_2
+\]</span>
+onde <span class="math inline">\(\frac{\partial W}{\partial P1}\)</span> e <span class="math inline">\(\frac{\partial W}{\partial P2}\)</span> são das variações da carteira em função da variação de cada ativo (do cálculo diferencial são as derivadas parciais da carteira <span class="math inline">\(W \equiv W(P_1, P_2)\)</span>).
+De acordo com a Eq.<a href="análise-de-carteiras.html#eq:total-wealth">(6.1)</a> temos:</p>
+<p><span class="math display">\[\begin{equation}
+\begin{array}{rcl}
+\frac{\partial W}{\partial P1} &amp; = &amp; n_1 \\
+\frac{\partial W}{\partial P2} &amp; = &amp; n_2 \\
+\end{array}
+\end{equation}\]</span></p>
+<p>Assim</p>
+<p><span class="math display">\[\begin{equation}
+\begin{array}{rcl}
+dW &amp; = &amp; \frac{\partial W}{\partial P1} dP_1 + \frac{\partial W}{\partial P2} dP_2 \\
+   &amp; = &amp; n_1 dP_1 + n_2 dP_2 \\
+   &amp; = &amp; n_1 \frac{P_1}{P_1} dP_1 + n_2 \frac{P_2}{P_2} dP_2 \\
+   &amp; = &amp; n_1 P_1 \frac{dP_1}{P_1} + n_2 P_2 \frac{dP_2}{P_2} \\
+   &amp; = &amp; w_1 W \frac{dP_1}{P_1} + w_2 W \frac{dP_2}{P_2} \\
+\end{array}
+\end{equation}\]</span></p>
+<p>Dividindo os 2 lados da equação por <span class="math inline">\(W\)</span> para obter as relações <span class="math inline">\(\frac{dx}{x} \equiv d\log x\)</span>.</p>
+<p><span class="math display">\[\begin{equation}
+\begin{array}{rcl}
+\frac{dW}{W} &amp; = &amp; w_1 \frac{dP_1}{P_1} + w_2 \frac{dP_2}{P_2} \\
+d\log W      &amp; = &amp; w_1 d\log P_1 + w_2 d\log P_2 \\
+\end{array}
+\end{equation}\]</span></p>
+<p>O termo <span class="math inline">\(d\log x\)</span> pode ser expandido para <span class="math inline">\(\log x_t - \log x_{t-1}\)</span> que é a definição de log-retorno.
+Dessa maneira podemos escrever <span class="math inline">\(d\log W \equiv r_W\)</span>, <span class="math inline">\(d\log P_1 \equiv r_1\)</span> e <span class="math inline">\(d\log P_2 \equiv r_2\)</span>, logo:</p>
+<p><span class="math display">\[
+r_W = w_1 r_1 + w_2 r_2
+\]</span></p>
+<p>Temos então que o log-retorno da carteira é dado pela soma dos retornos ponderados pelos pesos dos ativos na carteira.</p>
+</div>
+</div>
+<div id="carteira-com-2-ativos" class="section level2">
+<h2><span class="header-section-number">6.2</span> Carteira com 2 ativos</h2>
+<p>Seja uma carteira com 2 ativos, o retorno dessa carteira é dado pela soma dos retornos dos ativos multiplicados pelos seus respectivos pesos na carteira.</p>
+<p><span class="math display">\[
+r_{c,t} = w_1 r_{1,t} + w_2 r_{2,t}
+\]</span></p>
+<p>onde os pesos <span class="math inline">\(w_1\)</span> e <span class="math inline">\(w_2\)</span> são restritos a:</p>
+<ul>
+<li><span class="math inline">\(w_1 + w_2 = 1\)</span>: 100% da carteira está alocada nestes 2 ativos</li>
+<li><span class="math inline">\(w_1 \ge 0\)</span> e <span class="math inline">\(w_2 \ge 0\)</span>: vamos adimitir apenas posições compradas na carteira</li>
+</ul>
+<p>Da primeira restrição temos que</p>
+<p><span class="math display">\[
+w_2 = 1 - w_1
+\]</span></p>
+<p>logo, se fizermos <span class="math inline">\(w_1 = \alpha\)</span> temos</p>
+<p><span class="math display">\[
+\begin{array}{rcl}
+w_1 &amp; = &amp; \alpha \\
+w_2 &amp; = &amp; 1 - \alpha
+\end{array}
+\]</span></p>
+<p>Consequentemente,</p>
+<p><span class="math display">\[
+r_{c,t} = \alpha r_{1,t} + (1 - \alpha) r_{2,t}
+\]</span></p>
+<div id="retorno-esperado-da-carteira" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> Retorno esperado da carteira</h3>
+<p><span class="math display">\[
+\bar{r}_{c} = \alpha \bar{r}_{1} + (1 - \alpha) \bar{r}_{2}
+\]</span></p>
+</div>
+<div id="risco-esperado-da-carteira" class="section level3">
+<h3><span class="header-section-number">6.2.2</span> Risco esperado da carteira</h3>
+<p>A variância da carteira é dada por</p>
+<p><span class="math display">\[
+\sigma^2_{c} = \alpha^2 \sigma^2_1 + (1-\alpha)^2\sigma^2_2+ 2 \alpha (1 - \alpha) \sigma_1 \sigma_2 \rho_{12}
+\]</span>
+onde</p>
+<ul>
+<li><span class="math inline">\(\sigma_1\)</span> e <span class="math inline">\(\sigma_2\)</span> são os desvios padrão dos ativos que compõem a carteira</li>
+<li><span class="math inline">\(\rho_{12}\)</span> é a correlação entre os retornos <span class="math inline">\(r_{1,t}\)</span> e <span class="math inline">\(r_{2,t}\)</span></li>
+</ul>
+<p>O risco da carteira é a raiz quadrada da variância da carteira <span class="math inline">\(\sigma_c = \sqrt{\sigma^2_c}\)</span>.</p>
+<p>Note que as equações para <span class="math inline">\(\bar{r}_{c}\)</span> e <span class="math inline">\(\sigma_c\)</span> são função apenas de <span class="math inline">\(\alpha\)</span>, uma vez que escolhidos os ativos, as variáveis <span class="math inline">\(\bar{r}_1\)</span>, <span class="math inline">\(\bar{r}_2\)</span>, <span class="math inline">\(\sigma_1\)</span>, <span class="math inline">\(\sigma_2\)</span> e <span class="math inline">\(\rho_{12}\)</span> são obtidas dos próprios ativos.
+Dessa maneira, podemos simular o risco e retorno esperados da carteira para todos os valores de <span class="math inline">\(\alpha\)</span> no intervalo <span class="math inline">\([0,1]\)</span>.</p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="análise-de-carteiras.html#cb474-1"></a>symbols &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BOVA11.SA&quot;</span>, <span class="st">&quot;SPXI11.SA&quot;</span>)</span>
+<span id="cb474-2"><a href="análise-de-carteiras.html#cb474-2"></a>prices &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(symbols, <span class="dt">from =</span> <span class="st">&quot;2016-01-01&quot;</span>,</span>
+<span id="cb474-3"><a href="análise-de-carteiras.html#cb474-3"></a>                     <span class="dt">to =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
+<span id="cb474-4"><a href="análise-de-carteiras.html#cb474-4"></a>                     <span class="dt">auto.assign =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb474-5"><a href="análise-de-carteiras.html#cb474-5"></a><span class="st">  </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">Ad</span>(<span class="kw">get</span>(.))) <span class="op">%&gt;%</span></span>
+<span id="cb474-6"><a href="análise-de-carteiras.html#cb474-6"></a><span class="st">  </span><span class="kw">reduce</span>(merge) <span class="op">%&gt;%</span></span>
+<span id="cb474-7"><a href="análise-de-carteiras.html#cb474-7"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(symbols)</span></code></pre></div>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="análise-de-carteiras.html#cb475-1"></a>rets &lt;-<span class="st"> </span><span class="kw">log</span>(prices) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="análise-de-carteiras.html#cb476-1"></a>r_i &lt;-<span class="st"> </span><span class="kw">colMeans</span>(rets)</span>
+<span id="cb476-2"><a href="análise-de-carteiras.html#cb476-2"></a>sigma_i &lt;-<span class="st"> </span><span class="kw">apply</span>(rets, <span class="dv">2</span>, sd)</span>
+<span id="cb476-3"><a href="análise-de-carteiras.html#cb476-3"></a>rho_ij &lt;-<span class="st"> </span><span class="kw">cor</span>(rets[,<span class="dv">1</span>], rets[,<span class="dv">2</span>]) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="análise-de-carteiras.html#cb477-1"></a>r_c &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, R) alpha<span class="op">*</span>R[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha)<span class="op">*</span>R[<span class="dv">2</span>]</span>
+<span id="cb477-2"><a href="análise-de-carteiras.html#cb477-2"></a>sigma_c &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, SIGMA, RHO) {</span>
+<span id="cb477-3"><a href="análise-de-carteiras.html#cb477-3"></a>  r &lt;-<span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">+</span></span>
+<span id="cb477-4"><a href="análise-de-carteiras.html#cb477-4"></a><span class="st">    </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">+</span></span>
+<span id="cb477-5"><a href="análise-de-carteiras.html#cb477-5"></a><span class="st">    </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>RHO</span>
+<span id="cb477-6"><a href="análise-de-carteiras.html#cb477-6"></a>  <span class="kw">sqrt</span>(r)</span>
+<span id="cb477-7"><a href="análise-de-carteiras.html#cb477-7"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="análise-de-carteiras.html#cb478-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb478-2"><a href="análise-de-carteiras.html#cb478-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
+<span id="cb478-3"><a href="análise-de-carteiras.html#cb478-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb478-4"><a href="análise-de-carteiras.html#cb478-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-129-1.png" width="672" /></p>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="análise-de-carteiras.html#cb479-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb479-2"><a href="análise-de-carteiras.html#cb479-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">1</span>)</span>
+<span id="cb479-3"><a href="análise-de-carteiras.html#cb479-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb479-4"><a href="análise-de-carteiras.html#cb479-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="análise-de-carteiras.html#cb480-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb480-2"><a href="análise-de-carteiras.html#cb480-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">-1</span>)</span>
+<span id="cb480-3"><a href="análise-de-carteiras.html#cb480-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb480-4"><a href="análise-de-carteiras.html#cb480-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="análise-de-carteiras.html#cb481-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb481-2"><a href="análise-de-carteiras.html#cb481-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
+<span id="cb481-3"><a href="análise-de-carteiras.html#cb481-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb481-4"><a href="análise-de-carteiras.html#cb481-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span>
+<span id="cb481-5"><a href="análise-de-carteiras.html#cb481-5"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">1</span>)</span>
+<span id="cb481-6"><a href="análise-de-carteiras.html#cb481-6"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb481-7"><a href="análise-de-carteiras.html#cb481-7"></a><span class="kw">lines</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>), <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb481-8"><a href="análise-de-carteiras.html#cb481-8"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">-1</span>)</span>
+<span id="cb481-9"><a href="análise-de-carteiras.html#cb481-9"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb481-10"><a href="análise-de-carteiras.html#cb481-10"></a><span class="kw">lines</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>), <span class="dt">col =</span> <span class="st">&quot;cyan&quot;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-132-1.png" width="672" /></p>
+</div>
+<div id="selecionar-a-carteira-de-mínima-variância" class="section level3">
+<h3><span class="header-section-number">6.2.3</span> Selecionar a carteira de Mínima Variância</h3>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="análise-de-carteiras.html#cb482-1"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
+<span id="cb482-2"><a href="análise-de-carteiras.html#cb482-2"></a></span>
+<span id="cb482-3"><a href="análise-de-carteiras.html#cb482-3"></a>min_var_weight &lt;-<span class="st"> </span>alpha[<span class="kw">which.min</span>(risk)]</span>
+<span id="cb482-4"><a href="análise-de-carteiras.html#cb482-4"></a></span>
+<span id="cb482-5"><a href="análise-de-carteiras.html#cb482-5"></a>min_var_weight</span></code></pre></div>
+<pre><code>## [1] 0.38</code></pre>
+</div>
+</div>
+<div id="montando-uma-carteira" class="section level2">
+<h2><span class="header-section-number">6.3</span> Montando uma carteira</h2>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="análise-de-carteiras.html#cb484-1"></a>weights_c &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">BOVA11.SA =</span> min_var_weight, <span class="dt">SPXI11.SA =</span> <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>min_var_weight)</span>
+<span id="cb484-2"><a href="análise-de-carteiras.html#cb484-2"></a>port_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">Return.portfolio</span>(rets, weights_c, <span class="dt">wealth.index =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb484-3"><a href="análise-de-carteiras.html#cb484-3"></a><span class="kw">plot</span>(port_<span class="dv">1</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-134-1.png" width="672" /></p>
+<div id="o-que-acontece-com-os-pesos-dos-ativos-ao-longo-do-tempo" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> O que acontece com os pesos dos ativos ao longo do tempo?</h3>
+<p>Começamos a carteira com um <span class="math inline">\(\alpha\)</span> igual a 0.38.
+Logo temos 0.38 investidos em BOVA11 e 0.62 investidos em SPXI11.
+De acordo com a Eq.<a href="análise-de-carteiras.html#eq:total-wealth">(6.1)</a> as quantidades de cada ativo são atribuídos no instante da montagem da carteira, obedescendo pesos definidos.
+O que acontece se um ativo dobrar de valor e o outro ficar parado?
+Naturalmente os pesos dos ativos são alterados, pois as quantidades de cada ativo permanecem fixas.
+Logo, é necessário rebalancear a carteira para evitar que um ativo fique muito dominante na carteira, reduzindo a diversificação.</p>
+<p>Há diversas maneiras de fazer o rebalanceamento da carteira, uma forma bastante simples, embora não tanto eficaz, é fazer com que os ativos voltem a ponderação definida no instante inicial da carteira.</p>
+<blockquote>
+<p>Uma abordagem muito comum para investidores pessoa física é distribuir os ativos na carteira com pesos iguais e frequentemente fazer o rebalanceamento da carteira para enquadrar os pesos nesta regra.</p>
+</blockquote>
+</div>
+</div>
+<div id="rebalanceamento-da-carteira" class="section level2">
+<h2><span class="header-section-number">6.4</span> Rebalanceamento da carteira</h2>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="análise-de-carteiras.html#cb485-1"></a>weights_c &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">BOVA11.SA =</span> min_var_weight, <span class="dt">SPXI11.SA =</span> <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>min_var_weight)</span>
+<span id="cb485-2"><a href="análise-de-carteiras.html#cb485-2"></a>port_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">Return.portfolio</span>(rets, weights_c, <span class="dt">rebalance_on =</span> <span class="st">&quot;months&quot;</span>, <span class="dt">wealth.index =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb485-3"><a href="análise-de-carteiras.html#cb485-3"></a>ports &lt;-<span class="st"> </span><span class="kw">merge</span>(port_<span class="dv">1</span>, port_<span class="dv">2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb485-4"><a href="análise-de-carteiras.html#cb485-4"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(<span class="kw">c</span>(<span class="st">&quot;Sem rebalanceamento&quot;</span>, <span class="st">&quot;Com rebalanceamento&quot;</span>))</span>
+<span id="cb485-5"><a href="análise-de-carteiras.html#cb485-5"></a><span class="kw">plot</span>(ports, <span class="dt">legend.loc =</span> <span class="st">&quot;topleft&quot;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="análise-de-risco.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["curso_r_financas.pdf"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
