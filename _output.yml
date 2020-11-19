@@ -5,7 +5,7 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">Introdução a Análise de Investimentos com R</a></li>
+        <li><a href="./">Tópicos de Finanças com R</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     download: ["pdf"]

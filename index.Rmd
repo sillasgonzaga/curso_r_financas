@@ -1,5 +1,5 @@
 --- 
-title: "Introdução a Análise de Investimentos com R"
+title: "Tópicos de Finanças com R"
 author: "Sillas Gonzaga e Wilson Freitas"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
