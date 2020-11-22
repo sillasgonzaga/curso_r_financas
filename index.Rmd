@@ -22,7 +22,14 @@ knitr::write_bib(c(
 
 # Boas-vindas {-}
 
-Blá-blá-blá
+Tópicos de Finanças com R tenta aproximar o mundo financeiro da linguagem de programação R.
+O mercado financeiro é um parque de diversões para profissionais com interesse em programação e em análise de dados.
+Há um grande volume de dados disponível online onde qualquer um pode ter acesso e realizar análises.
+Infelizmente a análise de dados financeiros não é trivial, é necessário algum conhecimento do problema para entrar nesse mundo, mas isso não é diferente de qualquer outra area do conhecimento.
+Este material tenta começar a preencher este hiato.
+Trazemos aqui fundamentais para o estudo de finanças e análise de dados, como: estruturas de dados para processamento, onde conseguir os dados, visualização de dados e alguns modelos.
+Há diversos exercícios para tornar a jornada o mais aplicada possível.
+Esperamos que aproveitem o conteúdo e boas análises.
 
 ## Sobre os instrutores {-}
 

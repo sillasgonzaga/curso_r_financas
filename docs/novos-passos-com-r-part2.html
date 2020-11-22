@@ -24,7 +24,7 @@
 <meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
 
 
-<meta name="date" content="2020-11-19" />
+<meta name="date" content="2020-11-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -137,6 +137,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Boas-vindas</a><ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#sobre-os-instrutores"><i class="fa fa-check"></i>Sobre os instrutores</a></li>
 </ul></li>
+<li class="part"><span><b>I Introdução ao R</b></span></li>
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Primeiros passos com R</a><ul>
 <li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#o-que-é-r-e-por-que-devo-aprendê-lo"><i class="fa fa-check"></i><b>1.1</b> O que é R e por que devo aprendê-lo?</a></li>
 <li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#introdução-ao-rstudio"><i class="fa fa-check"></i><b>1.2</b> Introdução ao Rstudio</a></li>
@@ -175,7 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.5" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#juntar-múltiplas-séries-temporais-fazer-merge-das-séries-de-fechamento."><i class="fa fa-check"></i><b>3.5</b> Juntar múltiplas séries temporais: fazer merge das séries de fechamento.</a></li>
 <li class="chapter" data-level="3.6" data-path="fontes-de-dados-financeiros.html"><a href="fontes-de-dados-financeiros.html#case"><i class="fa fa-check"></i><b>3.6</b> Case</a></li>
 </ul></li>
-<li class="part"><span><b>I Aplicações</b></span></li>
+<li class="part"><span><b>II Aplicações</b></span></li>
 <li class="chapter" data-level="4" data-path="returns.html"><a href="returns.html"><i class="fa fa-check"></i><b>4</b> Análise de Retornos</a><ul>
 <li class="chapter" data-level="4.1" data-path="returns.html"><a href="returns.html#retornos-simples"><i class="fa fa-check"></i><b>4.1</b> Retornos simples</a></li>
 <li class="chapter" data-level="4.2" data-path="returns.html"><a href="returns.html#retornos-logaritimicos"><i class="fa fa-check"></i><b>4.2</b> Retornos logaritimicos</a></li>
@@ -229,7 +230,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Vamos ler o arquivo de exemplo deste módulo:</p>
 <div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="novos-passos-com-r-part2.html#cb122-1"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
 <pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## -- Attaching packages --------- tidyverse 1.3.0 --</code></pre>
+<pre><code>## -- Attaching packages ----------------------------------------------- tidyverse 1.3.0 --</code></pre>
 <pre><code>## v ggplot2 3.3.2     v purrr   0.3.4
 ## v tibble  3.0.1     v dplyr   1.0.0
 ## v tidyr   1.1.0     v stringr 1.4.0
@@ -239,7 +240,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Warning: package &#39;readr&#39; was built under R version 4.0.2</code></pre>
 <pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.0.2</code></pre>
 <pre><code>## Warning: package &#39;forcats&#39; was built under R version 4.0.2</code></pre>
-<pre><code>## -- Conflicts ------------ tidyverse_conflicts() --
+<pre><code>## -- Conflicts -------------------------------------------------- tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="novos-passos-com-r-part2.html#cb132-1"></a>df &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw">read_csv</span>(<span class="st">&quot;abev3_petr4.csv&quot;</span>)</span></code></pre></div>
