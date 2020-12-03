@@ -24,7 +24,7 @@
 <meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
 
 
-<meta name="date" content="2020-11-22" />
+<meta name="date" content="2020-12-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -311,19 +311,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2019-12-01         13.31         14.26        13.26          14.09
 ## 2020-01-01         14.09         14.38        12.72          12.86
 ##            ITSA4.SA.Volume ITSA4.SA.Adjusted
-## 2019-01-01       601458600          12.27471
-## 2019-02-01       717154000          11.24727
-## 2019-03-01       455097200          11.26931
-## 2019-04-01       371836700          11.22160
-## 2019-05-01       479823200          11.67386
-## 2019-06-01       498662200          12.14496
-## 2019-07-01       358912200          11.76823
-## 2019-08-01       533774500          11.59836
-## 2019-09-01       422719300          12.77819
-## 2019-10-01       391134100          13.31370
-## 2019-11-01       334994100          12.88642
-## 2019-12-01       338858800          13.68272
-## 2020-01-01       407079600          12.51259</code></pre>
+## 2019-01-01       601458600          12.25150
+## 2019-02-01       717154000          11.22601
+## 2019-03-01       455097200          11.24800
+## 2019-04-01       371836700          11.20039
+## 2019-05-01       479823200          11.65179
+## 2019-06-01       498662200          12.12200
+## 2019-07-01       358912200          11.74598
+## 2019-08-01       533774500          11.57643
+## 2019-09-01       422719300          12.75404
+## 2019-10-01       391134100          13.28853
+## 2019-11-01       334994100          12.86206
+## 2019-12-01       338858800          13.65685
+## 2020-01-01       407079600          12.48894</code></pre>
 </div>
 <div id="rbcb-séries-de-preços-de-moedas-mostrar-helpers-bid-e-ask" class="section level3">
 <h3><span class="header-section-number">3.1.2</span> rbcb: séries de preços de moedas: Mostrar helpers bid e ask</h3>
@@ -361,12 +361,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## # A tibble: 6 x 2
 ##   date       dolar
 ##   &lt;date&gt;     &lt;dbl&gt;
-## 1 2020-11-13  5.49
-## 2 2020-11-16  5.42
-## 3 2020-11-17  5.40
-## 4 2020-11-18  5.29
-## 5 2020-11-19  5.33
-## 6 2020-11-20  5.35</code></pre>
+## 1 2020-11-26  5.32
+## 2 2020-11-27  5.35
+## 3 2020-11-30  5.33
+## 4 2020-12-01  5.28
+## 5 2020-12-02  5.23
+## 6 2020-12-03  5.16</code></pre>
 <p>Outro item interessante que pode ser baixado é o IPCA. Além disso, outros paràmetros da função podem ser manipulados:</p>
 <div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="fontes-de-dados-financeiros.html#cb292-1"></a>df_ipca &lt;-<span class="st"> </span><span class="kw">get_series</span>(<span class="dt">code =</span> <span class="kw">c</span>(<span class="dt">ipca =</span> <span class="dv">433</span>),</span>
 <span id="cb292-2"><a href="fontes-de-dados-financeiros.html#cb292-2"></a>                      <span class="dt">start_date =</span> <span class="st">&quot;2019-06-01&quot;</span>,</span>
@@ -409,19 +409,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # A tibble: 6 x 2
 ##   date        IGPM
 ##   &lt;date&gt;     &lt;dbl&gt;
-## 1 2019-11-01  0.3 
-## 2 2019-12-01  2.09
-## 3 2020-01-01  0.48
-## 4 2020-02-01 -0.04
-## 5 2020-03-01  1.24
-## 6 2020-04-01  0.8</code></pre>
+## 1 2019-12-01  2.09
+## 2 2020-01-01  0.48
+## 3 2020-02-01 -0.04
+## 4 2020-03-01  1.24
+## 5 2020-04-01  0.8 
+## 6 2020-05-01  0.28</code></pre>
 <p>Caso você deseje que o objeto de output acima seja um tibble, pode-se usar a função customizada abaixo:</p>
 <div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="fontes-de-dados-financeiros.html#cb301-1"></a>df_inflacao &lt;-<span class="st"> </span><span class="kw">reduce</span>(inflacao, left_join, <span class="dt">by =</span> <span class="st">&quot;date&quot;</span>)</span>
 <span id="cb301-2"><a href="fontes-de-dados-financeiros.html#cb301-2"></a><span class="kw">head</span>(df_inflacao)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   date        IPCA  IGPM
 ##   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;
-## 1 2019-11-01  0.51  0.3 
+## 1 2019-11-01  0.51 NA   
 ## 2 2019-12-01  1.15  2.09
 ## 3 2020-01-01  0.21  0.48
 ## 4 2020-02-01  0.25 -0.04
@@ -602,12 +602,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2018-01-08      10.30000       10.3455     10.25450        10.3455
 ## 2018-01-09      10.35450       10.3545     10.17270        10.1818
 ##            ITSA4.SA.Volume ITSA4.SA.Adjusted
-## 2018-01-02        14040950          8.456573
-## 2018-01-03        13498870          8.556257
-## 2018-01-04        14303520          8.717254
-## 2018-01-05        10845010          8.732521
-## 2018-01-08        11024750          8.724931
-## 2018-01-09        24859010          8.586872</code></pre>
+## 2018-01-02        14040950          8.440587
+## 2018-01-03        13498870          8.540083
+## 2018-01-04        14303520          8.700775
+## 2018-01-05        10845010          8.716013
+## 2018-01-08        11024750          8.708437
+## 2018-01-09        24859010          8.570640</code></pre>
 <p>Um objeto <code>xts</code> possui dois principais elementos:</p>
 <ul>
 <li><em>coredata</em>: o vetor ou matriz referente aos dados.</li>
@@ -621,12 +621,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [5,]      10.30000       10.3455     10.25450        10.3455        11024750
 ## [6,]      10.35450       10.3545     10.17270        10.1818        24859010
 ##      ITSA4.SA.Adjusted
-## [1,]          8.456573
-## [2,]          8.556257
-## [3,]          8.717254
-## [4,]          8.732521
-## [5,]          8.724931
-## [6,]          8.586872</code></pre>
+## [1,]          8.440587
+## [2,]          8.540083
+## [3,]          8.700775
+## [4,]          8.716013
+## [5,]          8.708437
+## [6,]          8.570640</code></pre>
 <ul>
 <li><em>index</em>: vetor referente às datas</li>
 </ul>
@@ -647,8 +647,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2018-12-28     9.88182     13.1182       8.51        12.08    5109065710
 ## 2019-12-30    12.11000     14.2600      11.02        14.09    5488006700
 ##            itausa.Adjusted
-## 2018-12-28        10.98359
-## 2019-12-30        13.70937</code></pre>
+## 2018-12-28        10.96283
+## 2019-12-30        13.68345</code></pre>
 <div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="fontes-de-dados-financeiros.html#cb324-1"></a><span class="co"># para mensal</span></span>
 <span id="cb324-2"><a href="fontes-de-dados-financeiros.html#cb324-2"></a><span class="kw">head</span>(<span class="kw">to.monthly</span>(itausa))</span></code></pre></div>
 <pre><code>## Warning in to.period(x, &quot;months&quot;, indexAt = indexAt, name = name, ...): missing
@@ -661,12 +661,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## mai 2018    12.29090     12.2909   10.06360      10.2091     525804620
 ## jun 2018    10.50000     10.6800    8.51000       9.1800     578588000
 ##          itausa.Adjusted
-## jan 2018       10.158634
-## fev 2018       10.549949
-## mar 2018       11.101403
-## abr 2018       10.956441
-## mai 2018        9.040500
-## jun 2018        8.140071</code></pre>
+## jan 2018       10.139430
+## fev 2018       10.530005
+## mar 2018       11.080418
+## abr 2018       10.935729
+## mai 2018        9.023410
+## jun 2018        8.124683</code></pre>
 <div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="fontes-de-dados-financeiros.html#cb327-1"></a><span class="co"># para trimestral</span></span>
 <span id="cb327-2"><a href="fontes-de-dados-financeiros.html#cb327-2"></a><span class="kw">head</span>(<span class="kw">to.quarterly</span>(itausa))</span></code></pre></div>
 <pre><code>## Warning in to.period(x, &quot;quarters&quot;, indexAt = indexAt, name = name, ...):
@@ -679,12 +679,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2019 Q1    12.11000     13.8000   11.36000      11.9800    1757291600
 ## 2019 Q2    12.10000     13.0700   11.02000      12.8900    1350322100
 ##         itausa.Adjusted
-## 2018 Q1       11.101403
-## 2018 Q2        8.140071
-## 2018 Q3        9.162148
-## 2018 Q4       10.983588
-## 2019 Q1       11.287557
-## 2019 Q2       12.164594</code></pre>
+## 2018 Q1       11.080418
+## 2018 Q2        8.124683
+## 2018 Q3        9.144828
+## 2018 Q4       10.962826
+## 2019 Q1       11.266219
+## 2019 Q2       12.141599</code></pre>
 <p>Para converter um <code>xts</code> para data.frame:</p>
 <div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="fontes-de-dados-financeiros.html#cb330-1"></a><span class="kw">head</span>(<span class="kw">fortify.zoo</span>(itausa))</span></code></pre></div>
 <pre><code>##        Index ITSA4.SA.Open ITSA4.SA.High ITSA4.SA.Low ITSA4.SA.Close
@@ -695,12 +695,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5 2018-01-08      10.30000       10.3455     10.25450        10.3455
 ## 6 2018-01-09      10.35450       10.3545     10.17270        10.1818
 ##   ITSA4.SA.Volume ITSA4.SA.Adjusted
-## 1        14040950          8.456573
-## 2        13498870          8.556257
-## 3        14303520          8.717254
-## 4        10845010          8.732521
-## 5        11024750          8.724931
-## 6        24859010          8.586872</code></pre>
+## 1        14040950          8.440587
+## 2        13498870          8.540083
+## 3        14303520          8.700775
+## 4        10845010          8.716013
+## 5        11024750          8.708437
+## 6        24859010          8.570640</code></pre>
 </div>
 </div>
 <div id="helpers-do-quantmod-cl-op-hi-lo" class="section level2">
@@ -736,12 +736,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="fontes-de-dados-financeiros.html#cb338-1"></a><span class="co"># serie de preços ajustados</span></span>
 <span id="cb338-2"><a href="fontes-de-dados-financeiros.html#cb338-2"></a><span class="kw">head</span>(<span class="kw">Ad</span>(itausa))</span></code></pre></div>
 <pre><code>##            ITSA4.SA.Adjusted
-## 2018-01-02          8.456573
-## 2018-01-03          8.556257
-## 2018-01-04          8.717254
-## 2018-01-05          8.732521
-## 2018-01-08          8.724931
-## 2018-01-09          8.586872</code></pre>
+## 2018-01-02          8.440587
+## 2018-01-03          8.540083
+## 2018-01-04          8.700775
+## 2018-01-05          8.716013
+## 2018-01-08          8.708437
+## 2018-01-09          8.570640</code></pre>
 </div>
 <div id="funções-de-gráficos-xts" class="section level2">
 <h2><span class="header-section-number">3.4</span> Funções de gráficos xts</h2>
@@ -788,12 +788,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="fontes-de-dados-financeiros.html#cb347-1"></a>portfolio &lt;-<span class="st"> </span><span class="kw">merge</span>(petr3, bbdc, ibov)</span>
 <span id="cb347-2"><a href="fontes-de-dados-financeiros.html#cb347-2"></a><span class="kw">head</span>(portfolio)</span></code></pre></div>
 <pre><code>##            PETR3.SA.Adjusted BBDC4.SA.Adjusted BVSP.Adjusted
-## 2018-01-01          16.25078          31.02850         84913
-## 2018-02-01          21.70834          26.35257         85481
-## 2018-03-01          21.90526          26.86041         85366
-## 2018-04-01          23.09617          25.87021         86115
-## 2018-05-01          20.80812          21.83974         76754
-## 2018-06-01          18.24192          20.15056         72763</code></pre>
+## 2018-01-01          16.25078          31.00556         84913
+## 2018-02-01          21.70834          26.33308         85481
+## 2018-03-01          21.90526          26.84055         85366
+## 2018-04-01          23.09617          25.85108         86115
+## 2018-05-01          20.80812          21.82359         76754
+## 2018-06-01          18.24192          20.13566         72763</code></pre>
 </div>
 <div id="case" class="section level2">
 <h2><span class="header-section-number">3.6</span> Case</h2>

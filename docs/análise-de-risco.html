@@ -24,7 +24,7 @@
 <meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
 
 
-<meta name="date" content="2020-11-22" />
+<meta name="date" content="2020-12-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -236,29 +236,29 @@ Dessa maneira, vamos dar uma passo para trás e introduzir uma análise qualitat
 <p>Vamos começar obtendo a série de cotação de fechamento do índice IBOVESPA no período de 10 anos de 2010 a 2019.
 Para obter a série do índice vamos utiliza a função <code>getSymbols</code> do pacote <code>quantmod</code>.
 O símbolo do IBOVESPA é <code>^BVSP</code>.</p>
-<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="análise-de-risco.html#cb419-1"></a>IBOVESPA &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;^BVSP&quot;</span>,</span>
-<span id="cb419-2"><a href="análise-de-risco.html#cb419-2"></a>                       <span class="dt">from =</span> <span class="st">&quot;2009-12-31&quot;</span>,</span>
-<span id="cb419-3"><a href="análise-de-risco.html#cb419-3"></a>                       <span class="dt">to =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
-<span id="cb419-4"><a href="análise-de-risco.html#cb419-4"></a>                       <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb426-1"><a href="análise-de-risco.html#cb426-1"></a>IBOVESPA &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;^BVSP&quot;</span>,</span>
+<span id="cb426-2"><a href="análise-de-risco.html#cb426-2"></a>                       <span class="dt">from =</span> <span class="st">&quot;2009-12-31&quot;</span>,</span>
+<span id="cb426-3"><a href="análise-de-risco.html#cb426-3"></a>                       <span class="dt">to =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
+<span id="cb426-4"><a href="análise-de-risco.html#cb426-4"></a>                       <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p>Como é fundamental <strong>ver</strong> os dados com os quais se está trabalhando, vamos visualizar a série do índice, pegando a série de cotações de fechamento.</p>
-<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="análise-de-risco.html#cb420-1"></a>IBOVESPA <span class="op">%&gt;%</span></span>
-<span id="cb420-2"><a href="análise-de-risco.html#cb420-2"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
-<span id="cb420-3"><a href="análise-de-risco.html#cb420-3"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="análise-de-risco.html#cb427-1"></a>IBOVESPA <span class="op">%&gt;%</span></span>
+<span id="cb427-2"><a href="análise-de-risco.html#cb427-2"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb427-3"><a href="análise-de-risco.html#cb427-3"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
 <p>O que observamos?</p>
 <ul>
 <li>De 2010 até 2016, aproximadamente há uma tendência de queda.</li>
 <li>A partir de 2016 há uma forte tendência de alta.</li>
 </ul>
 <p>Agora vamos calcular os retornos das cotações de fechamento:</p>
-<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="análise-de-risco.html#cb421-1"></a>IBOVESPA_rets &lt;-<span class="st"> </span>IBOVESPA <span class="op">%&gt;%</span></span>
-<span id="cb421-2"><a href="análise-de-risco.html#cb421-2"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
-<span id="cb421-3"><a href="análise-de-risco.html#cb421-3"></a><span class="st">  </span><span class="kw">log</span>() <span class="op">%&gt;%</span></span>
-<span id="cb421-4"><a href="análise-de-risco.html#cb421-4"></a><span class="st">  </span><span class="kw">diff</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb428-1"><a href="análise-de-risco.html#cb428-1"></a>IBOVESPA_rets &lt;-<span class="st"> </span>IBOVESPA <span class="op">%&gt;%</span></span>
+<span id="cb428-2"><a href="análise-de-risco.html#cb428-2"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb428-3"><a href="análise-de-risco.html#cb428-3"></a><span class="st">  </span><span class="kw">log</span>() <span class="op">%&gt;%</span></span>
+<span id="cb428-4"><a href="análise-de-risco.html#cb428-4"></a><span class="st">  </span><span class="kw">diff</span>()</span></code></pre></div>
 <p>Vamos visualizar os retornos agora:</p>
-<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="análise-de-risco.html#cb422-1"></a>IBOVESPA_rets <span class="op">%&gt;%</span></span>
-<span id="cb422-2"><a href="análise-de-risco.html#cb422-2"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="análise-de-risco.html#cb429-1"></a>IBOVESPA_rets <span class="op">%&gt;%</span></span>
+<span id="cb429-2"><a href="análise-de-risco.html#cb429-2"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
 <p>O que observamos?</p>
 <ul>
 <li>Oscilações tanto positivas quanto negativas</li>
@@ -286,7 +286,7 @@ Entretanto, vamos apresentar algumas avaliações qualitativas que permitam cara
 São úteis para caracterizar e entender a amostra aleatória, assim como comparar variáveis aleatórias diferentes.</p>
 <p>São exemplos de estatísticas descritivas para uma amostra aleatória: a média, a mediana, alguns quartis e valores de mínimo e máximo.</p>
 <p>No R a função <code>summary</code> provê algumas estatísticas descritivas da nossa série de retornos do IBOVESPA</p>
-<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb423-1"><a href="análise-de-risco.html#cb423-1"></a><span class="kw">summary</span>(<span class="kw">coredata</span>(IBOVESPA_rets))</span></code></pre></div>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb430-1"><a href="análise-de-risco.html#cb430-1"></a><span class="kw">summary</span>(<span class="kw">coredata</span>(IBOVESPA_rets))</span></code></pre></div>
 <pre><code>##    BVSP.Close       
 ##  Min.   :-0.092107  
 ##  1st Qu.:-0.008163  
@@ -305,49 +305,49 @@ A mediana é ligeiramente superior a média, na verdade quase o dobro, isso pode
 Todavia, os valores aqui de média e mediana são muito próximos de zero, dessa maneira, a análise persiste, mas eventualmente esse efeito não seja significativo.</p>
 <p>Além dessas medidas de posição, há também as medidas de dispersão.
 Já vimos no Capítulo <a href="returns.html#returns">4</a> a variância e o desvio padrão (volatilidade)</p>
-<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb425-1"><a href="análise-de-risco.html#cb425-1"></a><span class="kw">var</span>(IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>(), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb432-1"><a href="análise-de-risco.html#cb432-1"></a><span class="kw">var</span>(IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>(), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 0.0001973679</code></pre>
-<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb427-1"><a href="análise-de-risco.html#cb427-1"></a><span class="kw">sd</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb434-1"><a href="análise-de-risco.html#cb434-1"></a><span class="kw">sd</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 0.01404877</code></pre>
 <p>Mas temos também a assimetria (<em>skewness</em>), que indica o quão simétrica é a amostra em torno da média.
 Uma assimetria zero indica que a amostra é simétrica, a assimetria positiva indica uma amostra com maior peso para valores acima da média e assimetria negativa o oposto.</p>
-<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb429-1"><a href="análise-de-risco.html#cb429-1"></a><span class="kw">skewness</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="análise-de-risco.html#cb436-1"></a><span class="kw">skewness</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] -0.1643848</code></pre>
 <p>Conforme falamos na análise da mediana, a amostra apresentava uma assimetria negativa, e o skewness confirma essa hipótese.</p>
 <p>Outra medida interessante é a curtose (<em>kurtosis</em>).
 A curtose é sempre positiva e quanto maior a curtose maior a probabilidade de que eventos extremos ocorram.
 Como balisador usamos a curtose da distribuição Normal (Gaussiana) que é uma distribuição muito importante e aparece em diversos fenômenos.
 Para a distribuição Normal e curtose é 3, dessa maneira, se a amostra apresenta uma curtose maior que 3 ela tem probabilidade de eventos extremos maior do que uma distribuição Normal.</p>
-<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb431-1"><a href="análise-de-risco.html#cb431-1"></a><span class="kw">kurtosis</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>, <span class="dt">method =</span> <span class="st">&quot;moment&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb438-1"><a href="análise-de-risco.html#cb438-1"></a><span class="kw">kurtosis</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>, <span class="dt">method =</span> <span class="st">&quot;moment&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 4.945592</code></pre>
 <p>Como vemos os retornos do IBOVESPA apresentam uma curtose maior do que 3, logo, há uma probabilidade de eventos extremos maior do que uma distribuição Normal.
 Isso não é necessariamente bom ou ruim, porque os eventos extremos podem ser positivos ou negativos e apesar dos retornos extremos negativos serem indesejados, os retornos extremos positivos são altamente desejáveis.</p>
 <p>Para efeito de comparação, vamos calcular as estatísticas descritivas para uma amostra aleatória Normal com média e variância dos retornos do IBOVESPA.</p>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb433-1"><a href="análise-de-risco.html#cb433-1"></a><span class="co"># aprox. 10 anos</span></span>
-<span id="cb433-2"><a href="análise-de-risco.html#cb433-2"></a>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">2500</span>,</span>
-<span id="cb433-3"><a href="análise-de-risco.html#cb433-3"></a>           <span class="dt">mean =</span> <span class="kw">mean</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
-<span id="cb433-4"><a href="análise-de-risco.html#cb433-4"></a>           <span class="dt">sd =</span> <span class="kw">sd</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb433-5"><a href="análise-de-risco.html#cb433-5"></a><span class="kw">c</span>(</span>
-<span id="cb433-6"><a href="análise-de-risco.html#cb433-6"></a>  <span class="kw">summary</span>(x),</span>
-<span id="cb433-7"><a href="análise-de-risco.html#cb433-7"></a>  <span class="dt">skewness =</span> <span class="kw">skewness</span>(x),</span>
-<span id="cb433-8"><a href="análise-de-risco.html#cb433-8"></a>  <span class="dt">kurtosis =</span> <span class="kw">kurtosis</span>(x, <span class="dt">method =</span> <span class="st">&quot;moment&quot;</span>)</span>
-<span id="cb433-9"><a href="análise-de-risco.html#cb433-9"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="análise-de-risco.html#cb440-1"></a><span class="co"># aprox. 10 anos</span></span>
+<span id="cb440-2"><a href="análise-de-risco.html#cb440-2"></a>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">2500</span>,</span>
+<span id="cb440-3"><a href="análise-de-risco.html#cb440-3"></a>           <span class="dt">mean =</span> <span class="kw">mean</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb440-4"><a href="análise-de-risco.html#cb440-4"></a>           <span class="dt">sd =</span> <span class="kw">sd</span>(IBOVESPA_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb440-5"><a href="análise-de-risco.html#cb440-5"></a><span class="kw">c</span>(</span>
+<span id="cb440-6"><a href="análise-de-risco.html#cb440-6"></a>  <span class="kw">summary</span>(x),</span>
+<span id="cb440-7"><a href="análise-de-risco.html#cb440-7"></a>  <span class="dt">skewness =</span> <span class="kw">skewness</span>(x),</span>
+<span id="cb440-8"><a href="análise-de-risco.html#cb440-8"></a>  <span class="dt">kurtosis =</span> <span class="kw">kurtosis</span>(x, <span class="dt">method =</span> <span class="st">&quot;moment&quot;</span>)</span>
+<span id="cb440-9"><a href="análise-de-risco.html#cb440-9"></a>)</span></code></pre></div>
 <pre><code>##          Min.       1st Qu.        Median          Mean       3rd Qu. 
-## -0.0536959744 -0.0097713790  0.0002192958  0.0003294034  0.0101854735 
+## -5.220719e-02 -9.497233e-03 -4.287076e-05 -2.385144e-04  8.977870e-03 
 ##          Max.      skewness      kurtosis 
-##  0.0459519480 -0.0431169643  2.9579718317</code></pre>
+##  5.202584e-02 -7.857911e-03  2.995699e+00</code></pre>
 <p>Note que na amostra Normal os pontos de mínimo e máximo são bem menores que na distribuição de retornos do IBOVESPA, esse é um efeito que pode ser explicado, pela curtose mais elevada da distribuição de retornos.</p>
 </div>
 <div id="histograma" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> Histograma</h3>
 <p>Um histograma é um gráfico que representa a distribuição construida a partir da amostra aleatória, é um gráfico da distribuição amostral.</p>
 <p>No <a href="https://cran.r-project.org/package=PerformanceAnalytics">PerformanceAnalytics</a> temos a função <code>chart.Histogram</code>.</p>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb435-1"><a href="análise-de-risco.html#cb435-1"></a>IBOVESPA_rets <span class="op">%&gt;%</span></span>
-<span id="cb435-2"><a href="análise-de-risco.html#cb435-2"></a><span class="st">  </span><span class="kw">chart.Histogram</span>(<span class="dt">breaks =</span> <span class="dv">50</span>,</span>
-<span id="cb435-3"><a href="análise-de-risco.html#cb435-3"></a>                  <span class="dt">main =</span> <span class="st">&quot;Histograma de retornos do IBOVESPA&quot;</span>,</span>
-<span id="cb435-4"><a href="análise-de-risco.html#cb435-4"></a>                  <span class="dt">show.outliers =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb435-5"><a href="análise-de-risco.html#cb435-5"></a>                  <span class="dt">methods =</span> <span class="st">&quot;add.normal&quot;</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="análise-de-risco.html#cb442-1"></a>IBOVESPA_rets <span class="op">%&gt;%</span></span>
+<span id="cb442-2"><a href="análise-de-risco.html#cb442-2"></a><span class="st">  </span><span class="kw">chart.Histogram</span>(<span class="dt">breaks =</span> <span class="dv">50</span>,</span>
+<span id="cb442-3"><a href="análise-de-risco.html#cb442-3"></a>                  <span class="dt">main =</span> <span class="st">&quot;Histograma de retornos do IBOVESPA&quot;</span>,</span>
+<span id="cb442-4"><a href="análise-de-risco.html#cb442-4"></a>                  <span class="dt">show.outliers =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb442-5"><a href="análise-de-risco.html#cb442-5"></a>                  <span class="dt">methods =</span> <span class="st">&quot;add.normal&quot;</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
 <p>O que observamos?</p>
 <ul>
 <li>Pico em torno de zero, região mais provável ou de maior frequência.</li>
@@ -364,23 +364,23 @@ Esse processo contribui para aumentar a sensibilidade com os dados e o senso cr�
 <p>Vamos introduzir aqui algumas medidas de risco e utilizar alguns exemplos com o ativo BOVA11, que é um ETF (fundo negociado em bolsa) que reproduz o retorno do índice IBOVESPA.
 O BOVA11 não é exatamente, na vírgula, o índice IBOVESPA, mas é muito próximo do índice.
 Vamos criar as séries de preços do BOVA11, de retornos diários, de preços mensais e retornos mensais.</p>
-<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb436-1"><a href="análise-de-risco.html#cb436-1"></a>BOVA11 &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;BOVA11.SA&quot;</span>,</span>
-<span id="cb436-2"><a href="análise-de-risco.html#cb436-2"></a>                     <span class="dt">to =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
-<span id="cb436-3"><a href="análise-de-risco.html#cb436-3"></a>                     <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb436-4"><a href="análise-de-risco.html#cb436-4"></a>BOVA11_rets &lt;-<span class="st"> </span>BOVA11 <span class="op">%&gt;%</span></span>
-<span id="cb436-5"><a href="análise-de-risco.html#cb436-5"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
-<span id="cb436-6"><a href="análise-de-risco.html#cb436-6"></a><span class="st">  </span><span class="kw">log</span>() <span class="op">%&gt;%</span></span>
-<span id="cb436-7"><a href="análise-de-risco.html#cb436-7"></a><span class="st">  </span><span class="kw">diff</span>()</span>
-<span id="cb436-8"><a href="análise-de-risco.html#cb436-8"></a>BOVA11_monthly &lt;-<span class="st"> </span>BOVA11 <span class="op">%&gt;%</span></span>
-<span id="cb436-9"><a href="análise-de-risco.html#cb436-9"></a><span class="st">  </span><span class="kw">Ad</span>() <span class="op">%&gt;%</span></span>
-<span id="cb436-10"><a href="análise-de-risco.html#cb436-10"></a><span class="st">  </span><span class="kw">to.period</span>()</span>
-<span id="cb436-11"><a href="análise-de-risco.html#cb436-11"></a>BOVA11_monthly_rets &lt;-<span class="st"> </span>BOVA11_monthly <span class="op">%&gt;%</span></span>
-<span id="cb436-12"><a href="análise-de-risco.html#cb436-12"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
-<span id="cb436-13"><a href="análise-de-risco.html#cb436-13"></a><span class="st">  </span><span class="kw">log</span>() <span class="op">%&gt;%</span></span>
-<span id="cb436-14"><a href="análise-de-risco.html#cb436-14"></a><span class="st">  </span><span class="kw">diff</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb443-1"><a href="análise-de-risco.html#cb443-1"></a>BOVA11 &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(<span class="st">&quot;BOVA11.SA&quot;</span>,</span>
+<span id="cb443-2"><a href="análise-de-risco.html#cb443-2"></a>                     <span class="dt">to =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
+<span id="cb443-3"><a href="análise-de-risco.html#cb443-3"></a>                     <span class="dt">auto.assign =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb443-4"><a href="análise-de-risco.html#cb443-4"></a>BOVA11_rets &lt;-<span class="st"> </span>BOVA11 <span class="op">%&gt;%</span></span>
+<span id="cb443-5"><a href="análise-de-risco.html#cb443-5"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb443-6"><a href="análise-de-risco.html#cb443-6"></a><span class="st">  </span><span class="kw">log</span>() <span class="op">%&gt;%</span></span>
+<span id="cb443-7"><a href="análise-de-risco.html#cb443-7"></a><span class="st">  </span><span class="kw">diff</span>()</span>
+<span id="cb443-8"><a href="análise-de-risco.html#cb443-8"></a>BOVA11_monthly &lt;-<span class="st"> </span>BOVA11 <span class="op">%&gt;%</span></span>
+<span id="cb443-9"><a href="análise-de-risco.html#cb443-9"></a><span class="st">  </span><span class="kw">Ad</span>() <span class="op">%&gt;%</span></span>
+<span id="cb443-10"><a href="análise-de-risco.html#cb443-10"></a><span class="st">  </span><span class="kw">to.period</span>()</span>
+<span id="cb443-11"><a href="análise-de-risco.html#cb443-11"></a>BOVA11_monthly_rets &lt;-<span class="st"> </span>BOVA11_monthly <span class="op">%&gt;%</span></span>
+<span id="cb443-12"><a href="análise-de-risco.html#cb443-12"></a><span class="st">  </span><span class="kw">Cl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb443-13"><a href="análise-de-risco.html#cb443-13"></a><span class="st">  </span><span class="kw">log</span>() <span class="op">%&gt;%</span></span>
+<span id="cb443-14"><a href="análise-de-risco.html#cb443-14"></a><span class="st">  </span><span class="kw">diff</span>()</span></code></pre></div>
 <p>Vamos considerar um cenário onde eu tenho uma carteira com 1000 ações do BOVA11.
 A série de BOVA11 termina em dez/2019, e a cotação de fechamento é R$ 111,23, logo o patrimônio da carteira é R$ 111.230,00.</p>
-<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb437-1"><a href="análise-de-risco.html#cb437-1"></a>BOVA11 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">last</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">Cl</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="análise-de-risco.html#cb444-1"></a>BOVA11 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">last</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">Cl</span>()</span></code></pre></div>
 <pre><code>##            BOVA11.SA.Close
 ## 2019-12-30          111.23</code></pre>
 <p>Dessa forma e para começarmos a discutir sobre as medidas de risco vou colocar algumas perguntas que precisam ser respondidas.</p>
@@ -399,12 +399,12 @@ A série de BOVA11 termina em dez/2019, e a cotação de fechamento é R$ 111,23
 <p>Para o horizonte de investimento de 1 mês, quanto pode ser uma oscilação <strong>extrema</strong>?
 É necessário definir o que vem a ser uma variação extrema neste horizonte de investimento
 Para isso vamos usar a série de retornos de 1 mês do BOVA11, pois é necessário que os retornos estejam ajustados ao horizonte de investimento definido, e vamos observar o seu histograma.</p>
-<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb439-1"><a href="análise-de-risco.html#cb439-1"></a>BOVA11_monthly_rets <span class="op">%&gt;%</span></span>
-<span id="cb439-2"><a href="análise-de-risco.html#cb439-2"></a><span class="st">  </span><span class="kw">chart.Histogram</span>(<span class="dt">breaks =</span> <span class="dv">30</span>,</span>
-<span id="cb439-3"><a href="análise-de-risco.html#cb439-3"></a>                  <span class="dt">main =</span> <span class="st">&quot;Histograma de retornos do IBOVESPA&quot;</span>,</span>
-<span id="cb439-4"><a href="análise-de-risco.html#cb439-4"></a>                  <span class="dt">show.outliers =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb439-5"><a href="análise-de-risco.html#cb439-5"></a>                  <span class="dt">methods =</span> <span class="st">&quot;add.normal&quot;</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb446-1"><a href="análise-de-risco.html#cb446-1"></a>BOVA11_monthly_rets <span class="op">%&gt;%</span></span>
+<span id="cb446-2"><a href="análise-de-risco.html#cb446-2"></a><span class="st">  </span><span class="kw">chart.Histogram</span>(<span class="dt">breaks =</span> <span class="dv">30</span>,</span>
+<span id="cb446-3"><a href="análise-de-risco.html#cb446-3"></a>                  <span class="dt">main =</span> <span class="st">&quot;Histograma de retornos do IBOVESPA&quot;</span>,</span>
+<span id="cb446-4"><a href="análise-de-risco.html#cb446-4"></a>                  <span class="dt">show.outliers =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb446-5"><a href="análise-de-risco.html#cb446-5"></a>                  <span class="dt">methods =</span> <span class="st">&quot;add.normal&quot;</span>, <span class="dt">lwd =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>O que observamos:</p>
 <ul>
 <li>os maiores retornos positivos ocorrem acima de 15%</li>
@@ -427,13 +427,13 @@ Para nos ajudar nessa análise vamos olhar a distribuição Normal na figura aba
 <p>Agora a pergunta é: dado que eu sei que a probabilidade de termos uma perda maior que 2 desvios padrão é de 2,5%, como calcular essa perda em financeiro?</p>
 <p>Para isso vamos usar a função <code>qnorm</code> que dada uma probabilidade ela retorna o valor associado, considerando uma distribuição Normal.
 Dado que temos a média e o desvio padrão dos retornos mensais, vamos <em>plugar</em> estes parâmetros na distribuição Normal para obter a perda associada a probabilidade de 2,5%.</p>
-<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb440-1"><a href="análise-de-risco.html#cb440-1"></a>mu &lt;-<span class="st"> </span>BOVA11_monthly_rets <span class="op">%&gt;%</span></span>
-<span id="cb440-2"><a href="análise-de-risco.html#cb440-2"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span></span>
-<span id="cb440-3"><a href="análise-de-risco.html#cb440-3"></a><span class="st">  </span><span class="kw">mean</span>()</span>
-<span id="cb440-4"><a href="análise-de-risco.html#cb440-4"></a>sigma &lt;-<span class="st"> </span>BOVA11_monthly_rets <span class="op">%&gt;%</span></span>
-<span id="cb440-5"><a href="análise-de-risco.html#cb440-5"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span></span>
-<span id="cb440-6"><a href="análise-de-risco.html#cb440-6"></a><span class="st">  </span><span class="kw">sd</span>()</span>
-<span id="cb440-7"><a href="análise-de-risco.html#cb440-7"></a><span class="kw">qnorm</span>(<span class="fl">0.025</span>, <span class="dt">mean =</span> mu, <span class="dt">sd =</span> sigma)</span></code></pre></div>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="análise-de-risco.html#cb447-1"></a>mu &lt;-<span class="st"> </span>BOVA11_monthly_rets <span class="op">%&gt;%</span></span>
+<span id="cb447-2"><a href="análise-de-risco.html#cb447-2"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span></span>
+<span id="cb447-3"><a href="análise-de-risco.html#cb447-3"></a><span class="st">  </span><span class="kw">mean</span>()</span>
+<span id="cb447-4"><a href="análise-de-risco.html#cb447-4"></a>sigma &lt;-<span class="st"> </span>BOVA11_monthly_rets <span class="op">%&gt;%</span></span>
+<span id="cb447-5"><a href="análise-de-risco.html#cb447-5"></a><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span></span>
+<span id="cb447-6"><a href="análise-de-risco.html#cb447-6"></a><span class="st">  </span><span class="kw">sd</span>()</span>
+<span id="cb447-7"><a href="análise-de-risco.html#cb447-7"></a><span class="kw">qnorm</span>(<span class="fl">0.025</span>, <span class="dt">mean =</span> mu, <span class="dt">sd =</span> sigma)</span></code></pre></div>
 <pre><code>## [1] -0.1015289</code></pre>
 <!-- Para isso vamos usar a função `quantile` que para uma série de retornos, retorna o valor na série referente a probabilidade fornecida. -->
 <!-- Por exemplo, passando a série de retornos mensais do BOVA11 e a probabilidade de 2,5% temos -->
@@ -443,9 +443,9 @@ Dado que temos a média e o desvio padrão dos retornos mensais, vamos <em>pluga
 <p>Para essa amostra de retornos temos que a probabilidade de uma perda maior do que 10,15% é de 2,5%.
 De posse do retorno podemos aplicar a Eq.<a href="returns.html#eq:log-price">(4.7)</a> para calcular a variação no preço para este retorno.
 Sabemos que último preço de BOVA11 é R$ 111,23, dessa forma a perda é dada por:</p>
-<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="análise-de-risco.html#cb442-1"></a>r_t &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="fl">0.025</span>, <span class="dt">mean =</span> mu, <span class="dt">sd =</span> sigma)</span>
-<span id="cb442-2"><a href="análise-de-risco.html#cb442-2"></a>P_t &lt;-<span class="st"> </span><span class="fl">111.23</span></span>
-<span id="cb442-3"><a href="análise-de-risco.html#cb442-3"></a><span class="dv">1000</span> <span class="op">*</span><span class="st"> </span>P_t <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">exp</span>(r_t))</span></code></pre></div>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="análise-de-risco.html#cb449-1"></a>r_t &lt;-<span class="st"> </span><span class="kw">qnorm</span>(<span class="fl">0.025</span>, <span class="dt">mean =</span> mu, <span class="dt">sd =</span> sigma)</span>
+<span id="cb449-2"><a href="análise-de-risco.html#cb449-2"></a>P_t &lt;-<span class="st"> </span><span class="fl">111.23</span></span>
+<span id="cb449-3"><a href="análise-de-risco.html#cb449-3"></a><span class="dv">1000</span> <span class="op">*</span><span class="st"> </span>P_t <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">exp</span>(r_t))</span></code></pre></div>
 <pre><code>## [1] 10738.7</code></pre>
 <p>Temos que para o horizonte de investimentos de 1 mês, a carteira com 1000 posições de BOVA11 tem um <em>Value at Risk</em> de R$ 10.738,70 com nível de confiança de 95%.
 Essa é a forma que se constuma <em>ler</em> o <em>Value at Risk</em>.</p>
@@ -466,11 +466,11 @@ Entretanto, existem períodos que ocorrem sequências de quedas e é isso que o 
 </ul>
 <p>No pacote <code>PerformanceAnalytics</code> tem algumas funções para trabalhar com drawdown.
 Vejamos o gráfico do drawdown para os retornos diários do BOVA11 no ano de 2019.</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb444-1"><a href="análise-de-risco.html#cb444-1"></a><span class="kw">chart.Drawdown</span>(BOVA11_rets[<span class="st">&quot;2019&quot;</span>])</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="análise-de-risco.html#cb451-1"></a><span class="kw">chart.Drawdown</span>(BOVA11_rets[<span class="st">&quot;2019&quot;</span>])</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
 <p>Note que no gráfico as perdas começam, há uma recuperação, mas não suficiente para reverter o estado de perda.
 Quando puxamos os dados de drawdowns para o ano de 2019 (usando a função <code>table.Drawdowns</code> do <code>PerformanceAnalytics</code>) temos:</p>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb445-1"><a href="análise-de-risco.html#cb445-1"></a><span class="kw">table.Drawdowns</span>(BOVA11_rets[<span class="st">&quot;2019&quot;</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb452-1"><a href="análise-de-risco.html#cb452-1"></a><span class="kw">table.Drawdowns</span>(BOVA11_rets[<span class="st">&quot;2019&quot;</span>])</span></code></pre></div>
 <pre><code>##         From     Trough         To   Depth Length To Trough Recovery
 ## 1 2019-03-19 2019-05-16 2019-06-21 -0.1057     66        41       25
 ## 2 2019-07-11 2019-08-26 2019-10-22 -0.0937     74        33       41
@@ -483,12 +483,12 @@ Quando puxamos os dados de drawdowns para o ano de 2019 (usando a função <code
 <h3><span class="header-section-number">5.3.3</span> Short-Fall Risk</h3>
 <p>Vimos como quantificar a perda dado um nível de risco associado a uma probabilidade no cálculo do VaR, agora vamos inverter a análise, e vamos calcular a probabilidade de ter uma perda maior que um determinado valor.
 Ou seja, como calcular a probabilidade de um retorno cair abaixo de 5%?</p>
-<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb447-1"><a href="análise-de-risco.html#cb447-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(BOVA11_rets <span class="op">&lt;</span><span class="st"> </span><span class="fl">-0.05</span>,</span>
-<span id="cb447-2"><a href="análise-de-risco.html#cb447-2"></a>    <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(BOVA11_rets)</span></code></pre></div>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="análise-de-risco.html#cb454-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(BOVA11_rets <span class="op">&lt;</span><span class="st"> </span><span class="fl">-0.05</span>,</span>
+<span id="cb454-2"><a href="análise-de-risco.html#cb454-2"></a>    <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(BOVA11_rets)</span></code></pre></div>
 <pre><code>## [1] 0.1603421</code></pre>
 <p>Para os retornos diários temos uma probabilidade de 0,16% de termos retornos menores que 5%.</p>
-<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb449-1"><a href="análise-de-risco.html#cb449-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(BOVA11_monthly_rets <span class="op">&lt;</span><span class="st"> </span><span class="fl">-0.05</span>,</span>
-<span id="cb449-2"><a href="análise-de-risco.html#cb449-2"></a>    <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(BOVA11_monthly_rets)</span></code></pre></div>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="análise-de-risco.html#cb456-1"></a><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>(BOVA11_monthly_rets <span class="op">&lt;</span><span class="st"> </span><span class="fl">-0.05</span>,</span>
+<span id="cb456-2"><a href="análise-de-risco.html#cb456-2"></a>    <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(BOVA11_monthly_rets)</span></code></pre></div>
 <pre><code>## [1] 12.08791</code></pre>
 <p>Os retornos mensais apresentam uma probabilidade de 12,09% de probabilidade para retornos menores que 5%.</p>
 </div>
@@ -497,42 +497,42 @@ Ou seja, como calcular a probabilidade de um retorno cair abaixo de 5%?</p>
 <h2><span class="header-section-number">5.4</span> Análise em Janela Móvel</h2>
 <p>Análise em janela móvel é útil para a avaliação da dinâmica temporal dos dados.
 Por exemplo, temos a série de retornos do IBOVESPA de 2010 a 2019 e podemos calcular a média e o desvio padrão para essa amostra.</p>
-<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb451-1"><a href="análise-de-risco.html#cb451-1"></a><span class="kw">c</span>(</span>
-<span id="cb451-2"><a href="análise-de-risco.html#cb451-2"></a>  <span class="dt">mean =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(),</span>
-<span id="cb451-3"><a href="análise-de-risco.html#cb451-3"></a>  <span class="dt">sd =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sd</span>()</span>
-<span id="cb451-4"><a href="análise-de-risco.html#cb451-4"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="análise-de-risco.html#cb458-1"></a><span class="kw">c</span>(</span>
+<span id="cb458-2"><a href="análise-de-risco.html#cb458-2"></a>  <span class="dt">mean =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(),</span>
+<span id="cb458-3"><a href="análise-de-risco.html#cb458-3"></a>  <span class="dt">sd =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sd</span>()</span>
+<span id="cb458-4"><a href="análise-de-risco.html#cb458-4"></a>)</span></code></pre></div>
 <pre><code>##         mean           sd 
 ## 0.0001459989 0.0140487672</code></pre>
 <p>Uma pergunta que podemos fazer é, como se comporta a média e o desvio em uma janela móvel de 21 dias (tipicamente 1 mês em dias úteis).</p>
 <p>Vamos usar a função <code>rollmean</code> onde passamos a série e o tamanho da janela e ela retorna uma série com as médias para as janelas contíguas de 21 dias.</p>
-<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb453-1"><a href="análise-de-risco.html#cb453-1"></a><span class="kw">rollmean</span>(IBOVESPA_rets, <span class="dv">21</span>) <span class="op">%&gt;%</span></span>
-<span id="cb453-2"><a href="análise-de-risco.html#cb453-2"></a><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span></span>
-<span id="cb453-3"><a href="análise-de-risco.html#cb453-3"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(), <span class="dt">colour =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="análise-de-risco.html#cb460-1"></a><span class="kw">rollmean</span>(IBOVESPA_rets, <span class="dv">21</span>) <span class="op">%&gt;%</span></span>
+<span id="cb460-2"><a href="análise-de-risco.html#cb460-2"></a><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span></span>
+<span id="cb460-3"><a href="análise-de-risco.html#cb460-3"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(), <span class="dt">colour =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
 <p>Marcando em vermelho a média da amostra completa, é interessante ver que há uma grande dispersão em torno desse valor e não há tendência clara de longo prazo, o que faz sentido (porque?).</p>
 <p>A mesma análise pode ser realizada com o desvio padrão.
 Neste caso usamos a função <code>rollapply</code> que recebe a série de retornos, o tamanho da janela e a função a ser aplicada a cada janela, aqui usaremos a função <code>sd</code> para cálculo do desvio padrão.</p>
-<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb454-1"><a href="análise-de-risco.html#cb454-1"></a><span class="kw">rollapply</span>(IBOVESPA_rets, <span class="dv">21</span>, sd) <span class="op">%&gt;%</span></span>
-<span id="cb454-2"><a href="análise-de-risco.html#cb454-2"></a><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span></span>
-<span id="cb454-3"><a href="análise-de-risco.html#cb454-3"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sd</span>(), <span class="dt">colour =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb461-1"><a href="análise-de-risco.html#cb461-1"></a><span class="kw">rollapply</span>(IBOVESPA_rets, <span class="dv">21</span>, sd) <span class="op">%&gt;%</span></span>
+<span id="cb461-2"><a href="análise-de-risco.html#cb461-2"></a><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span></span>
+<span id="cb461-3"><a href="análise-de-risco.html#cb461-3"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> IBOVESPA_rets <span class="op">%&gt;%</span><span class="st"> </span>na.omit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sd</span>(), <span class="dt">colour =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 <p>Curioso ver que em 2011 e 2014/2015 tivemos picos mais pronunciados no desvio padrão, indicando momentos de maior volatilidade.</p>
 </div>
 <div id="túnel-de-volatilidade" class="section level2">
 <h2><span class="header-section-number">5.5</span> Túnel de Volatilidade</h2>
 <p>Complementando a análise em janela móvel para os retornos, podemos também construir um túnel de volatilidade (ou envelope de volatilidade) que é útil para uma análise qualitativa dos retornos em conjunto com o desvio padrão em janela móvel.</p>
 <p>No gráfico abaixo fazemos o gráfico dos retornos com o túnel de volatilidade e fica bem evidente que nos períodos de 2011 e 2014/2015 tivemos umas aglomerações de retornos, indicando um período de crise onde retornos mais extremos, bastante distantes da média, podem ocorrer.</p>
-<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="análise-de-risco.html#cb455-1"></a><span class="kw">plot</span>(<span class="kw">index</span>(IBOVESPA_rets), <span class="kw">coredata</span>(IBOVESPA_rets),</span>
-<span id="cb455-2"><a href="análise-de-risco.html#cb455-2"></a>     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,</span>
-<span id="cb455-3"><a href="análise-de-risco.html#cb455-3"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>),</span>
-<span id="cb455-4"><a href="análise-de-risco.html#cb455-4"></a>     <span class="dt">cex.axis =</span> <span class="fl">.7</span>,</span>
-<span id="cb455-5"><a href="análise-de-risco.html#cb455-5"></a>     <span class="dt">lwd =</span> <span class="dv">1</span>,</span>
-<span id="cb455-6"><a href="análise-de-risco.html#cb455-6"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Date&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Retorno&quot;</span>,</span>
-<span id="cb455-7"><a href="análise-de-risco.html#cb455-7"></a>     <span class="dt">main =</span> <span class="st">&quot;Retorno diário do IBOVESPA com intervalo de confiança de 2 desvios&quot;</span>)</span>
-<span id="cb455-8"><a href="análise-de-risco.html#cb455-8"></a>volatility &lt;-<span class="st"> </span><span class="kw">rollapply</span>(IBOVESPA_rets, <span class="dv">21</span>, sd)</span>
-<span id="cb455-9"><a href="análise-de-risco.html#cb455-9"></a><span class="kw">lines</span>(<span class="kw">index</span>(volatility), <span class="kw">coredata</span>(volatility) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span>
-<span id="cb455-10"><a href="análise-de-risco.html#cb455-10"></a><span class="kw">lines</span>(<span class="kw">index</span>(volatility), <span class="op">-</span><span class="kw">coredata</span>(volatility) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="análise-de-risco.html#cb462-1"></a><span class="kw">plot</span>(<span class="kw">index</span>(IBOVESPA_rets), <span class="kw">coredata</span>(IBOVESPA_rets),</span>
+<span id="cb462-2"><a href="análise-de-risco.html#cb462-2"></a>     <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>,</span>
+<span id="cb462-3"><a href="análise-de-risco.html#cb462-3"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>),</span>
+<span id="cb462-4"><a href="análise-de-risco.html#cb462-4"></a>     <span class="dt">cex.axis =</span> <span class="fl">.7</span>,</span>
+<span id="cb462-5"><a href="análise-de-risco.html#cb462-5"></a>     <span class="dt">lwd =</span> <span class="dv">1</span>,</span>
+<span id="cb462-6"><a href="análise-de-risco.html#cb462-6"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Date&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Retorno&quot;</span>,</span>
+<span id="cb462-7"><a href="análise-de-risco.html#cb462-7"></a>     <span class="dt">main =</span> <span class="st">&quot;Retorno diário do IBOVESPA com intervalo de confiança de 2 desvios&quot;</span>)</span>
+<span id="cb462-8"><a href="análise-de-risco.html#cb462-8"></a>volatility &lt;-<span class="st"> </span><span class="kw">rollapply</span>(IBOVESPA_rets, <span class="dv">21</span>, sd)</span>
+<span id="cb462-9"><a href="análise-de-risco.html#cb462-9"></a><span class="kw">lines</span>(<span class="kw">index</span>(volatility), <span class="kw">coredata</span>(volatility) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb462-10"><a href="análise-de-risco.html#cb462-10"></a><span class="kw">lines</span>(<span class="kw">index</span>(volatility), <span class="op">-</span><span class="kw">coredata</span>(volatility) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
 </div>
 <div id="comparando-ativos" class="section level2">
 <h2><span class="header-section-number">5.6</span> Comparando Ativos</h2>
@@ -554,23 +554,23 @@ Os passos são</p>
 <h4><span class="header-section-number">5.6.1.1</span> Baixando as séries de preços</h4>
 <p>As séries dos ativos contidas em <code>symbols</code> são baixadas e depois juntadas com a chamada <code>reduce(merge)</code>.
 Essa é uma passagem tricky que vale a pena ser executada passo a passo para que seja bem compreendida.</p>
-<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb456-1"><a href="análise-de-risco.html#cb456-1"></a>symbols &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BOVA11.SA&quot;</span>, <span class="st">&quot;SMAL11.SA&quot;</span>, <span class="st">&quot;SPXI11.SA&quot;</span>, <span class="st">&quot;PETR4.SA&quot;</span>, <span class="st">&quot;VALE3.SA&quot;</span>, <span class="st">&quot;B3SA3.SA&quot;</span>, <span class="st">&quot;ABEV3.SA&quot;</span>, <span class="st">&quot;ITUB4.SA&quot;</span>, <span class="st">&quot;VVAR3.SA&quot;</span>)</span>
-<span id="cb456-2"><a href="análise-de-risco.html#cb456-2"></a>prices &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(symbols, <span class="dt">from =</span> <span class="st">&quot;2016-01-01&quot;</span>,</span>
-<span id="cb456-3"><a href="análise-de-risco.html#cb456-3"></a>                     <span class="dt">to =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
-<span id="cb456-4"><a href="análise-de-risco.html#cb456-4"></a>                     <span class="dt">auto.assign =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb456-5"><a href="análise-de-risco.html#cb456-5"></a><span class="st">  </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">Ad</span>(<span class="kw">get</span>(.))) <span class="op">%&gt;%</span></span>
-<span id="cb456-6"><a href="análise-de-risco.html#cb456-6"></a><span class="st">  </span><span class="kw">reduce</span>(merge) <span class="op">%&gt;%</span></span>
-<span id="cb456-7"><a href="análise-de-risco.html#cb456-7"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(symbols)</span></code></pre></div>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb463-1"><a href="análise-de-risco.html#cb463-1"></a>symbols &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;BOVA11.SA&quot;</span>, <span class="st">&quot;SMAL11.SA&quot;</span>, <span class="st">&quot;SPXI11.SA&quot;</span>, <span class="st">&quot;PETR4.SA&quot;</span>, <span class="st">&quot;VALE3.SA&quot;</span>, <span class="st">&quot;B3SA3.SA&quot;</span>, <span class="st">&quot;ABEV3.SA&quot;</span>, <span class="st">&quot;ITUB4.SA&quot;</span>, <span class="st">&quot;VVAR3.SA&quot;</span>)</span>
+<span id="cb463-2"><a href="análise-de-risco.html#cb463-2"></a>prices &lt;-<span class="st"> </span><span class="kw">getSymbols</span>(symbols, <span class="dt">from =</span> <span class="st">&quot;2016-01-01&quot;</span>,</span>
+<span id="cb463-3"><a href="análise-de-risco.html#cb463-3"></a>                     <span class="dt">to =</span> <span class="st">&quot;2019-12-31&quot;</span>,</span>
+<span id="cb463-4"><a href="análise-de-risco.html#cb463-4"></a>                     <span class="dt">auto.assign =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb463-5"><a href="análise-de-risco.html#cb463-5"></a><span class="st">  </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">Ad</span>(<span class="kw">get</span>(.))) <span class="op">%&gt;%</span></span>
+<span id="cb463-6"><a href="análise-de-risco.html#cb463-6"></a><span class="st">  </span><span class="kw">reduce</span>(merge) <span class="op">%&gt;%</span></span>
+<span id="cb463-7"><a href="análise-de-risco.html#cb463-7"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(symbols)</span></code></pre></div>
 <p>Obtidas as séries vamos ver o que temos em mãos.</p>
-<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb457-1"><a href="análise-de-risco.html#cb457-1"></a><span class="kw">plot</span>(prices, <span class="dt">legend.loc =</span> <span class="st">&quot;topleft&quot;</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="análise-de-risco.html#cb464-1"></a><span class="kw">plot</span>(prices, <span class="dt">legend.loc =</span> <span class="st">&quot;topleft&quot;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
 <p>Nada demais, séries diferentes com diferentes ordens de grandeza, o que prejudica a avaliação.</p>
 </div>
 <div id="calculando-dados-mensais" class="section level4">
 <h4><span class="header-section-number">5.6.1.2</span> Calculando dados mensais</h4>
 <p>Usando a função <code>to.monthly</code> para obter as séries de preços mensais.</p>
-<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb458-1"><a href="análise-de-risco.html#cb458-1"></a>prices_monthly &lt;-<span class="st"> </span><span class="kw">to.monthly</span>(prices, <span class="dt">indexAt =</span> <span class="st">&quot;lastof&quot;</span>, <span class="dt">OHLC =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb458-2"><a href="análise-de-risco.html#cb458-2"></a><span class="kw">head</span>(prices_monthly)</span></code></pre></div>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb465-1"><a href="análise-de-risco.html#cb465-1"></a>prices_monthly &lt;-<span class="st"> </span><span class="kw">to.monthly</span>(prices, <span class="dt">indexAt =</span> <span class="st">&quot;lastof&quot;</span>, <span class="dt">OHLC =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb465-2"><a href="análise-de-risco.html#cb465-2"></a><span class="kw">head</span>(prices_monthly)</span></code></pre></div>
 <pre><code>##            BOVA11.SA SMAL11.SA SPXI11.SA PETR4.SA  VALE3.SA  B3SA3.SA ABEV3.SA
 ## 2016-01-31     39.19     37.71     78.32 4.490080  8.315054  8.961099 16.52255
 ## 2016-02-29     41.45     39.65     79.03 4.768392 10.102961 10.148924 15.72897
@@ -579,15 +579,15 @@ Essa é uma passagem tricky que vale a pena ser executada passo a passo para que
 ## 2016-05-31     47.02     44.26     76.83 7.458729 12.164614 13.986295 17.03972
 ## 2016-06-30     49.90     48.45     68.58 8.738958 13.918304 15.813653 16.98622
 ##            ITUB4.SA VVAR3.SA
-## 2016-01-31 12.00738 1.232770
-## 2016-02-29 12.23606 2.236881
-## 2016-03-31 15.04968 2.405890
-## 2016-04-30 15.86267 2.953283
-## 2016-05-31 14.02979 2.585365
-## 2016-06-30 14.64589 3.082551</code></pre>
+## 2016-01-31 12.00107 1.232770
+## 2016-02-29 12.22963 2.236881
+## 2016-03-31 15.04177 2.405890
+## 2016-04-30 15.85434 2.953283
+## 2016-05-31 14.02242 2.585365
+## 2016-06-30 14.63821 3.082551</code></pre>
 <p>Obtidas as séries de preços mensais vamos seguir com o cálculo dos retornos usando a já conhecida <code>Return.calculate</code>.</p>
-<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb460-1"><a href="análise-de-risco.html#cb460-1"></a>prices_monthly_rets &lt;-<span class="st"> </span><span class="kw">Return.calculate</span>(prices_monthly, <span class="st">&quot;log&quot;</span>)</span>
-<span id="cb460-2"><a href="análise-de-risco.html#cb460-2"></a><span class="kw">head</span>(prices_monthly_rets)</span></code></pre></div>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="análise-de-risco.html#cb467-1"></a>prices_monthly_rets &lt;-<span class="st"> </span><span class="kw">Return.calculate</span>(prices_monthly, <span class="st">&quot;log&quot;</span>)</span>
+<span id="cb467-2"><a href="análise-de-risco.html#cb467-2"></a><span class="kw">head</span>(prices_monthly_rets)</span></code></pre></div>
 <pre><code>##              BOVA11.SA   SMAL11.SA    SPXI11.SA    PETR4.SA   VALE3.SA
 ## 2016-01-31          NA          NA           NA          NA         NA
 ## 2016-02-29  0.05606632  0.05016571  0.009024516  0.06013862  0.1947609
@@ -597,42 +597,42 @@ Essa é uma passagem tricky que vale a pena ser executada passo a passo para que
 ## 2016-06-30  0.05944800  0.09045107 -0.113594239  0.15840594  0.1346736
 ##               B3SA3.SA     ABEV3.SA    ITUB4.SA    VVAR3.SA
 ## 2016-01-31          NA           NA          NA          NA
-## 2016-02-29  0.12447481 -0.049222058  0.01886628  0.59581881
-## 2016-03-31  0.27838779  0.063687794  0.20696912  0.07283741
-## 2016-04-30  0.11263020  0.030900753  0.05261202  0.20499754
-## 2016-05-31 -0.07030776 -0.014545521 -0.12278562 -0.13305074
-## 2016-06-30  0.12279576 -0.003144956  0.04297710  0.17589080</code></pre>
+## 2016-02-29  0.12447481 -0.049222058  0.01886613  0.59581881
+## 2016-03-31  0.27838779  0.063687794  0.20696922  0.07283741
+## 2016-04-30  0.11263020  0.030900753  0.05261197  0.20499754
+## 2016-05-31 -0.07030776 -0.014545521 -0.12278563 -0.13305074
+## 2016-06-30  0.12279576 -0.003144956  0.04297763  0.17589080</code></pre>
 </div>
 <div id="calculando-média-e-desvio-padrão" class="section level4">
 <h4><span class="header-section-number">5.6.1.3</span> Calculando média e desvio padrão</h4>
 <p>Tendo um objeto com todos os retornos mensais vamos calcular a média para cada ativo com <code>colMeans</code> que calcula a média de cada coluna de uma matriz (em nosso caso um objeto <code>xts</code>).</p>
-<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb462-1"><a href="análise-de-risco.html#cb462-1"></a>exp_returns &lt;-<span class="st"> </span><span class="kw">colMeans</span>(prices_monthly_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb462-2"><a href="análise-de-risco.html#cb462-2"></a>exp_returns</span></code></pre></div>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="análise-de-risco.html#cb469-1"></a>exp_returns &lt;-<span class="st"> </span><span class="kw">colMeans</span>(prices_monthly_rets, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb469-2"><a href="análise-de-risco.html#cb469-2"></a>exp_returns</span></code></pre></div>
 <pre><code>##   BOVA11.SA   SMAL11.SA   SPXI11.SA    PETR4.SA    VALE3.SA    B3SA3.SA 
 ## 0.022195289 0.027360844 0.011658452 0.040536915 0.038657794 0.032656128 
 ##    ABEV3.SA    ITUB4.SA    VVAR3.SA 
-## 0.002599821 0.023515049 0.046892935</code></pre>
+## 0.002599821 0.023515050 0.046892935</code></pre>
 <p>O cálculo do desvio padrão utiliza a função <code>StdDev</code> do pacote <code>PerformanceAnalytics</code>.</p>
-<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb464-1"><a href="análise-de-risco.html#cb464-1"></a>exp_risk &lt;-<span class="st"> </span><span class="kw">StdDev</span>(prices_monthly_rets)</span>
-<span id="cb464-2"><a href="análise-de-risco.html#cb464-2"></a>exp_risk</span></code></pre></div>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="análise-de-risco.html#cb471-1"></a>exp_risk &lt;-<span class="st"> </span><span class="kw">StdDev</span>(prices_monthly_rets)</span>
+<span id="cb471-2"><a href="análise-de-risco.html#cb471-2"></a>exp_risk</span></code></pre></div>
 <pre><code>##         BOVA11.SA  SMAL11.SA  SPXI11.SA  PETR4.SA VALE3.SA   B3SA3.SA
 ## StdDev 0.05495577 0.05394365 0.05235481 0.1269872 0.113819 0.08488673
 ##          ABEV3.SA   ITUB4.SA  VVAR3.SA
-## StdDev 0.06119064 0.07817455 0.1760825</code></pre>
+## StdDev 0.06119064 0.07817451 0.1760825</code></pre>
 <p>Com isso fechamos os indicadores de risco e retorno para cada um dos ativos.</p>
 </div>
 <div id="construindo-o-gráfico-risco-x-retorno" class="section level4">
 <h4><span class="header-section-number">5.6.1.4</span> Construindo o gráfico risco x retorno</h4>
 <p>A parte mais fácil é construir os gráficos e utilizar os nomes dos ativos para identificá-los facilmente no gráfico.</p>
-<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="análise-de-risco.html#cb466-1"></a><span class="kw">plot</span>(exp_risk, exp_returns, </span>
-<span id="cb466-2"><a href="análise-de-risco.html#cb466-2"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.2</span>),</span>
-<span id="cb466-3"><a href="análise-de-risco.html#cb466-3"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.05</span>),</span>
-<span id="cb466-4"><a href="análise-de-risco.html#cb466-4"></a>     <span class="dt">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb466-5"><a href="análise-de-risco.html#cb466-5"></a><span class="kw">text</span>(<span class="dt">x =</span> exp_risk,</span>
-<span id="cb466-6"><a href="análise-de-risco.html#cb466-6"></a>     <span class="dt">y =</span> exp_returns,</span>
-<span id="cb466-7"><a href="análise-de-risco.html#cb466-7"></a>     <span class="dt">labels =</span> <span class="kw">colnames</span>(exp_risk),</span>
-<span id="cb466-8"><a href="análise-de-risco.html#cb466-8"></a>     <span class="dt">pos=</span><span class="dv">4</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="análise-de-risco.html#cb473-1"></a><span class="kw">plot</span>(exp_risk, exp_returns, </span>
+<span id="cb473-2"><a href="análise-de-risco.html#cb473-2"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.05</span>, <span class="fl">0.2</span>),</span>
+<span id="cb473-3"><a href="análise-de-risco.html#cb473-3"></a>     <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.05</span>),</span>
+<span id="cb473-4"><a href="análise-de-risco.html#cb473-4"></a>     <span class="dt">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb473-5"><a href="análise-de-risco.html#cb473-5"></a><span class="kw">text</span>(<span class="dt">x =</span> exp_risk,</span>
+<span id="cb473-6"><a href="análise-de-risco.html#cb473-6"></a>     <span class="dt">y =</span> exp_returns,</span>
+<span id="cb473-7"><a href="análise-de-risco.html#cb473-7"></a>     <span class="dt">labels =</span> <span class="kw">colnames</span>(exp_risk),</span>
+<span id="cb473-8"><a href="análise-de-risco.html#cb473-8"></a>     <span class="dt">pos=</span><span class="dv">4</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
 <p>Interessante aqui é ver uma <em>small cap</em> (ação de empresa com menor tamanho de mercado), VVAR3, dispontando com a maior risco e retorno, seguida de PETR4 e VALE3, duas consagradas blueships.
 Outra coisa curiosa, o SMALL11 (ETF de small caps) com um risco ligeiramente menor que BOVA11 e com maior retorno.</p>
 </div>
@@ -642,32 +642,32 @@ Outra coisa curiosa, o SMALL11 (ETF de small caps) com um risco ligeiramente men
 <p>O boxplot é uma forma de visualizar a dispersão dos dados e permite ainda a avaliação de pontos extremos na amostra, os <em>outliers</em>.
 Dado que possuimos uma amostra de retornos para cada ativo, podemos calcular um boxplot para cada ativo.
 Colocando tudo no mesmo gráfico nos permite comparar como os retornos dos ativos estão distribuidos.</p>
-<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="análise-de-risco.html#cb467-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
-<span id="cb467-2"><a href="análise-de-risco.html#cb467-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
-<span id="cb467-3"><a href="análise-de-risco.html#cb467-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
-<span id="cb467-4"><a href="análise-de-risco.html#cb467-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
-<span id="cb467-5"><a href="análise-de-risco.html#cb467-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
-<span id="cb467-6"><a href="análise-de-risco.html#cb467-6"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="análise-de-risco.html#cb474-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
+<span id="cb474-2"><a href="análise-de-risco.html#cb474-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
+<span id="cb474-3"><a href="análise-de-risco.html#cb474-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
+<span id="cb474-4"><a href="análise-de-risco.html#cb474-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
+<span id="cb474-5"><a href="análise-de-risco.html#cb474-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
+<span id="cb474-6"><a href="análise-de-risco.html#cb474-6"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 </div>
 <div id="gráfico-violinplot-com-as-distribuições-de-retornos-dos-ativos" class="section level3">
 <h3><span class="header-section-number">5.6.3</span> Gráfico violinplot com as distribuições de retornos dos ativos</h3>
 <p>O <em>violinplot</em> é muito semelhante ao boxplot.
 É um pouco mais <em>fancy</em> apesar de não deixar clara a existência de <em>outliers</em>, mas impressiona em um ppt.
 Brincadeiras a parte ele apresenta uma distribuição continua para cada ativo, o que permite identificar a simetria das distribuições dos retornos.</p>
-<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb468-1"><a href="análise-de-risco.html#cb468-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
-<span id="cb468-2"><a href="análise-de-risco.html#cb468-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
-<span id="cb468-3"><a href="análise-de-risco.html#cb468-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
-<span id="cb468-4"><a href="análise-de-risco.html#cb468-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
-<span id="cb468-5"><a href="análise-de-risco.html#cb468-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
-<span id="cb468-6"><a href="análise-de-risco.html#cb468-6"></a><span class="st">  </span><span class="kw">geom_violin</span>(<span class="dt">fill =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="análise-de-risco.html#cb475-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
+<span id="cb475-2"><a href="análise-de-risco.html#cb475-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
+<span id="cb475-3"><a href="análise-de-risco.html#cb475-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
+<span id="cb475-4"><a href="análise-de-risco.html#cb475-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
+<span id="cb475-5"><a href="análise-de-risco.html#cb475-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
+<span id="cb475-6"><a href="análise-de-risco.html#cb475-6"></a><span class="st">  </span><span class="kw">geom_violin</span>(<span class="dt">fill =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 </div>
 <div id="correlação-entre-séries-de-retornos" class="section level3">
 <h3><span class="header-section-number">5.6.4</span> Correlação entre séries de retornos</h3>
 <p>Concluindo a parte multivariada precisamos calcular a correlação entre os ativos, não poderia ficar de fora.
 A matriz de correlação é obtida com a função <code>cor</code> que retorna uma matrix quadrada com as correlações entre cada um dos pares de ativos e 1 na diagonal principal, como é uma matriz de correlação.</p>
-<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb469-1"><a href="análise-de-risco.html#cb469-1"></a><span class="kw">cor</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="análise-de-risco.html#cb476-1"></a><span class="kw">cor</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
 <pre><code>##            BOVA11.SA  SMAL11.SA   SPXI11.SA   PETR4.SA   VALE3.SA   B3SA3.SA
 ## BOVA11.SA  1.0000000  0.8719722 -0.47764813  0.8684556  0.4678069  0.7619350
 ## SMAL11.SA  0.8719722  1.0000000 -0.51911630  0.6452371  0.3061980  0.6321611
@@ -676,20 +676,20 @@ A matriz de correlação é obtida com a função <code>cor</code> que retorna u
 ## VALE3.SA   0.4678069  0.3061980 -0.11489970  0.4813710  1.0000000  0.2238908
 ## B3SA3.SA   0.7619350  0.6321611 -0.47689171  0.6735395  0.2238908  1.0000000
 ## ABEV3.SA   0.4264350  0.4600609 -0.01728933  0.2039109 -0.0182789  0.3576270
-## ITUB4.SA   0.9113159  0.7489049 -0.47870662  0.7764730  0.3262517  0.6980960
+## ITUB4.SA   0.9113159  0.7489051 -0.47870759  0.7764732  0.3262518  0.6980961
 ## VVAR3.SA   0.5137772  0.5543491 -0.32382206  0.2988384  0.2077724  0.4305646
 ##              ABEV3.SA   ITUB4.SA   VVAR3.SA
 ## BOVA11.SA  0.42643495  0.9113159  0.5137772
-## SMAL11.SA  0.46006094  0.7489049  0.5543491
-## SPXI11.SA -0.01728933 -0.4787066 -0.3238221
-## PETR4.SA   0.20391093  0.7764730  0.2988384
-## VALE3.SA  -0.01827890  0.3262517  0.2077724
-## B3SA3.SA   0.35762698  0.6980960  0.4305646
-## ABEV3.SA   1.00000000  0.3439020  0.3857068
-## ITUB4.SA   0.34390196  1.0000000  0.3900220
+## SMAL11.SA  0.46006094  0.7489051  0.5543491
+## SPXI11.SA -0.01728933 -0.4787076 -0.3238221
+## PETR4.SA   0.20391093  0.7764732  0.2988384
+## VALE3.SA  -0.01827890  0.3262518  0.2077724
+## B3SA3.SA   0.35762698  0.6980961  0.4305646
+## ABEV3.SA   1.00000000  0.3439021  0.3857068
+## ITUB4.SA   0.34390212  1.0000000  0.3900220
 ## VVAR3.SA   0.38570681  0.3900220  1.0000000</code></pre>
 <p>A matriz de covariância é calculada com a função <code>cov</code>.</p>
-<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb471-1"><a href="análise-de-risco.html#cb471-1"></a><span class="kw">cov</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="análise-de-risco.html#cb478-1"></a><span class="kw">cov</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
 <pre><code>##              BOVA11.SA    SMAL11.SA     SPXI11.SA     PETR4.SA      VALE3.SA
 ## BOVA11.SA  0.003020137  0.002584975 -1.374289e-03  0.006060672  0.0029261381
 ## SMAL11.SA  0.002584975  0.002909918 -1.466093e-03  0.004419971  0.0018799989
@@ -698,21 +698,21 @@ A matriz de correlação é obtida com a função <code>cor</code> que retorna u
 ## VALE3.SA   0.002926138  0.001879999 -6.846843e-04  0.006957523  0.0129547701
 ## B3SA3.SA   0.003554439  0.002894729 -2.119416e-03  0.007260435  0.0021631714
 ## ABEV3.SA   0.001434007  0.001518591 -5.538853e-05  0.001584475 -0.0001273063
-## ITUB4.SA   0.003915143  0.003158148 -1.959257e-03  0.007708175  0.0029029070
+## ITUB4.SA   0.003915142  0.003158147 -1.959260e-03  0.007708173  0.0029029063
 ## VVAR3.SA   0.004971693  0.005265503 -2.985239e-03  0.006682091  0.0041640788
 ##               B3SA3.SA      ABEV3.SA     ITUB4.SA     VVAR3.SA
-## BOVA11.SA  0.003554439  1.434007e-03  0.003915143  0.004971693
-## SMAL11.SA  0.002894729  1.518591e-03  0.003158148  0.005265503
-## SPXI11.SA -0.002119416 -5.538853e-05 -0.001959257 -0.002985239
-## PETR4.SA   0.007260435  1.584475e-03  0.007708175  0.006682091
-## VALE3.SA   0.002163171 -1.273063e-04  0.002902907  0.004164079
-## B3SA3.SA   0.007205756  1.857612e-03  0.004632552  0.006435678
+## BOVA11.SA  0.003554439  1.434007e-03  0.003915142  0.004971693
+## SMAL11.SA  0.002894729  1.518591e-03  0.003158147  0.005265503
+## SPXI11.SA -0.002119416 -5.538853e-05 -0.001959260 -0.002985239
+## PETR4.SA   0.007260435  1.584475e-03  0.007708173  0.006682091
+## VALE3.SA   0.002163171 -1.273063e-04  0.002902906  0.004164079
+## B3SA3.SA   0.007205756  1.857612e-03  0.004632551  0.006435678
 ## ABEV3.SA   0.001857612  3.744295e-03  0.001645073  0.004155837
-## ITUB4.SA   0.004632552  1.645073e-03  0.006111261  0.005368719
-## VVAR3.SA   0.006435678  4.155837e-03  0.005368719  0.031005042</code></pre>
+## ITUB4.SA   0.004632551  1.645073e-03  0.006111255  0.005368717
+## VVAR3.SA   0.006435678  4.155837e-03  0.005368717  0.031005042</code></pre>
 <p>A função <code>chart.Correlation</code> do <code>PerformanceAnalytics</code> traz um gráfico bem interessante e completo da correlação entre os ativos.</p>
-<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb473-1"><a href="análise-de-risco.html#cb473-1"></a><span class="kw">chart.Correlation</span>(prices_monthly_rets)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-123-1.png" width="672" />
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="análise-de-risco.html#cb480-1"></a><span class="kw">chart.Correlation</span>(prices_monthly_rets)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-129-1.png" width="672" />
 Onde além dos valores de correlação também traz os níveis de significância de cada estivativa.
 Note que ABEV3 e VALE3 apresentam uma correlação muito baixa entre si, o que veremos no próximo capítulo, é uma boa característica quando falamos em diversificação.</p>
 </div>

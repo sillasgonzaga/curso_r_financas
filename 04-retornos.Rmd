@@ -263,6 +263,19 @@ Visualizando os dados em um gráfico de barras.
 barplot(USDBRL_2019_monthly_returns * 100, las = 2, ylim = c(-5, 10))
 ```
 
+Outra forma de visualização de toda a série com `PerformanceAnalytics` usando a função `charts.Bar`.
+
+```{r, warning=FALSE}
+get_currency("USD",
+             start_date = "2018-12-31",
+             end_date = "2019-12-31",
+             as = "xts") %>%
+  Ask() %>%
+  Return.calculate(method = "discrete") %>%
+  charts.Bar(main = "Retornos do Dólar")
+```
+
+
 ### Entendendo os preços em função dos retornos
 
 Vimos com escrever os retornos em função dos preços, uma outra forma de entender os retornos simples é inverter a Eq.\@ref(eq:simple-return) e escrevê-la em termos do preço $P_t$.
@@ -374,7 +387,11 @@ No R ainda calcular o calcular a série de retornos simples compostos usando a f
 100 * (cumprod(1 + na.trim(USDBRL_2019_monthly_returns)) - 1)
 ```
 
-Isso fica legal de ver em um gráfico de barras.
+### Visualização de retornos compostos
+
+Vamos ver aqui algumas formas de visualizar os retornos acumulados que aparecem em diversos sites de comparação de ativos.
+
+Dados os retornos mensais `USDBRL_2019_monthly_returns` vamos ver um gráfico de barras simples usando o código acima.
 
 ```{r}
 barplot(100 * (cumprod(1 + na.trim(USDBRL_2019_monthly_returns)) - 1),
@@ -382,6 +399,68 @@ barplot(100 * (cumprod(1 + na.trim(USDBRL_2019_monthly_returns)) - 1),
 ```
 
 É possível notar que o grande resultado para o ano do Dólar Americano ocorreu em julho/2019, após este mês ele ficou de lado mantendo esse resultado.
+
+Uma outra forma interessante de ver o resultado dos retornos acumulados no tempo é visualizar o gráfico de linha dos retornos acumulados
+
+```{r}
+chart.CumReturns(USDBRL_2019_monthly_returns,
+                 begin = "axis",
+                 wealth.index = TRUE,
+                 main = "Retornos Acumulados",
+                 legend.loc = 'topleft')
+```
+
+Note que ao fim do período temos os mesmos 4,02% acumulados, apenas sendo consistente.
+
+Também podemos fazer para toda a série acumulada.
+
+```{r, warning=FALSE}
+get_currency("USD",
+             start_date = "2018-12-31",
+             end_date = "2019-12-31",
+             as = "xts") %>%
+  Ask() %>%
+  Return.calculate(method = "discrete") %>%
+  chart.CumReturns(begin = "axis",
+                   wealth.index = TRUE,
+                   main = "Retornos Acumulados",
+                   legend.loc = 'topleft')
+```
+
+Mais interessante é comparar mais de 1 ativos, vamos pegar 3 moedas: USD, CNY e GBP.
+
+```{r, warning=FALSE}
+list("USD", "CNY", "GBP") %>%
+  map(get_currency,
+         start_date = "2018-12-31",
+         end_date = "2019-12-31",
+         as = "xts") %>%
+  map(Ask) %>%
+  reduce(function(x, y) merge(x, y)) %>%
+  Return.calculate(method = "discrete") %>%
+  chart.CumReturns(begin = "axis",
+                   wealth.index = TRUE,
+                   main = "Retornos Acumulados - Moedas x BRL",
+                   legend.loc = 'topleft')
+```
+
+Outra abordagem interessante é poder usar as cores para destacar uma série específica.
+
+```{r, warning=FALSE}
+list("USD", "CNY", "GBP") %>%
+  map(get_currency,
+         start_date = "2018-12-31",
+         end_date = "2019-12-31",
+         as = "xts") %>%
+  map(Ask) %>%
+  reduce(function(x, y) merge(x, y)) %>%
+  Return.calculate(method = "discrete") %>%
+  chart.CumReturns(begin = "axis",
+                   wealth.index = TRUE,
+                   main = "Retornos Acumulados - Moedas x BRL",
+                   legend.loc = 'topleft',
+                   col = c('gray', 'red', 'gray'))
+```
 
 ### Retorno médio 
 
@@ -669,9 +748,15 @@ No exemplo acima, temos a volatilidade diária, logo, para anualizar a volatilid
 Com a volatilidade anualizada podemos escrever que o retorno anualizado é de 3,9% com uma volatilidade de 11%.
 Nas próximas seções vamos entender  como comparar ativos com diferentes medidas de risco e retorno.
 
+Uma alternativa usando o `PerformanceAnalytics`
+
+```{r}
+100 * StdDev.annualized(Return.calculate(USDBRL_2019, method = "log"))
+```
+
 ## Exercícios - Análise de Retornos
 
-1. Obtenha as séries de preços de Petrobrás PN (PETR4.SA), Lojas Renner (LREN3.SA), Ambev (ABEV3.SA), da ETF BOVA11 (BOVA11.SA) e do Índice IBOVESPA (^BVSP), para o período de 2010-01-01 a 2020-01-01 (10 anos de dados). Use a função `getSymbols` passando os símbolos dados. Estas séries possuem valores faltantes `NA`, é necessário fazer o tratamento. Para cada uma destas séries faça:
+1. Obtenha as séries de preços ajustados de Petrobrás PN (PETR4.SA), Lojas Renner (LREN3.SA), Ambev (ABEV3.SA), da ETF BOVA11 (BOVA11.SA) e do Índice IBOVESPA (^BVSP), para o período de 2010-01-01 a 2020-01-01 (10 anos de dados). Use a função `getSymbols` passando os símbolos dados. Estas séries possuem valores faltantes `NA`, é necessário fazer o tratamento. Para cada uma destas séries faça:
     1. Limpeza dos dados faltantes
     1. Cálculo do log-retorno diário
     1. Cálculo do retorno esperado anualizado
@@ -689,4 +774,7 @@ Nas próximas seções vamos entender  como comparar ativos com diferentes medid
     1. Cálculo do retorno esperado e volatilidade mensal
     1. Cálculo do retorno esperado e volatilidade anualizados
 1. Repira a análise do segundo exercício utilizando as moedas USD, EUR, CNY, GBP e CHF. Dica: as moedas podem ser obtidas com a função `get_currency` do pacote `rbcb`. Use a função `list_currencies` do `rbcb` para descobrir os paises dessas moedas. Avalie as características das moedas.
-  
+1. Fazer gráfico de comparação de evolução de ativos. Usar a série do Magazine Luiza (MGLU3.SA) no período de 2015-01-01 até 2020-11-30 e comparar com:
+    1. CDI acumulado no período
+    1. IBOVESPA
+    1. IPCA
