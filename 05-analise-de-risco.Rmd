@@ -554,4 +554,3 @@ Note que ABEV3 e VALE3 apresentam uma correlação muito baixa entre si, o que v
     1. Fazer o gráfico do histograma
     1. Com a média e variância da amostra fazer o gráfico da densidade de probabilidade da distribuição normal. Comparar os gráficos. O histograma da amostra *parece* com uma distribuição normal?
 1. Calcular o VaR, Drawdown e Short-fall Risk para a Magazine Luiza (MGLU3.SA).
-1. 
