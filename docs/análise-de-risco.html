@@ -24,7 +24,7 @@
 <meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
 
 
-<meta name="date" content="2020-12-03" />
+<meta name="date" content="2020-12-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -200,6 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#carteira-com-2-ativos"><i class="fa fa-check"></i><b>6.2</b> Carteira com 2 ativos</a></li>
 <li class="chapter" data-level="6.3" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#montando-uma-carteira"><i class="fa fa-check"></i><b>6.3</b> Montando uma carteira</a></li>
 <li class="chapter" data-level="6.4" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#rebalanceamento-da-carteira"><i class="fa fa-check"></i><b>6.4</b> Rebalanceamento da carteira</a></li>
+<li class="chapter" data-level="6.5" data-path="análise-de-carteiras.html"><a href="análise-de-carteiras.html#exercícios---análise-de-carteiras"><i class="fa fa-check"></i><b>6.5</b> Exercícios - Análise de Carteiras</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -333,9 +334,9 @@ Isso não é necessariamente bom ou ruim, porque os eventos extremos podem ser p
 <span id="cb440-8"><a href="análise-de-risco.html#cb440-8"></a>  <span class="dt">kurtosis =</span> <span class="kw">kurtosis</span>(x, <span class="dt">method =</span> <span class="st">&quot;moment&quot;</span>)</span>
 <span id="cb440-9"><a href="análise-de-risco.html#cb440-9"></a>)</span></code></pre></div>
 <pre><code>##          Min.       1st Qu.        Median          Mean       3rd Qu. 
-## -5.220719e-02 -9.497233e-03 -4.287076e-05 -2.385144e-04  8.977870e-03 
+## -0.0466034113 -0.0092204068  0.0002447111  0.0001913628  0.0093492860 
 ##          Max.      skewness      kurtosis 
-##  5.202584e-02 -7.857911e-03  2.995699e+00</code></pre>
+##  0.0485846974  0.0394800800  3.0509902137</code></pre>
 <p>Note que na amostra Normal os pontos de mínimo e máximo são bem menores que na distribuição de retornos do IBOVESPA, esse é um efeito que pode ser explicado, pela curtose mais elevada da distribuição de retornos.</p>
 </div>
 <div id="histograma" class="section level3">
@@ -635,6 +636,9 @@ Essa é uma passagem tricky que vale a pena ser executada passo a passo para que
 <p><img src="curso_r_financas_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
 <p>Interessante aqui é ver uma <em>small cap</em> (ação de empresa com menor tamanho de mercado), VVAR3, dispontando com a maior risco e retorno, seguida de PETR4 e VALE3, duas consagradas blueships.
 Outra coisa curiosa, o SMALL11 (ETF de small caps) com um risco ligeiramente menor que BOVA11 e com maior retorno.</p>
+<p>Usando PerformanceAnalytics temos a função <code>chart.RiskReturnScatter</code>.</p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="análise-de-risco.html#cb474-1"></a><span class="kw">chart.RiskReturnScatter</span>(prices_monthly_rets)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gráfico-boxplot-com-retorno-dos-ativos" class="section level3">
@@ -642,32 +646,32 @@ Outra coisa curiosa, o SMALL11 (ETF de small caps) com um risco ligeiramente men
 <p>O boxplot é uma forma de visualizar a dispersão dos dados e permite ainda a avaliação de pontos extremos na amostra, os <em>outliers</em>.
 Dado que possuimos uma amostra de retornos para cada ativo, podemos calcular um boxplot para cada ativo.
 Colocando tudo no mesmo gráfico nos permite comparar como os retornos dos ativos estão distribuidos.</p>
-<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb474-1"><a href="análise-de-risco.html#cb474-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
-<span id="cb474-2"><a href="análise-de-risco.html#cb474-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
-<span id="cb474-3"><a href="análise-de-risco.html#cb474-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
-<span id="cb474-4"><a href="análise-de-risco.html#cb474-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
-<span id="cb474-5"><a href="análise-de-risco.html#cb474-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
-<span id="cb474-6"><a href="análise-de-risco.html#cb474-6"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="análise-de-risco.html#cb475-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
+<span id="cb475-2"><a href="análise-de-risco.html#cb475-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
+<span id="cb475-3"><a href="análise-de-risco.html#cb475-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
+<span id="cb475-4"><a href="análise-de-risco.html#cb475-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
+<span id="cb475-5"><a href="análise-de-risco.html#cb475-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
+<span id="cb475-6"><a href="análise-de-risco.html#cb475-6"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 </div>
 <div id="gráfico-violinplot-com-as-distribuições-de-retornos-dos-ativos" class="section level3">
 <h3><span class="header-section-number">5.6.3</span> Gráfico violinplot com as distribuições de retornos dos ativos</h3>
 <p>O <em>violinplot</em> é muito semelhante ao boxplot.
 É um pouco mais <em>fancy</em> apesar de não deixar clara a existência de <em>outliers</em>, mas impressiona em um ppt.
 Brincadeiras a parte ele apresenta uma distribuição continua para cada ativo, o que permite identificar a simetria das distribuições dos retornos.</p>
-<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb475-1"><a href="análise-de-risco.html#cb475-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
-<span id="cb475-2"><a href="análise-de-risco.html#cb475-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
-<span id="cb475-3"><a href="análise-de-risco.html#cb475-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
-<span id="cb475-4"><a href="análise-de-risco.html#cb475-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
-<span id="cb475-5"><a href="análise-de-risco.html#cb475-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
-<span id="cb475-6"><a href="análise-de-risco.html#cb475-6"></a><span class="st">  </span><span class="kw">geom_violin</span>(<span class="dt">fill =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="análise-de-risco.html#cb476-1"></a>prices_monthly_rets <span class="op">%&gt;%</span></span>
+<span id="cb476-2"><a href="análise-de-risco.html#cb476-2"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">Date =</span> <span class="kw">index</span>(.)) <span class="op">%&gt;%</span></span>
+<span id="cb476-3"><a href="análise-de-risco.html#cb476-3"></a><span class="st">  </span><span class="kw">remove_rownames</span>() <span class="op">%&gt;%</span></span>
+<span id="cb476-4"><a href="análise-de-risco.html#cb476-4"></a><span class="st">  </span><span class="kw">gather</span>(Symbol, Returns, <span class="op">-</span>Date) <span class="op">%&gt;%</span></span>
+<span id="cb476-5"><a href="análise-de-risco.html#cb476-5"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Symbol, <span class="dt">y =</span> Returns)) <span class="op">+</span></span>
+<span id="cb476-6"><a href="análise-de-risco.html#cb476-6"></a><span class="st">  </span><span class="kw">geom_violin</span>(<span class="dt">fill =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
 </div>
 <div id="correlação-entre-séries-de-retornos" class="section level3">
 <h3><span class="header-section-number">5.6.4</span> Correlação entre séries de retornos</h3>
 <p>Concluindo a parte multivariada precisamos calcular a correlação entre os ativos, não poderia ficar de fora.
 A matriz de correlação é obtida com a função <code>cor</code> que retorna uma matrix quadrada com as correlações entre cada um dos pares de ativos e 1 na diagonal principal, como é uma matriz de correlação.</p>
-<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb476-1"><a href="análise-de-risco.html#cb476-1"></a><span class="kw">cor</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb477-1"><a href="análise-de-risco.html#cb477-1"></a><span class="kw">cor</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
 <pre><code>##            BOVA11.SA  SMAL11.SA   SPXI11.SA   PETR4.SA   VALE3.SA   B3SA3.SA
 ## BOVA11.SA  1.0000000  0.8719722 -0.47764813  0.8684556  0.4678069  0.7619350
 ## SMAL11.SA  0.8719722  1.0000000 -0.51911630  0.6452371  0.3061980  0.6321611
@@ -689,7 +693,7 @@ A matriz de correlação é obtida com a função <code>cor</code> que retorna u
 ## ITUB4.SA   0.34390212  1.0000000  0.3900220
 ## VVAR3.SA   0.38570681  0.3900220  1.0000000</code></pre>
 <p>A matriz de covariância é calculada com a função <code>cov</code>.</p>
-<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb478-1"><a href="análise-de-risco.html#cb478-1"></a><span class="kw">cov</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="análise-de-risco.html#cb479-1"></a><span class="kw">cov</span>(prices_monthly_rets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>())</span></code></pre></div>
 <pre><code>##              BOVA11.SA    SMAL11.SA     SPXI11.SA     PETR4.SA      VALE3.SA
 ## BOVA11.SA  0.003020137  0.002584975 -1.374289e-03  0.006060672  0.0029261381
 ## SMAL11.SA  0.002584975  0.002909918 -1.466093e-03  0.004419971  0.0018799989
@@ -711,8 +715,8 @@ A matriz de correlação é obtida com a função <code>cor</code> que retorna u
 ## ITUB4.SA   0.004632551  1.645073e-03  0.006111255  0.005368717
 ## VVAR3.SA   0.006435678  4.155837e-03  0.005368717  0.031005042</code></pre>
 <p>A função <code>chart.Correlation</code> do <code>PerformanceAnalytics</code> traz um gráfico bem interessante e completo da correlação entre os ativos.</p>
-<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="análise-de-risco.html#cb480-1"></a><span class="kw">chart.Correlation</span>(prices_monthly_rets)</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-129-1.png" width="672" />
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="análise-de-risco.html#cb481-1"></a><span class="kw">chart.Correlation</span>(prices_monthly_rets)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-130-1.png" width="672" />
 Onde além dos valores de correlação também traz os níveis de significância de cada estivativa.
 Note que ABEV3 e VALE3 apresentam uma correlação muito baixa entre si, o que veremos no próximo capítulo, é uma boa característica quando falamos em diversificação.</p>
 </div>
@@ -720,20 +724,20 @@ Note que ABEV3 e VALE3 apresentam uma correlação muito baixa entre si, o que v
 <div id="exercícios---análise-de-risco" class="section level2">
 <h2><span class="header-section-number">5.7</span> Exercícios - Análise de Risco</h2>
 <ol style="list-style-type: decimal">
-<li>Escolher 1 série de preços de ações, ETFs ou Índices, calcular:</li>
-</ol>
-<ul>
+<li>Para a série de preços da WEG (WEGE3.SA), calcular:
+<ol style="list-style-type: decimal">
 <li>Retornos diários logaritmicos</li>
 <li>Volatilidade em janela móvel</li>
 <li>Gráfico de túnel de volatilidade</li>
-</ul>
-<ol start="2" style="list-style-type: decimal">
-<li>Para a série de retornos diários logaritmicos</li>
-</ol>
-<ul>
+</ol></li>
+<li>Para a série de retornos diários logaritmicos
+<ol style="list-style-type: decimal">
 <li>Fazer o gráfico do histograma</li>
 <li>Com a média e variância da amostra fazer o gráfico da densidade de probabilidade da distribuição normal. Comparar os gráficos. O histograma da amostra <em>parece</em> com uma distribuição normal?</li>
-</ul>
+</ol></li>
+<li>Calcular o VaR, Drawdown e Short-fall Risk para a Magazine Luiza (MGLU3.SA).</li>
+<li></li>
+</ol>
 
 </div>
 </div>

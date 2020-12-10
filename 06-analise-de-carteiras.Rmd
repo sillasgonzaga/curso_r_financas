@@ -151,61 +151,130 @@ prices <- getSymbols(symbols, from = "2016-01-01",
   map(~Ad(get(.))) %>%
   reduce(merge) %>%
   `colnames<-`(symbols)
+prices %>% head()
 ```
+
+Calculando o log-retorno dos ativos.
 
 ```{r}
 rets <- log(prices) %>% diff() %>% na.omit()
+head(rets)
+```
+
+Calculando retorno esperado anualizado, risco esperado anualizado para cada ativo e a correlação entre os ativos.
+
+```{r}
+r_i <- colMeans(rets) * 252
+r_i
 ```
 
 ```{r}
-r_i <- colMeans(rets)
-sigma_i <- apply(rets, 2, sd)
+sigma_i <- apply(rets, 2, sd) * sqrt(252)
+sigma_i
+```
+
+```{r}
 rho_ij <- cor(rets[,1], rets[,2]) %>% as.numeric()
+rho_ij
 ```
 
+Montanto as funções para cálculo do retorno esperado e risco esperado (anualizados) da carteira com os 2 ativos.
+
 ```{r}
-r_c <- function(alpha, R) alpha*R[1] + (1 - alpha)*R[2]
+r_c <- function(alpha, R) {
+  # desanualizando
+  R <- R / 252
+  r <- alpha*R[1] + (1 - alpha)*R[2]
+  r * 252
+}
+
 sigma_c <- function(alpha, SIGMA, RHO) {
-  r <- alpha * alpha * SIGMA[1] * SIGMA[1] +
+  # desanualizando
+  SIGMA <- SIGMA / sqrt(252)
+  s <- alpha * alpha * SIGMA[1] * SIGMA[1] +
     (1 - alpha) * (1 - alpha) * SIGMA[2] * SIGMA[2] +
     2 * alpha * (1 - alpha) * SIGMA[1] * SIGMA[2] * RHO
-  sqrt(r)
+  sqrt(s * 252)
 }
 ```
 
+Construindo o gráfico de risco e retorno com a fronteira eficiente com a correlação estimada entre os ativos.
+
 ```{r}
 alpha <- seq(0, 1, 0.01)
-risk <- sigma_c(alpha, sigma_i, rho_ij)
+risk_ <- sigma_c(alpha, sigma_i, rho_ij)
 return_ <- r_c(alpha, r_i)
-plot(risk, return_, type = "l", xlim = c(0.0, 0.014))
+
+plot(risk_, return_,
+     xlim = c(0.12, 0.25),
+     type = "b", pch=16, col = "firebrick2",
+     xlab = "Risco", ylab = "Retorno")
+text(x = sigma_i, y = r_i, labels=names(r_i), pos=4)
+points(x = sigma_i, y = r_i, col="orange3", pch=16, cex=1.5)
+```
+
+Gráfico de risco e retorno com a fronteira eficiente assumindo uma correlação igual a 1 entre os ativos, ou seja, uma carteira sem diversificação.
+
+```{r}
+alpha <- seq(0, 1, 0.05)
+risk_ <- sigma_c(alpha, sigma_i, 1)
+return_ <- r_c(alpha, r_i)
+
+plot(risk_, return_,
+     xlim = c(0.12, 0.25),
+     type = "b", pch=16, col = "firebrick3",
+     xlab = "Risco", ylab = "Retorno")
+text(x = sigma_i, y = r_i, labels=names(r_i), pos=4)
+points(x = sigma_i, y = r_i, col="orange3", pch=16, cex=1.5)
 ```
 
 
-```{r}
-alpha <- seq(0, 1, 0.01)
-risk <- sigma_c(alpha, sigma_i, 1)
-return_ <- r_c(alpha, r_i)
-plot(risk, return_, type = "l", xlim = c(0.0, 0.014))
-```
+Gráfico de risco e retorno com a fronteira eficiente assumindo uma correlação igual a -1 entre os ativos, ou seja, uma carteira totalmente divesificada.
+
 
 ```{r}
 alpha <- seq(0, 1, 0.01)
-risk <- sigma_c(alpha, sigma_i, -1)
+risk_ <- sigma_c(alpha, sigma_i, -1)
 return_ <- r_c(alpha, r_i)
-plot(risk, return_, type = "l", xlim = c(0.0, 0.014))
+
+plot(risk_, return_,
+     xlim = c(0, 0.27),
+     type = "b", pch=16, col = "firebrick4",
+     xlab = "Risco", ylab = "Retorno")
+text(x = sigma_i, y = r_i, labels=names(r_i), pos=4)
+points(x = sigma_i, y = r_i, col="orange3", pch=16, cex=1.5)
 ```
 
+Juntando as curvas de fronteira eficiente.
+
 ```{r}
+# Totalmente diversificada (correlação = -1)
 alpha <- seq(0, 1, 0.01)
-risk <- sigma_c(alpha, sigma_i, rho_ij)
+risk_ <- sigma_c(alpha, sigma_i, -1)
 return_ <- r_c(alpha, r_i)
-plot(risk, return_, type = "l", xlim = c(0.0, 0.014))
-risk <- sigma_c(alpha, sigma_i, 1)
+
+plot(risk_, return_,
+     xlim = c(0, 0.27),
+     type = "p", pch=16, col = "firebrick2",
+     xlab = "Risco", ylab = "Retorno")
+
+# Correlação estimada entre os ativos
+alpha <- seq(0, 1, 0.02)
+risk_ <- sigma_c(alpha, sigma_i, rho_ij)
 return_ <- r_c(alpha, r_i)
-lines(risk, return_, type = "l", xlim = c(0.0, 0.014), col = "blue")
-risk <- sigma_c(alpha, sigma_i, -1)
+
+points(risk_, return_, col = "firebrick3", pch = 16)
+
+# Sem diversificação
+alpha <- seq(0, 1, 0.05)
+risk_ <- sigma_c(alpha, sigma_i, 1)
 return_ <- r_c(alpha, r_i)
-lines(risk, return_, type = "l", xlim = c(0.0, 0.014), col = "cyan")
+
+points(risk_, return_, col = "firebrick4", pch=16)
+
+# labels
+text(x = sigma_i, y = r_i, labels = names(r_i), pos = 4)
+points(x = sigma_i, y = r_i, col="orange3", pch = 16, cex = 1.5)
 ```
 
 ### Selecionar a carteira de Mínima Variância
@@ -223,7 +292,7 @@ min_var_weight
 ```{r}
 weights_c <- c(BOVA11.SA = min_var_weight, SPXI11.SA = 1 - min_var_weight)
 port_1 <- Return.portfolio(rets, weights_c, wealth.index = TRUE)
-plot(port_1)
+plot(port_1, main = "Carteira de mínima variância")
 ```
 
 
@@ -247,5 +316,14 @@ weights_c <- c(BOVA11.SA = min_var_weight, SPXI11.SA = 1 - min_var_weight)
 port_2 <- Return.portfolio(rets, weights_c, rebalance_on = "months", wealth.index = TRUE)
 ports <- merge(port_1, port_2) %>%
   `colnames<-`(c("Sem rebalanceamento", "Com rebalanceamento"))
-plot(ports, legend.loc = "topleft")
+plot(ports, legend.loc = "topleft", main = "Simulando rebalanceamento da carteira")
 ```
+
+## Exercícios - Análise de Carteiras
+
+1. Escolha pares de ativos e faça:
+    1. Análise de fronteira eficiente
+    1. Pesos da carteira de mínima variância
+    1. Retornos da carteira
+    1. Retornos da carteira com rebalanceamento
+    1. Cálculo do VaR e Drawdown da carteira com e sem rebalanceamento, tem diferença?

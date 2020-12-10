@@ -483,6 +483,13 @@ text(x = exp_risk,
 Interessante aqui é ver uma *small cap* (ação de empresa com menor tamanho de mercado), VVAR3, dispontando com a maior risco e retorno, seguida de PETR4 e VALE3, duas consagradas blueships.
 Outra coisa curiosa, o SMALL11 (ETF de small caps) com um risco ligeiramente menor que BOVA11 e com maior retorno.
 
+Usando PerformanceAnalytics temos a função `chart.RiskReturnScatter`.
+
+```{r}
+chart.RiskReturnScatter(prices_monthly_rets)
+```
+
+
 ### Gráfico boxplot com retorno dos ativos
 
 O boxplot é uma forma de visualizar a dispersão dos dados e permite ainda a avaliação de pontos extremos na amostra, os *outliers*.
@@ -539,11 +546,12 @@ Note que ABEV3 e VALE3 apresentam uma correlação muito baixa entre si, o que v
 
 ## Exercícios - Análise de Risco
 
-1. Escolher 1 série de preços de ações, ETFs ou Índices, calcular:
-  - Retornos diários logaritmicos
-  - Volatilidade em janela móvel
-  - Gráfico de túnel de volatilidade
-
-2. Para a série de retornos diários logaritmicos
-  - Fazer o gráfico do histograma
-  - Com a média e variância da amostra fazer o gráfico da densidade de probabilidade da distribuição normal. Comparar os gráficos. O histograma da amostra *parece* com uma distribuição normal?
+1. Para a série de preços da WEG (WEGE3.SA), calcular:
+    1. Retornos diários logaritmicos
+    1. Volatilidade em janela móvel
+    1. Gráfico de túnel de volatilidade
+1. Para a série de retornos diários logaritmicos
+    1. Fazer o gráfico do histograma
+    1. Com a média e variância da amostra fazer o gráfico da densidade de probabilidade da distribuição normal. Comparar os gráficos. O histograma da amostra *parece* com uma distribuição normal?
+1. Calcular o VaR, Drawdown e Short-fall Risk para a Magazine Luiza (MGLU3.SA).
+1. 
