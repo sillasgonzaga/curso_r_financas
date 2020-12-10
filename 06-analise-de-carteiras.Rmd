@@ -173,6 +173,8 @@ sigma_i <- apply(rets, 2, sd) * sqrt(252)
 sigma_i
 ```
 
+Calculando retorno esperado anualizado, risco esperado anualizado para cada ativo e a correlação entre os ativos.
+
 ```{r}
 rho_ij <- cor(rets[,1], rets[,2]) %>% as.numeric()
 rho_ij
