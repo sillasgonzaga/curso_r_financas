@@ -24,7 +24,7 @@
 <meta name="author" content="Sillas Gonzaga e Wilson Freitas" />
 
 
-<meta name="date" content="2020-12-03" />
+<meta name="date" content="2020-12-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -338,65 +338,131 @@ Dessa maneira, podemos simular o risco e retorno esperados da carteira para todo
 <span id="cb481-4"><a href="análise-de-carteiras.html#cb481-4"></a>                     <span class="dt">auto.assign =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
 <span id="cb481-5"><a href="análise-de-carteiras.html#cb481-5"></a><span class="st">  </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">Ad</span>(<span class="kw">get</span>(.))) <span class="op">%&gt;%</span></span>
 <span id="cb481-6"><a href="análise-de-carteiras.html#cb481-6"></a><span class="st">  </span><span class="kw">reduce</span>(merge) <span class="op">%&gt;%</span></span>
-<span id="cb481-7"><a href="análise-de-carteiras.html#cb481-7"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(symbols)</span></code></pre></div>
-<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb482-1"><a href="análise-de-carteiras.html#cb482-1"></a>rets &lt;-<span class="st"> </span><span class="kw">log</span>(prices) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb483-1"><a href="análise-de-carteiras.html#cb483-1"></a>r_i &lt;-<span class="st"> </span><span class="kw">colMeans</span>(rets)</span>
-<span id="cb483-2"><a href="análise-de-carteiras.html#cb483-2"></a>sigma_i &lt;-<span class="st"> </span><span class="kw">apply</span>(rets, <span class="dv">2</span>, sd)</span>
-<span id="cb483-3"><a href="análise-de-carteiras.html#cb483-3"></a>rho_ij &lt;-<span class="st"> </span><span class="kw">cor</span>(rets[,<span class="dv">1</span>], rets[,<span class="dv">2</span>]) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
-<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="análise-de-carteiras.html#cb484-1"></a>r_c &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, R) alpha<span class="op">*</span>R[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha)<span class="op">*</span>R[<span class="dv">2</span>]</span>
-<span id="cb484-2"><a href="análise-de-carteiras.html#cb484-2"></a>sigma_c &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, SIGMA, RHO) {</span>
-<span id="cb484-3"><a href="análise-de-carteiras.html#cb484-3"></a>  r &lt;-<span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">+</span></span>
-<span id="cb484-4"><a href="análise-de-carteiras.html#cb484-4"></a><span class="st">    </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">+</span></span>
-<span id="cb484-5"><a href="análise-de-carteiras.html#cb484-5"></a><span class="st">    </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>RHO</span>
-<span id="cb484-6"><a href="análise-de-carteiras.html#cb484-6"></a>  <span class="kw">sqrt</span>(r)</span>
-<span id="cb484-7"><a href="análise-de-carteiras.html#cb484-7"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="análise-de-carteiras.html#cb485-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
-<span id="cb485-2"><a href="análise-de-carteiras.html#cb485-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
-<span id="cb485-3"><a href="análise-de-carteiras.html#cb485-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
-<span id="cb485-4"><a href="análise-de-carteiras.html#cb485-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
-<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="análise-de-carteiras.html#cb486-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
-<span id="cb486-2"><a href="análise-de-carteiras.html#cb486-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">1</span>)</span>
-<span id="cb486-3"><a href="análise-de-carteiras.html#cb486-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
-<span id="cb486-4"><a href="análise-de-carteiras.html#cb486-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-136-1.png" width="672" /></p>
+<span id="cb481-7"><a href="análise-de-carteiras.html#cb481-7"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(symbols)</span>
+<span id="cb481-8"><a href="análise-de-carteiras.html#cb481-8"></a>prices <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>##            BOVA11.SA SPXI11.SA
+## 2016-01-04     41.10     82.35
+## 2016-01-05     41.18     83.00
+## 2016-01-06     40.50     81.65
+## 2016-01-07     39.47     80.25
+## 2016-01-08     39.34     79.50
+## 2016-01-11     38.72     78.49</code></pre>
+<p>Calculando o log-retorno dos ativos.</p>
+<div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb483-1"><a href="análise-de-carteiras.html#cb483-1"></a>rets &lt;-<span class="st"> </span><span class="kw">log</span>(prices) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">na.omit</span>()</span>
+<span id="cb483-2"><a href="análise-de-carteiras.html#cb483-2"></a><span class="kw">head</span>(rets)</span></code></pre></div>
+<pre><code>##               BOVA11.SA    SPXI11.SA
+## 2016-01-05  0.001944629  0.007862175
+## 2016-01-06 -0.016650727 -0.016398764
+## 2016-01-07 -0.025761059 -0.017295082
+## 2016-01-08 -0.003299102 -0.009389740
+## 2016-01-11 -0.015885525 -0.012785819
+## 2016-01-12 -0.008819772  0.006096844</code></pre>
+<p>Calculando retorno esperado anualizado, risco esperado anualizado para cada ativo e a correlação entre os ativos.</p>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb485-1"><a href="análise-de-carteiras.html#cb485-1"></a>r_i &lt;-<span class="st"> </span><span class="kw">colMeans</span>(rets) <span class="op">*</span><span class="st"> </span><span class="dv">252</span></span>
+<span id="cb485-2"><a href="análise-de-carteiras.html#cb485-2"></a>sigma_i &lt;-<span class="st"> </span><span class="kw">apply</span>(rets, <span class="dv">2</span>, sd) <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">252</span>)</span>
+<span id="cb485-3"><a href="análise-de-carteiras.html#cb485-3"></a>rho_ij &lt;-<span class="st"> </span><span class="kw">cor</span>(rets[,<span class="dv">1</span>], rets[,<span class="dv">2</span>]) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
+<p>Montanto as funções para cálculo do retorno esperado e risco esperado (anualizados) da carteira com os 2 ativos.</p>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="análise-de-carteiras.html#cb486-1"></a>r_c &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, R) {</span>
+<span id="cb486-2"><a href="análise-de-carteiras.html#cb486-2"></a>  <span class="co"># desanualizando</span></span>
+<span id="cb486-3"><a href="análise-de-carteiras.html#cb486-3"></a>  R &lt;-<span class="st"> </span>R <span class="op">/</span><span class="st"> </span><span class="dv">252</span></span>
+<span id="cb486-4"><a href="análise-de-carteiras.html#cb486-4"></a>  r &lt;-<span class="st"> </span>alpha<span class="op">*</span>R[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha)<span class="op">*</span>R[<span class="dv">2</span>]</span>
+<span id="cb486-5"><a href="análise-de-carteiras.html#cb486-5"></a>  r <span class="op">*</span><span class="st"> </span><span class="dv">252</span></span>
+<span id="cb486-6"><a href="análise-de-carteiras.html#cb486-6"></a>}</span>
+<span id="cb486-7"><a href="análise-de-carteiras.html#cb486-7"></a></span>
+<span id="cb486-8"><a href="análise-de-carteiras.html#cb486-8"></a>sigma_c &lt;-<span class="st"> </span><span class="cf">function</span>(alpha, SIGMA, RHO) {</span>
+<span id="cb486-9"><a href="análise-de-carteiras.html#cb486-9"></a>  <span class="co"># desanualizando</span></span>
+<span id="cb486-10"><a href="análise-de-carteiras.html#cb486-10"></a>  SIGMA &lt;-<span class="st"> </span>SIGMA <span class="op">/</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">252</span>)</span>
+<span id="cb486-11"><a href="análise-de-carteiras.html#cb486-11"></a>  s &lt;-<span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">+</span></span>
+<span id="cb486-12"><a href="análise-de-carteiras.html#cb486-12"></a><span class="st">    </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">+</span></span>
+<span id="cb486-13"><a href="análise-de-carteiras.html#cb486-13"></a><span class="st">    </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>alpha <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>alpha) <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>SIGMA[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span>RHO</span>
+<span id="cb486-14"><a href="análise-de-carteiras.html#cb486-14"></a>  <span class="kw">sqrt</span>(s <span class="op">*</span><span class="st"> </span><span class="dv">252</span>)</span>
+<span id="cb486-15"><a href="análise-de-carteiras.html#cb486-15"></a>}</span></code></pre></div>
+<p>Construindo o gráfico de risco e retorno com a fronteira eficiente com a correlação estimada entre os ativos.</p>
 <div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="análise-de-carteiras.html#cb487-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
-<span id="cb487-2"><a href="análise-de-carteiras.html#cb487-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">-1</span>)</span>
+<span id="cb487-2"><a href="análise-de-carteiras.html#cb487-2"></a>risk_ &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
 <span id="cb487-3"><a href="análise-de-carteiras.html#cb487-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
-<span id="cb487-4"><a href="análise-de-carteiras.html#cb487-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span></code></pre></div>
-<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-137-1.png" width="672" /></p>
-<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="análise-de-carteiras.html#cb488-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
-<span id="cb488-2"><a href="análise-de-carteiras.html#cb488-2"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
+<span id="cb487-4"><a href="análise-de-carteiras.html#cb487-4"></a></span>
+<span id="cb487-5"><a href="análise-de-carteiras.html#cb487-5"></a><span class="kw">plot</span>(risk_, return_,</span>
+<span id="cb487-6"><a href="análise-de-carteiras.html#cb487-6"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.12</span>, <span class="fl">0.25</span>),</span>
+<span id="cb487-7"><a href="análise-de-carteiras.html#cb487-7"></a>     <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">col =</span> <span class="st">&quot;firebrick2&quot;</span>,</span>
+<span id="cb487-8"><a href="análise-de-carteiras.html#cb487-8"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Risco&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Retorno&quot;</span>)</span>
+<span id="cb487-9"><a href="análise-de-carteiras.html#cb487-9"></a><span class="kw">text</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">labels=</span><span class="kw">names</span>(r_i), <span class="dt">pos=</span><span class="dv">4</span>)</span>
+<span id="cb487-10"><a href="análise-de-carteiras.html#cb487-10"></a><span class="kw">points</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">col=</span><span class="st">&quot;orange3&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
+<p>Gráfico de risco e retorno com a fronteira eficiente assumindo uma correlação igual a 1 entre os ativos, ou seja, uma carteira sem diversificação.</p>
+<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb488-1"><a href="análise-de-carteiras.html#cb488-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.05</span>)</span>
+<span id="cb488-2"><a href="análise-de-carteiras.html#cb488-2"></a>risk_ &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">1</span>)</span>
 <span id="cb488-3"><a href="análise-de-carteiras.html#cb488-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
-<span id="cb488-4"><a href="análise-de-carteiras.html#cb488-4"></a><span class="kw">plot</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>))</span>
-<span id="cb488-5"><a href="análise-de-carteiras.html#cb488-5"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">1</span>)</span>
-<span id="cb488-6"><a href="análise-de-carteiras.html#cb488-6"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
-<span id="cb488-7"><a href="análise-de-carteiras.html#cb488-7"></a><span class="kw">lines</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>), <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb488-8"><a href="análise-de-carteiras.html#cb488-8"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">-1</span>)</span>
-<span id="cb488-9"><a href="análise-de-carteiras.html#cb488-9"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
-<span id="cb488-10"><a href="análise-de-carteiras.html#cb488-10"></a><span class="kw">lines</span>(risk, return_, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.0</span>, <span class="fl">0.014</span>), <span class="dt">col =</span> <span class="st">&quot;cyan&quot;</span>)</span></code></pre></div>
+<span id="cb488-4"><a href="análise-de-carteiras.html#cb488-4"></a></span>
+<span id="cb488-5"><a href="análise-de-carteiras.html#cb488-5"></a><span class="kw">plot</span>(risk_, return_,</span>
+<span id="cb488-6"><a href="análise-de-carteiras.html#cb488-6"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="fl">0.12</span>, <span class="fl">0.25</span>),</span>
+<span id="cb488-7"><a href="análise-de-carteiras.html#cb488-7"></a>     <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">col =</span> <span class="st">&quot;firebrick3&quot;</span>,</span>
+<span id="cb488-8"><a href="análise-de-carteiras.html#cb488-8"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Risco&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Retorno&quot;</span>)</span>
+<span id="cb488-9"><a href="análise-de-carteiras.html#cb488-9"></a><span class="kw">text</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">labels=</span><span class="kw">names</span>(r_i), <span class="dt">pos=</span><span class="dv">4</span>)</span>
+<span id="cb488-10"><a href="análise-de-carteiras.html#cb488-10"></a><span class="kw">points</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">col=</span><span class="st">&quot;orange3&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-136-1.png" width="672" /></p>
+<p>Gráfico de risco e retorno com a fronteira eficiente assumindo uma correlação igual a -1 entre os ativos, ou seja, uma carteira totalmente divesificada.</p>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="análise-de-carteiras.html#cb489-1"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb489-2"><a href="análise-de-carteiras.html#cb489-2"></a>risk_ &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">-1</span>)</span>
+<span id="cb489-3"><a href="análise-de-carteiras.html#cb489-3"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb489-4"><a href="análise-de-carteiras.html#cb489-4"></a></span>
+<span id="cb489-5"><a href="análise-de-carteiras.html#cb489-5"></a><span class="kw">plot</span>(risk_, return_,</span>
+<span id="cb489-6"><a href="análise-de-carteiras.html#cb489-6"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.27</span>),</span>
+<span id="cb489-7"><a href="análise-de-carteiras.html#cb489-7"></a>     <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">col =</span> <span class="st">&quot;firebrick4&quot;</span>,</span>
+<span id="cb489-8"><a href="análise-de-carteiras.html#cb489-8"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Risco&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Retorno&quot;</span>)</span>
+<span id="cb489-9"><a href="análise-de-carteiras.html#cb489-9"></a><span class="kw">text</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">labels=</span><span class="kw">names</span>(r_i), <span class="dt">pos=</span><span class="dv">4</span>)</span>
+<span id="cb489-10"><a href="análise-de-carteiras.html#cb489-10"></a><span class="kw">points</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">col=</span><span class="st">&quot;orange3&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">cex=</span><span class="fl">1.5</span>)</span></code></pre></div>
+<p><img src="curso_r_financas_files/figure-html/unnamed-chunk-137-1.png" width="672" /></p>
+<p>Juntando as curvas de fronteira eficiente.</p>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb490-1"><a href="análise-de-carteiras.html#cb490-1"></a><span class="co"># Totalmente diversificada (correlação = -1)</span></span>
+<span id="cb490-2"><a href="análise-de-carteiras.html#cb490-2"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.01</span>)</span>
+<span id="cb490-3"><a href="análise-de-carteiras.html#cb490-3"></a>risk_ &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">-1</span>)</span>
+<span id="cb490-4"><a href="análise-de-carteiras.html#cb490-4"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb490-5"><a href="análise-de-carteiras.html#cb490-5"></a></span>
+<span id="cb490-6"><a href="análise-de-carteiras.html#cb490-6"></a><span class="kw">plot</span>(risk_, return_,</span>
+<span id="cb490-7"><a href="análise-de-carteiras.html#cb490-7"></a>     <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.27</span>),</span>
+<span id="cb490-8"><a href="análise-de-carteiras.html#cb490-8"></a>     <span class="dt">type =</span> <span class="st">&quot;p&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">col =</span> <span class="st">&quot;firebrick2&quot;</span>,</span>
+<span id="cb490-9"><a href="análise-de-carteiras.html#cb490-9"></a>     <span class="dt">xlab =</span> <span class="st">&quot;Risco&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Retorno&quot;</span>)</span>
+<span id="cb490-10"><a href="análise-de-carteiras.html#cb490-10"></a></span>
+<span id="cb490-11"><a href="análise-de-carteiras.html#cb490-11"></a><span class="co"># Correlação estimada entre os ativos</span></span>
+<span id="cb490-12"><a href="análise-de-carteiras.html#cb490-12"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.02</span>)</span>
+<span id="cb490-13"><a href="análise-de-carteiras.html#cb490-13"></a>risk_ &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
+<span id="cb490-14"><a href="análise-de-carteiras.html#cb490-14"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb490-15"><a href="análise-de-carteiras.html#cb490-15"></a></span>
+<span id="cb490-16"><a href="análise-de-carteiras.html#cb490-16"></a><span class="kw">points</span>(risk_, return_, <span class="dt">col =</span> <span class="st">&quot;firebrick3&quot;</span>, <span class="dt">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb490-17"><a href="análise-de-carteiras.html#cb490-17"></a></span>
+<span id="cb490-18"><a href="análise-de-carteiras.html#cb490-18"></a><span class="co"># Sem diversificação</span></span>
+<span id="cb490-19"><a href="análise-de-carteiras.html#cb490-19"></a>alpha &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.05</span>)</span>
+<span id="cb490-20"><a href="análise-de-carteiras.html#cb490-20"></a>risk_ &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, <span class="dv">1</span>)</span>
+<span id="cb490-21"><a href="análise-de-carteiras.html#cb490-21"></a>return_ &lt;-<span class="st"> </span><span class="kw">r_c</span>(alpha, r_i)</span>
+<span id="cb490-22"><a href="análise-de-carteiras.html#cb490-22"></a></span>
+<span id="cb490-23"><a href="análise-de-carteiras.html#cb490-23"></a><span class="kw">points</span>(risk_, return_, <span class="dt">col =</span> <span class="st">&quot;firebrick4&quot;</span>, <span class="dt">pch=</span><span class="dv">16</span>)</span>
+<span id="cb490-24"><a href="análise-de-carteiras.html#cb490-24"></a></span>
+<span id="cb490-25"><a href="análise-de-carteiras.html#cb490-25"></a><span class="co"># labels</span></span>
+<span id="cb490-26"><a href="análise-de-carteiras.html#cb490-26"></a><span class="kw">text</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">labels =</span> <span class="kw">names</span>(r_i), <span class="dt">pos =</span> <span class="dv">4</span>)</span>
+<span id="cb490-27"><a href="análise-de-carteiras.html#cb490-27"></a><span class="kw">points</span>(<span class="dt">x =</span> sigma_i, <span class="dt">y =</span> r_i, <span class="dt">col=</span><span class="st">&quot;orange3&quot;</span>, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>)</span></code></pre></div>
 <p><img src="curso_r_financas_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
 </div>
 <div id="selecionar-a-carteira-de-mínima-variância" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Selecionar a carteira de Mínima Variância</h3>
-<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="análise-de-carteiras.html#cb489-1"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
-<span id="cb489-2"><a href="análise-de-carteiras.html#cb489-2"></a></span>
-<span id="cb489-3"><a href="análise-de-carteiras.html#cb489-3"></a>min_var_weight &lt;-<span class="st"> </span>alpha[<span class="kw">which.min</span>(risk)]</span>
-<span id="cb489-4"><a href="análise-de-carteiras.html#cb489-4"></a></span>
-<span id="cb489-5"><a href="análise-de-carteiras.html#cb489-5"></a>min_var_weight</span></code></pre></div>
-<pre><code>## [1] 0.38</code></pre>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="análise-de-carteiras.html#cb491-1"></a>risk &lt;-<span class="st"> </span><span class="kw">sigma_c</span>(alpha, sigma_i, rho_ij)</span>
+<span id="cb491-2"><a href="análise-de-carteiras.html#cb491-2"></a></span>
+<span id="cb491-3"><a href="análise-de-carteiras.html#cb491-3"></a>min_var_weight &lt;-<span class="st"> </span>alpha[<span class="kw">which.min</span>(risk)]</span>
+<span id="cb491-4"><a href="análise-de-carteiras.html#cb491-4"></a></span>
+<span id="cb491-5"><a href="análise-de-carteiras.html#cb491-5"></a>min_var_weight</span></code></pre></div>
+<pre><code>## [1] 0.4</code></pre>
 </div>
 </div>
 <div id="montando-uma-carteira" class="section level2">
 <h2><span class="header-section-number">6.3</span> Montando uma carteira</h2>
-<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="análise-de-carteiras.html#cb491-1"></a>weights_c &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">BOVA11.SA =</span> min_var_weight, <span class="dt">SPXI11.SA =</span> <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>min_var_weight)</span>
-<span id="cb491-2"><a href="análise-de-carteiras.html#cb491-2"></a>port_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">Return.portfolio</span>(rets, weights_c, <span class="dt">wealth.index =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb491-3"><a href="análise-de-carteiras.html#cb491-3"></a><span class="kw">plot</span>(port_<span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="análise-de-carteiras.html#cb493-1"></a>weights_c &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">BOVA11.SA =</span> min_var_weight, <span class="dt">SPXI11.SA =</span> <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>min_var_weight)</span>
+<span id="cb493-2"><a href="análise-de-carteiras.html#cb493-2"></a>port_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">Return.portfolio</span>(rets, weights_c, <span class="dt">wealth.index =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb493-3"><a href="análise-de-carteiras.html#cb493-3"></a><span class="kw">plot</span>(port_<span class="dv">1</span>, <span class="dt">main =</span> <span class="st">&quot;Carteira de mínima variância&quot;</span>)</span></code></pre></div>
 <p><img src="curso_r_financas_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
 <div id="o-que-acontece-com-os-pesos-dos-ativos-ao-longo-do-tempo" class="section level3">
 <h3><span class="header-section-number">6.3.1</span> O que acontece com os pesos dos ativos ao longo do tempo?</h3>
-<p>Começamos a carteira com um <span class="math inline">\(\alpha\)</span> igual a 0.38.
-Logo temos 0.38 investidos em BOVA11 e 0.62 investidos em SPXI11.
+<p>Começamos a carteira com um <span class="math inline">\(\alpha\)</span> igual a 0.4.
+Logo temos 0.4 investidos em BOVA11 e 0.6 investidos em SPXI11.
 De acordo com a Eq.<a href="análise-de-carteiras.html#eq:total-wealth">(6.1)</a> as quantidades de cada ativo são atribuídos no instante da montagem da carteira, obedescendo pesos definidos.
 O que acontece se um ativo dobrar de valor e o outro ficar parado?
 Naturalmente os pesos dos ativos são alterados, pois as quantidades de cada ativo permanecem fixas.
@@ -409,11 +475,11 @@ Logo, é necessário rebalancear a carteira para evitar que um ativo fique muito
 </div>
 <div id="rebalanceamento-da-carteira" class="section level2">
 <h2><span class="header-section-number">6.4</span> Rebalanceamento da carteira</h2>
-<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb492-1"><a href="análise-de-carteiras.html#cb492-1"></a>weights_c &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">BOVA11.SA =</span> min_var_weight, <span class="dt">SPXI11.SA =</span> <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>min_var_weight)</span>
-<span id="cb492-2"><a href="análise-de-carteiras.html#cb492-2"></a>port_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">Return.portfolio</span>(rets, weights_c, <span class="dt">rebalance_on =</span> <span class="st">&quot;months&quot;</span>, <span class="dt">wealth.index =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb492-3"><a href="análise-de-carteiras.html#cb492-3"></a>ports &lt;-<span class="st"> </span><span class="kw">merge</span>(port_<span class="dv">1</span>, port_<span class="dv">2</span>) <span class="op">%&gt;%</span></span>
-<span id="cb492-4"><a href="análise-de-carteiras.html#cb492-4"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(<span class="kw">c</span>(<span class="st">&quot;Sem rebalanceamento&quot;</span>, <span class="st">&quot;Com rebalanceamento&quot;</span>))</span>
-<span id="cb492-5"><a href="análise-de-carteiras.html#cb492-5"></a><span class="kw">plot</span>(ports, <span class="dt">legend.loc =</span> <span class="st">&quot;topleft&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb494-1"><a href="análise-de-carteiras.html#cb494-1"></a>weights_c &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">BOVA11.SA =</span> min_var_weight, <span class="dt">SPXI11.SA =</span> <span class="dv">1</span> <span class="op">-</span><span class="st"> </span>min_var_weight)</span>
+<span id="cb494-2"><a href="análise-de-carteiras.html#cb494-2"></a>port_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">Return.portfolio</span>(rets, weights_c, <span class="dt">rebalance_on =</span> <span class="st">&quot;months&quot;</span>, <span class="dt">wealth.index =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb494-3"><a href="análise-de-carteiras.html#cb494-3"></a>ports &lt;-<span class="st"> </span><span class="kw">merge</span>(port_<span class="dv">1</span>, port_<span class="dv">2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb494-4"><a href="análise-de-carteiras.html#cb494-4"></a><span class="st">  `</span><span class="dt">colnames&lt;-</span><span class="st">`</span>(<span class="kw">c</span>(<span class="st">&quot;Sem rebalanceamento&quot;</span>, <span class="st">&quot;Com rebalanceamento&quot;</span>))</span>
+<span id="cb494-5"><a href="análise-de-carteiras.html#cb494-5"></a><span class="kw">plot</span>(ports, <span class="dt">legend.loc =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Simulando rebalanceamento da carteira&quot;</span>)</span></code></pre></div>
 <p><img src="curso_r_financas_files/figure-html/unnamed-chunk-141-1.png" width="672" /></p>
 
 </div>
