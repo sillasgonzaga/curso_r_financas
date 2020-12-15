@@ -3,7 +3,7 @@
 
 # Primeiros passos com R {#intro}
 
-O material deste módulo introdutóri foi adaptado do excelente material didático [Ciência de Dados com R - Introdução](http://sillasgonzaga.com/material/cdr/).
+O material deste módulo introdutório foi adaptado do excelente material didático [Ciência de Dados com R - Introdução](http://sillasgonzaga.com/material/cdr/).
 
 
 ## O que é R e por que devo aprendê-lo?
